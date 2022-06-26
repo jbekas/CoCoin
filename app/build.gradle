@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 //apply plugin: 'bugly'
 
 repositories {
-    //jcenter()
-    //mavenCentral()
     maven { url "https://jitpack.io" }
 }
 
@@ -16,11 +14,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-//    sourceCompatibility = 1.8
-//    targetCompatibility = 1.8
-
     defaultConfig {
-        applicationId "com.nightonke.cocoin"
+        applicationId "com.jbekas.cocoin"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1

@@ -1,4 +1,4 @@
-package com.nightonke.saver;
+package com.jbekas.cocoin;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

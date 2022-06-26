@@ -311,7 +311,7 @@
 
                                 </FrameLayout>
 
-                                <com.nightonke.saver.ui.ExpandedListView
+                                <com.jbekas.cocoin.ui.ExpandedListView
                                     android:id="@+id/highest_tags"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -524,7 +524,7 @@
 
                                 </FrameLayout>
 
-                                <com.nightonke.saver.ui.ExpandedListView
+                                <com.jbekas.cocoin.ui.ExpandedListView
                                     android:id="@+id/lowest_tags"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -820,7 +820,7 @@
 
                                 </FrameLayout>
 
-                                <com.nightonke.saver.ui.ExpandedListView
+                                <com.jbekas.cocoin.ui.ExpandedListView
                                     android:id="@+id/highest_month"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -1206,7 +1206,7 @@
 
                                 </FrameLayout>
 
-                                <com.nightonke.saver.ui.ExpandedListView
+                                <com.jbekas.cocoin.ui.ExpandedListView
                                     android:id="@+id/highest_days"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -1422,7 +1422,7 @@
 
                                 </FrameLayout>
 
-                                <com.nightonke.saver.ui.ExpandedListView
+                                <com.jbekas.cocoin.ui.ExpandedListView
                                     android:id="@+id/lowest_days"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
