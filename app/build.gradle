@@ -7,12 +7,6 @@ repositories {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "23.0.3"
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 
     defaultConfig {
         applicationId "com.jbekas.cocoin"
@@ -29,11 +23,17 @@ android {
         //javaCompileOptions.annotationProcessorOptions.includeCompileClasspath true
         vectorDrawables.useSupportLibrary true
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
