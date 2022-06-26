@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.dev.sacot41.scviewpager.DotsView;
 import com.dev.sacot41.scviewpager.SCPositionAnimation;
 import com.dev.sacot41.scviewpager.SCViewAnimation;
 import com.dev.sacot41.scviewpager.SCViewAnimationUtil;
@@ -65,8 +66,10 @@ public class ShowActivity extends AppCompatActivity {
 
     @BindView(R.id.viewpager_main_activity)
     protected SCViewPager mViewPager;
+    @BindView(R.id.dotsview_main)
+    protected DotsView mDotsView;
+
     private SCViewPagerAdapter mPageAdapter;
-//    private DotsView mDotsView;
 
     private View toolbarLayout;
 
@@ -112,9 +115,10 @@ public class ShowActivity extends AppCompatActivity {
         title.setTypeface(CoCoinUtil.typefaceLatoLight);
         title.setText(mContext.getResources().getString(R.string.app_name));
 
+//        mViewPager = (SCViewPager) findViewById(R.id.viewpager_main_activity);
 //        mDotsView = (DotsView) findViewById(R.id.dotsview_main);
-//        mDotsView.setDotRessource(R.drawable.dot_selected, R.drawable.dot_unselected);
-//        mDotsView.setNumberOfPage(NUM_PAGES);
+        mDotsView.setDotRessource(R.drawable.dot_selected, R.drawable.dot_unselected);
+        mDotsView.setNumberOfPage(NUM_PAGES);
 
         mPageAdapter = new SCViewPagerAdapter(getSupportFragmentManager());
         mPageAdapter.setNumberOfPage(NUM_PAGES);
@@ -122,14 +126,14 @@ public class ShowActivity extends AppCompatActivity {
         mViewPager.setAdapter(mPageAdapter);
         mViewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
             @Override
             public void onPageSelected(int position) {
-                //mDotsView.selectDot(position);
+                mDotsView.selectDot(position);
             }
 
             @Override
@@ -363,7 +367,6 @@ public class ShowActivity extends AppCompatActivity {
         backgroundAnimation.startToPosition(null, -size.y - 100);
         backgroundAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, size.y + 100));
         mViewPager.addAnimation(backgroundAnimation);
-
     }
 
     @Override
@@ -528,33 +531,33 @@ public class ShowActivity extends AppCompatActivity {
         superToast.show();
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-
-        switch (ev.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                x1 = ev.getX();
-                y1 = ev.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                x2 = ev.getX();
-                y2 = ev.getY();
-                if (Math.abs(x1 - x2) > 20) {
-                    return true;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                x2 = ev.getX();
-                y2 = ev.getY();
-                if (Math.abs(x1 - x2) > 20) {
-                    return true;
-                }
-                break;
-            default:
-                break;
-        }
-        return super.dispatchTouchEvent(ev);
-    }
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//
+//        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                x1 = ev.getX();
+//                y1 = ev.getY();
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                x2 = ev.getX();
+//                y2 = ev.getY();
+//                if (Math.abs(x1 - x2) > 20) {
+//                    return true;
+//                }
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                x2 = ev.getX();
+//                y2 = ev.getY();
+//                if (Math.abs(x1 - x2) > 20) {
+//                    return true;
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+//        return super.dispatchTouchEvent(ev);
+//    }
 
     @Override
     protected void onDestroy() {

@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
     </com.dev.sacot41.scviewpager.SCViewPager>
 
-    <View
+    <com.dev.sacot41.scviewpager.DotsView
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
