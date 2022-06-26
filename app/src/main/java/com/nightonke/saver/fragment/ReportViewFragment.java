@@ -5,24 +5,24 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
-import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.johnpersano.supertoasts.SuperToast;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.melnykov.fab.FloatingActionButton;
+import com.melnykov.fab.ObservableScrollView;
 import com.nightonke.saver.R;
 import com.nightonke.saver.activity.CoCoinApplication;
 import com.nightonke.saver.adapter.DialogSelectListDataAdapter;
@@ -173,7 +173,7 @@ public class ReportViewFragment extends Fragment
     private TextView highestTagRecord;
     private ExpandedListView highestTags;
     private ReportTagAdapter highestTagsAdapter;
-    private ExpandableRelativeLayout highestTagsLayout;
+    private RelativeLayout highestTagsLayout;
     private LinearLayout highestTagMore;
     private TextView highestTagMoreText;
 
@@ -187,7 +187,7 @@ public class ReportViewFragment extends Fragment
     private TextView lowestTagRecord;
     private ExpandedListView lowestTags;
     private ReportTagAdapter lowestTagsAdapter;
-    private ExpandableRelativeLayout lowestTagsLayout;
+    private RelativeLayout lowestTagsLayout;
     private LinearLayout lowestTagMore;
     private TextView lowestTagMoreText;
 
@@ -210,7 +210,7 @@ public class ReportViewFragment extends Fragment
     private TextView highestFirstRecord;
     private ExpandedListView highestMonths;
     private ReportMonthAdapter highestMonthsAdapter;
-    private ExpandableRelativeLayout highestMonthsLayout;
+    private RelativeLayout highestMonthsLayout;
     private LinearLayout highestLast;
     private TextView highestLastIcon;
     private TextView highestLastText;
@@ -234,7 +234,7 @@ public class ReportViewFragment extends Fragment
     private TextView highestDayRecord;
     private ExpandedListView highestDays;
     private ReportDayAdapter highestDaysAdapter;
-    private ExpandableRelativeLayout highestDaysLayout;
+    private RelativeLayout highestDaysLayout;
     private LinearLayout highestDayMore;
     private TextView highestDayMoreText;
     
@@ -248,7 +248,7 @@ public class ReportViewFragment extends Fragment
     private TextView lowestDayRecord;
     private ExpandedListView lowestDays;
     private ReportDayAdapter lowestDaysAdapter;
-    private ExpandableRelativeLayout lowestDaysLayout;
+    private RelativeLayout lowestDaysLayout;
     private LinearLayout lowestDayMore;
     private TextView lowestDayMoreText;
 
@@ -306,7 +306,7 @@ public class ReportViewFragment extends Fragment
         IS_EMPTY = RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.isEmpty();
 
         mScrollView = (ObservableScrollView) view.findViewById(R.id.scrollView);
-        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
+//        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
         expenseTV = (TextView)view.findViewById(R.id.expense);
         expenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
@@ -422,7 +422,7 @@ public class ReportViewFragment extends Fragment
         highestTagRecord = (TextView)view.findViewById(R.id.highest_tag_sum);
         highestTagRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestTags = (ExpandedListView)view.findViewById(R.id.highest_tags);
-        highestTagsLayout = (ExpandableRelativeLayout) view.findViewById(R.id.expand_highest_tag);
+        highestTagsLayout = (RelativeLayout) view.findViewById(R.id.expand_highest_tag);
         highestTagMore = (LinearLayout)view.findViewById(R.id.highest_tag_more);
         highestTagMore.setOnClickListener(this);
         highestTagMoreText = (TextView)view.findViewById(R.id.highest_tag_more_text);
@@ -443,7 +443,7 @@ public class ReportViewFragment extends Fragment
         lowestTagRecord = (TextView)view.findViewById(R.id.lowest_tag_sum);
         lowestTagRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestTags = (ExpandedListView)view.findViewById(R.id.lowest_tags);
-        lowestTagsLayout = (ExpandableRelativeLayout) view.findViewById(R.id.expand_lowest_tag);
+        lowestTagsLayout = (RelativeLayout) view.findViewById(R.id.expand_lowest_tag);
         lowestTagMore = (LinearLayout)view.findViewById(R.id.lowest_tag_more);
         lowestTagMore.setOnClickListener(this);
         lowestTagMoreText = (TextView)view.findViewById(R.id.lowest_tag_more_text);
@@ -573,7 +573,7 @@ public class ReportViewFragment extends Fragment
         highestFirstRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestMonths = (ExpandedListView)view.findViewById(R.id.highest_month);
         highestMonths.setOnItemClickListener(this);
-        highestMonthsLayout = (ExpandableRelativeLayout)view.findViewById(R.id.expand_highest_month);
+        highestMonthsLayout = (RelativeLayout) view.findViewById(R.id.expand_highest_month);
         highestLast = (LinearLayout)view.findViewById(R.id.highest_last_month);
         highestLast.setOnClickListener(this);
         highestLastIcon = (TextView) view.findViewById(R.id.lowest_month_icon);
@@ -611,7 +611,7 @@ public class ReportViewFragment extends Fragment
         highestDayRecord = (TextView)view.findViewById(R.id.highest_day_sum);
         highestDayRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestDays = (ExpandedListView)view.findViewById(R.id.highest_days);
-        highestDaysLayout = (ExpandableRelativeLayout) view.findViewById(R.id.expand_highest_day);
+        highestDaysLayout = (RelativeLayout) view.findViewById(R.id.expand_highest_day);
         highestDayMore = (LinearLayout)view.findViewById(R.id.highest_day_more);
         highestDayMore.setOnClickListener(this);
         highestDayMoreText = (TextView)view.findViewById(R.id.highest_day_more_text);
@@ -633,7 +633,7 @@ public class ReportViewFragment extends Fragment
         lowestDayRecord = (TextView)view.findViewById(R.id.lowest_day_sum);
         lowestDayRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestDays = (ExpandedListView)view.findViewById(R.id.lowest_days);
-        lowestDaysLayout = (ExpandableRelativeLayout) view.findViewById(R.id.expand_lowest_day);
+        lowestDaysLayout = (RelativeLayout) view.findViewById(R.id.expand_lowest_day);
         lowestDayMore = (LinearLayout)view.findViewById(R.id.lowest_day_more);
         lowestDayMore.setOnClickListener(this);
         lowestDayMoreText = (TextView)view.findViewById(R.id.lowest_day_more_text);
@@ -712,29 +712,29 @@ public class ReportViewFragment extends Fragment
                 onItemClick(highestTags, highestTags.getChildAt(0), -1, -1);
                 break;
             case R.id.highest_tag_more:
-                if (highestTagsLayout != null) {
-                    if (highestTagsLayout.isExpanded()) {
-                        highestTagsLayout.collapse();
-                        highestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_highest_tag_show_more));
-                    } else {
-                        highestTagsLayout.expand();
-                        highestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_highest_tag_show_less));
-                    }
-                }
+//                if (highestTagsLayout != null) {
+//                    if (highestTagsLayout.isExpanded()) {
+//                        highestTagsLayout.collapse();
+//                        highestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_highest_tag_show_more));
+//                    } else {
+//                        highestTagsLayout.expand();
+//                        highestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_highest_tag_show_less));
+//                    }
+//                }
                 break;
             case R.id.lowest_first:
                 onItemClick(lowestTags, lowestTags.getChildAt(0), -1, -1);
                 break;
             case R.id.lowest_tag_more:
-                if (lowestTagsLayout != null) {
-                    if (lowestTagsLayout.isExpanded()) {
-                        lowestTagsLayout.collapse();
-                        lowestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
-                    } else {
-                        lowestTagsLayout.expand();
-                        lowestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
-                    }
-                }
+//                if (lowestTagsLayout != null) {
+//                    if (lowestTagsLayout.isExpanded()) {
+//                        lowestTagsLayout.collapse();
+//                        lowestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
+//                    } else {
+//                        lowestTagsLayout.expand();
+//                        lowestTagMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
+//                    }
+//                }
                 break;
             case R.id.icon_left_line:
                 if (lastLineSelectedPosition != -1) {
@@ -771,43 +771,43 @@ public class ReportViewFragment extends Fragment
                 onItemClick(highestMonths, highestMonths.getChildAt(0), 10, -1);
                 break;
             case R.id.highest_month_more:
-                if (highestMonthsLayout != null) {
-                    if (highestMonthsLayout.isExpanded()) {
-                        highestMonthsLayout.collapse();
-                        highestMonthMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
-                    } else {
-                        highestMonthsLayout.expand();
-                        highestMonthMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
-                    }
-                }
+//                if (highestMonthsLayout != null) {
+//                    if (highestMonthsLayout.isExpanded()) {
+//                        highestMonthsLayout.collapse();
+//                        highestMonthMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
+//                    } else {
+//                        highestMonthsLayout.expand();
+//                        highestMonthMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
+//                    }
+//                }
                 break;
             case R.id.highest_first_day:
                 onItemClick(highestDays, highestDays.getChildAt(0), -1, -1);
                 break;
             case R.id.highest_day_more:
-                if (highestDaysLayout != null) {
-                    if (highestDaysLayout.isExpanded()) {
-                        highestDaysLayout.collapse();
-                        highestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
-                    } else {
-                        highestDaysLayout.expand();
-                        highestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
-                    }
-                }
+//                if (highestDaysLayout != null) {
+//                    if (highestDaysLayout.isExpanded()) {
+//                        highestDaysLayout.collapse();
+//                        highestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
+//                    } else {
+//                        highestDaysLayout.expand();
+//                        highestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
+//                    }
+//                }
                 break;
             case R.id.lowest_first_day:
                 onItemClick(lowestDays, lowestDays.getChildAt(0), -1, -1);
                 break;
             case R.id.lowest_day_more:
-                if (lowestDaysLayout != null) {
-                    if (lowestDaysLayout.isExpanded()) {
-                        lowestDaysLayout.collapse();
-                        lowestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
-                    } else {
-                        lowestDaysLayout.expand();
-                        lowestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
-                    }
-                }
+//                if (lowestDaysLayout != null) {
+//                    if (lowestDaysLayout.isExpanded()) {
+//                        lowestDaysLayout.collapse();
+//                        lowestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_more));
+//                    } else {
+//                        lowestDaysLayout.expand();
+//                        lowestDayMoreText.setText(CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_lowest_tag_show_less));
+//                    }
+//                }
                 break;
             case R.id.button:
                 if (!isEmpty) showSelectListDataDialog();
@@ -999,14 +999,14 @@ public class ReportViewFragment extends Fragment
                 .title(R.string.report_select_list_title)
                 .cancelable(false)
                 .negativeText(R.string.cancel)
-                .adapter(selectListDataAdapter,
-                        new MaterialDialog.ListCallback() {
-                            @Override
-                            public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                                dialog.dismiss();
-                                makeReport(which);
-                            }
-                        })
+//                .adapter(selectListDataAdapter,
+//                        new MaterialDialog.ListCallback() {
+//                            @Override
+//                            public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+//                                dialog.dismiss();
+//                                makeReport(which);
+//                            }
+//                        })
                 .show();
     }
 

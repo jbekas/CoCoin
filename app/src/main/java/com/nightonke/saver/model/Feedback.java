@@ -1,11 +1,9 @@
 package com.nightonke.saver.model;
 
-import cn.bmob.v3.BmobObject;
-
 /**
  * Created by Weiping on 2016/2/3.
  */
-public class Feedback extends BmobObject {
+public class Feedback { // extends BmobObject {
 
     String content;
 

@@ -2,16 +2,15 @@ package com.nightonke.saver.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
-import com.github.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.nightonke.saver.R;
 import com.nightonke.saver.activity.CoCoinApplication;
 import com.nightonke.saver.adapter.TodayViewRecyclerViewAdapter;
@@ -37,7 +36,7 @@ public class TodayViewFragment extends Fragment {
     private Context mContext;
 
     private RecyclerView mRecyclerView;
-    private RecyclerViewMaterialAdapter mAdapter;
+    //private RecyclerViewMaterialAdapter mAdapter;
     private RecyclerView.Adapter adapter;
 
     private RecyclerView.LayoutManager layoutManager;
@@ -196,12 +195,12 @@ public class TodayViewFragment extends Fragment {
                 break;
         }
 
-        adapter = new TodayViewRecyclerViewAdapter(start, end, mContext, position);
-
-        mAdapter = new RecyclerViewMaterialAdapter(adapter);
-        mRecyclerView.setAdapter(mAdapter);
-
-        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
+//        adapter = new TodayViewRecyclerViewAdapter(start, end, mContext, position);
+//
+//        mAdapter = new RecyclerViewMaterialAdapter(adapter);
+//        mRecyclerView.setAdapter(mAdapter);
+//
+//        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
     }
 
     @Override

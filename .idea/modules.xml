@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Saver.iml" filepath="$PROJECT_DIR$/Saver.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/107044535/CoCoin.iml" filepath="$PROJECT_DIR$/.idea/modules/107044535/CoCoin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/615252681/CoCoin.app.iml" filepath="$PROJECT_DIR$/.idea/modules/615252681/CoCoin.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/615252681/CoCoin.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/615252681/CoCoin.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/615252681/CoCoin.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/615252681/CoCoin.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/615252681/CoCoin.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/615252681/CoCoin.app.unitTest.iml" />
     </modules>
   </component>
 </project>

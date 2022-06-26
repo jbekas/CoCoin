@@ -3,16 +3,16 @@ package com.nightonke.saver.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.melnykov.fab.ObservableScrollView;
 import com.nightonke.saver.R;
 import com.nightonke.saver.util.CoCoinUtil;
 import com.squareup.picasso.Picasso;
@@ -79,7 +79,7 @@ public class HelpCoCoinFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mScrollView = (ObservableScrollView) view.findViewById(R.id.scrollView);
-        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
+//        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
         int width = CoCoinUtil.getInstance().GetScreenWidth(mContext) - CoCoinUtil.getInstance().dpToPx(20);
         int height = width * 653 / 1280;

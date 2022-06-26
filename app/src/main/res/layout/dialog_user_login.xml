@@ -13,7 +13,7 @@
         android:textColor="@color/drawer_text"
         android:textSize="12sp" />
 
-    <com.rengwuxian.materialedittext.MaterialEditText
+    <EditText
         android:id="@+id/login_user_name"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -21,7 +21,6 @@
         android:textSize="20sp"
         android:hint=""
         android:singleLine="true"
-        app:met_baseColor="@color/my_blue"
         />
 
     <TextView
@@ -32,7 +31,7 @@
         android:textColor="@color/drawer_text"
         android:textSize="12sp" />
 
-    <com.rengwuxian.materialedittext.MaterialEditText
+    <EditText
         android:id="@+id/login_password"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -41,7 +40,6 @@
         android:password="true"
         android:hint=""
         android:singleLine="true"
-        app:met_baseColor="@color/my_blue"
         />
 
     <com.dd.CircularProgressButton

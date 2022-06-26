@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -24,9 +26,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.FindListener;
+import java.util.logging.Logger;
 
 /**
  * Created by Weiping on 2016/1/27.
@@ -73,6 +73,7 @@ public class AppUpdateManager {
     private final Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
+            Log.w("AppUpdateManager", "handleMessage: " + msg.toString());
             switch (msg.what) {
                 case UPDARE_TOKEN:
                     progressDialog.setProgress(curProgress);
@@ -88,69 +89,69 @@ public class AppUpdateManager {
      * 检测应用更新信息
      */
     public void checkUpdateInfo(final Boolean showInfo) {
-        BmobQuery<APK> query = new BmobQuery<>();
-        query.addWhereGreaterThan("version", CoCoinApplication.VERSION);
-        query.setLimit(Integer.MAX_VALUE);
-        query.findObjects(CoCoinApplication.getAppContext(), new FindListener<APK>() {
-            @Override
-            public void onSuccess(final List<APK> object) {
-                if (object.size() == 0 && showInfo) {
-                    CoCoinUtil.showToast(context, context.getResources().getString(R.string.is_newest_version), SuperToast.Background.BLUE);
-                }
-                BmobQuery<APK> tooOldQuery = new BmobQuery<>();
-                tooOldQuery.addWhereEqualTo("version", CoCoinApplication.VERSION);
-                tooOldQuery.setLimit(1);
-                tooOldQuery.findObjects(CoCoinApplication.getAppContext(), new FindListener<APK>() {
-                    @Override
-                    public void onSuccess(List<APK> objectTooOld) {
-                        if (objectTooOld.get(0).getTooOld()) {
-                            mustUpdate = true;
-                        } else {
-                            mustUpdate = false;
-                        }
-                        if (object.size() > 0) {
-                            int max = -1;
-                            int maxPosition = 0;
-                            for (int i = 0; i < object.size(); i++) {
-                                if (object.get(i).getVersion() > max) {
-                                    max = object.get(i).getVersion();
-                                    maxPosition = i;
-                                }
-                            }
-                            spec = object.get(maxPosition).getFileUrl();
-                            updateContent = object.get(maxPosition).getInfo();
-                            SettingManager.getInstance().setCanBeUpdated(true);
-                            if (SettingManager.getInstance().getRemindUpdate()) showNoticeDialog();
-                        } else {
-                            SettingManager.getInstance().setCanBeUpdated(false);
-                        }
-                    }
-                    @Override
-                    public void onError(int code, String msg) {
-                        mustUpdate = false;
-                        if (object.size() > 0) {
-                            int max = -1;
-                            int maxPosition = 0;
-                            for (int i = 0; i < object.size(); i++) {
-                                if (object.get(i).getVersion() > max) {
-                                    max = object.get(i).getVersion();
-                                    maxPosition = i;
-                                }
-                            }
-                            spec = object.get(maxPosition).getFileUrl();
-                            updateContent = object.get(maxPosition).getInfo();
-                            SettingManager.getInstance().setCanBeUpdated(true);
-                            if (SettingManager.getInstance().getRemindUpdate()) showNoticeDialog();
-                        } else {
-                            SettingManager.getInstance().setCanBeUpdated(false);
-                        }
-                    }
-                });
-            }
-            @Override
-            public void onError(int code, String msg) {
-            }
-        });
+//        BmobQuery<APK> query = new BmobQuery<>();
+//        query.addWhereGreaterThan("version", CoCoinApplication.VERSION);
+//        query.setLimit(Integer.MAX_VALUE);
+//        query.findObjects(CoCoinApplication.getAppContext(), new FindListener<APK>() {
+//            @Override
+//            public void onSuccess(final List<APK> object) {
+//                if (object.size() == 0 && showInfo) {
+//                    CoCoinUtil.showToast(context, context.getResources().getString(R.string.is_newest_version), SuperToast.Background.BLUE);
+//                }
+//                BmobQuery<APK> tooOldQuery = new BmobQuery<>();
+//                tooOldQuery.addWhereEqualTo("version", CoCoinApplication.VERSION);
+//                tooOldQuery.setLimit(1);
+//                tooOldQuery.findObjects(CoCoinApplication.getAppContext(), new FindListener<APK>() {
+//                    @Override
+//                    public void onSuccess(List<APK> objectTooOld) {
+//                        if (objectTooOld.get(0).getTooOld()) {
+//                            mustUpdate = true;
+//                        } else {
+//                            mustUpdate = false;
+//                        }
+//                        if (object.size() > 0) {
+//                            int max = -1;
+//                            int maxPosition = 0;
+//                            for (int i = 0; i < object.size(); i++) {
+//                                if (object.get(i).getVersion() > max) {
+//                                    max = object.get(i).getVersion();
+//                                    maxPosition = i;
+//                                }
+//                            }
+//                            spec = object.get(maxPosition).getFileUrl();
+//                            updateContent = object.get(maxPosition).getInfo();
+//                            SettingManager.getInstance().setCanBeUpdated(true);
+//                            if (SettingManager.getInstance().getRemindUpdate()) showNoticeDialog();
+//                        } else {
+//                            SettingManager.getInstance().setCanBeUpdated(false);
+//                        }
+//                    }
+//                    @Override
+//                    public void onError(int code, String msg) {
+//                        mustUpdate = false;
+//                        if (object.size() > 0) {
+//                            int max = -1;
+//                            int maxPosition = 0;
+//                            for (int i = 0; i < object.size(); i++) {
+//                                if (object.get(i).getVersion() > max) {
+//                                    max = object.get(i).getVersion();
+//                                    maxPosition = i;
+//                                }
+//                            }
+//                            spec = object.get(maxPosition).getFileUrl();
+//                            updateContent = object.get(maxPosition).getInfo();
+//                            SettingManager.getInstance().setCanBeUpdated(true);
+//                            if (SettingManager.getInstance().getRemindUpdate()) showNoticeDialog();
+//                        } else {
+//                            SettingManager.getInstance().setCanBeUpdated(false);
+//                        }
+//                    }
+//                });
+//            }
+//            @Override
+//            public void onError(int code, String msg) {
+//            }
+//        });
     }
 
     private void showNoticeDialog() {

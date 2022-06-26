@@ -15,9 +15,9 @@
 
     <style name="AppTheme" parent="AppBaseTheme">
 
-        <item name="md_medium_font">LatoLatin-Light.ttf</item>
-        <item name="md_regular_font">LatoLatin-Light.ttf</item>
-        <item name="md_dark_theme">false</item>
+<!--        <item name="md_medium_font">LatoLatin-Light.ttf</item>-->
+<!--        <item name="md_regular_font">LatoLatin-Light.ttf</item>-->
+<!--        <item name="md_dark_theme">false</item>-->
 
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
@@ -34,7 +34,7 @@
         <!-- Material Theme -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/accent_color</item>
+        <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:navigationBarColor" tools:targetApi="21">@color/navigationBarColor</item>
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="21">true</item>

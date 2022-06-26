@@ -10,9 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -23,6 +20,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -57,14 +58,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.listener.DeleteListener;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
-import cn.bmob.v3.listener.UploadFileListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AccountBookSettingActivity extends AppCompatActivity
@@ -169,7 +162,7 @@ public class AccountBookSettingActivity extends AppCompatActivity
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
+//            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
         } else{
             // do something for phones running an SDK before lollipop
             View statusBarView = findViewById(R.id.status_bar_view);
@@ -281,105 +274,105 @@ public class AccountBookSettingActivity extends AppCompatActivity
 
 // Load logo from local/////////////////////////////////////////////////////////////////////////////
     private void loadLogo() {
-        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-        if (user != null) {
-            try {
-                File logoFile = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
-                if (!logoFile.exists()) {
-                    // the local logo file is missed
-                    // try to get from the server
-                    BmobQuery<Logo> bmobQuery = new BmobQuery();
-                    bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
-                    bmobQuery.findObjects(CoCoinApplication.getAppContext()
-                            , new FindListener<Logo>() {
-                                @Override
-                                public void onSuccess(List<Logo> object) {
-                                    // there has been an old logo in the server/////////////////////////////////////////////////////////
-                                    String url = object.get(0).getFile().getFileUrl(CoCoinApplication.getAppContext());
-                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Logo in server: " + url);
-                                    Ion.with(CoCoinApplication.getAppContext()).load(url)
-                                            .write(new File(CoCoinApplication.getAppContext().getFilesDir()
-                                                    + CoCoinUtil.LOGO_NAME))
-                                            .setCallback(new FutureCallback<File>() {
-                                                @Override
-                                                public void onCompleted(Exception e, File file) {
-                                                    logo.setImageBitmap(BitmapFactory.decodeFile(
-                                                            CoCoinApplication.getAppContext().getFilesDir()
-                                                                    + CoCoinUtil.LOGO_NAME));
-                                                }
-                                            });
-                                }
-                                @Override
-                                public void onError(int code, String msg) {
-                                    // the picture is lost
-                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Can't find the old logo in server.");
-                                }
-                            });
-                } else {
-                    // the user logo is in the storage
-                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(logoFile));
-                    logo.setImageBitmap(b);
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else {
-            // use the default logo
-            logo.setImageResource(R.drawable.default_user_logo);
-        }
+//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+//        if (user != null) {
+//            try {
+//                File logoFile = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
+//                if (!logoFile.exists()) {
+//                    // the local logo file is missed
+//                    // try to get from the server
+//                    BmobQuery<Logo> bmobQuery = new BmobQuery();
+//                    bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
+//                    bmobQuery.findObjects(CoCoinApplication.getAppContext()
+//                            , new FindListener<Logo>() {
+//                                @Override
+//                                public void onSuccess(List<Logo> object) {
+//                                    // there has been an old logo in the server/////////////////////////////////////////////////////////
+//                                    String url = object.get(0).getFile().getFileUrl(CoCoinApplication.getAppContext());
+//                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Logo in server: " + url);
+//                                    Ion.with(CoCoinApplication.getAppContext()).load(url)
+//                                            .write(new File(CoCoinApplication.getAppContext().getFilesDir()
+//                                                    + CoCoinUtil.LOGO_NAME))
+//                                            .setCallback(new FutureCallback<File>() {
+//                                                @Override
+//                                                public void onCompleted(Exception e, File file) {
+//                                                    logo.setImageBitmap(BitmapFactory.decodeFile(
+//                                                            CoCoinApplication.getAppContext().getFilesDir()
+//                                                                    + CoCoinUtil.LOGO_NAME));
+//                                                }
+//                                            });
+//                                }
+//                                @Override
+//                                public void onError(int code, String msg) {
+//                                    // the picture is lost
+//                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Can't find the old logo in server.");
+//                                }
+//                            });
+//                } else {
+//                    // the user logo is in the storage
+//                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(logoFile));
+//                    logo.setImageBitmap(b);
+//                }
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            // use the default logo
+//            logo.setImageResource(R.drawable.default_user_logo);
+//        }
     }
 
 // change the user logo/////////////////////////////////////////////////////////////////////////////
     private void changeLogo() {
-        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-        if (user == null) {
-            new MaterialDialog.Builder(this)
-                    .iconRes(R.drawable.cocoin_logo)
-                    .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
-                    .limitIconToDefaultSize() // limits the displayed icon size to 48dp
-                    .title(R.string.login_first_title)
-                    .content(R.string.login_first_content)
-                    .positiveText(R.string.ok)
-                    .neutralText(R.string.cancel)
-                    .onAny(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog,
-                                            @NonNull DialogAction which) {
-                            if (which == DialogAction.POSITIVE) {
-                                userOperator();
-                            }
-                        }
-                    })
-                    .show();
-            return;
-        }
-        new MaterialDialog.Builder(this)
-                .iconRes(R.drawable.cocoin_logo)
-                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
-                .limitIconToDefaultSize() // limits the displayed icon size to 48dp
-                .title(R.string.change_logo_title)
-                .content(R.string.change_logo_content)
-                .positiveText(R.string.from_gallery)
-                .negativeText(R.string.from_camera)
-                .neutralText(R.string.cancel)
-                .onAny(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog,
-                                        @NonNull DialogAction which) {
-                        if (which == DialogAction.POSITIVE) {
-                            Intent intent1 = new Intent(Intent.ACTION_PICK, null);
-                            intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                            startActivityForResult(intent1, 1);
-                        } else if (which == DialogAction.NEGATIVE) {
-                            Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            intent2.putExtra(MediaStore.EXTRA_OUTPUT,
-                                    Uri.fromFile(new File(CoCoinApplication.getAppContext().getFilesDir()
-                                            + CoCoinUtil.LOGO_NAME)));
-                            startActivityForResult(intent2, 2);
-                        }
-                    }
-                })
-                .show();
+//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+//        if (user == null) {
+//            new MaterialDialog.Builder(this)
+//                    .iconRes(R.drawable.cocoin_logo)
+//                    .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                    .limitIconToDefaultSize() // limits the displayed icon size to 48dp
+//                    .title(R.string.login_first_title)
+//                    .content(R.string.login_first_content)
+//                    .positiveText(R.string.ok)
+//                    .neutralText(R.string.cancel)
+//                    .onAny(new MaterialDialog.SingleButtonCallback() {
+//                        @Override
+//                        public void onClick(@NonNull MaterialDialog dialog,
+//                                            @NonNull DialogAction which) {
+//                            if (which == DialogAction.POSITIVE) {
+//                                userOperator();
+//                            }
+//                        }
+//                    })
+//                    .show();
+//            return;
+//        }
+//        new MaterialDialog.Builder(this)
+//                .iconRes(R.drawable.cocoin_logo)
+//                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                .limitIconToDefaultSize() // limits the displayed icon size to 48dp
+//                .title(R.string.change_logo_title)
+//                .content(R.string.change_logo_content)
+//                .positiveText(R.string.from_gallery)
+//                .negativeText(R.string.from_camera)
+//                .neutralText(R.string.cancel)
+//                .onAny(new MaterialDialog.SingleButtonCallback() {
+//                    @Override
+//                    public void onClick(@NonNull MaterialDialog dialog,
+//                                        @NonNull DialogAction which) {
+//                        if (which == DialogAction.POSITIVE) {
+//                            Intent intent1 = new Intent(Intent.ACTION_PICK, null);
+//                            intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+//                            startActivityForResult(intent1, 1);
+//                        } else if (which == DialogAction.NEGATIVE) {
+//                            Intent intent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                            intent2.putExtra(MediaStore.EXTRA_OUTPUT,
+//                                    Uri.fromFile(new File(CoCoinApplication.getAppContext().getFilesDir()
+//                                            + CoCoinUtil.LOGO_NAME)));
+//                            startActivityForResult(intent2, 2);
+//                        }
+//                    }
+//                })
+//                .show();
     }
 
 // Crop a picture///////////////////////////////////////////////////////////////////////////////////
@@ -457,148 +450,148 @@ public class AccountBookSettingActivity extends AppCompatActivity
 
 // download logo to local///////////////////////////////////////////////////////////////////////////
     private void downloadLogoFromServer() {
-        User user = getCurrentUser();
-        if (user.getLogoObjectId() == null) {
-            // the user has no logo
-            return;
-        }
-        BmobQuery<Logo> bmobQuery = new BmobQuery();
-        bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
-        bmobQuery.findObjects(CoCoinApplication.getAppContext()
-                , new FindListener<Logo>() {
-            @Override
-            public void onSuccess(List<Logo> object) {
-// there has been an old logo in the server/////////////////////////////////////////////////////////
-                Log.d("Saver", "There is an old logo");
-                String url = object.get(0).getFile().getUrl();
-                Ion.with(CoCoinApplication.getAppContext()).load(url)
-                        .write(new File(CoCoinApplication.getAppContext().getFilesDir()
-                                + CoCoinUtil.LOGO_NAME))
-                                .setCallback(new FutureCallback<File>() {
-                                    @Override
-                                    public void onCompleted(Exception e, File file) {
-                                        Bitmap bitmap = BitmapFactory.
-                                                decodeFile(CoCoinApplication.getAppContext().getFilesDir()
-                                                        + CoCoinUtil.LOGO_NAME);
-                                        if (bitmap == null) {
-                                            Log.d("Saver", "Logo misses");
-                                        } else {
-                                            logo.setImageBitmap(bitmap);
-                                        }
-                                        SettingManager.getInstance().setHasLogo(true);
-                                    }
-                                });
-                SettingManager.getInstance().setTodayViewLogoShouldChange(true);
-            }
-            @Override
-            public void onError(int code, String msg) {
-                // the picture is lost
-                Log.d("Saver", "Can't find the old logo in server.");
-            }
-        });
+//        User user = getCurrentUser();
+//        if (user.getLogoObjectId() == null) {
+//            // the user has no logo
+//            return;
+//        }
+//        BmobQuery<Logo> bmobQuery = new BmobQuery();
+//        bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
+//        bmobQuery.findObjects(CoCoinApplication.getAppContext()
+//                , new FindListener<Logo>() {
+//            @Override
+//            public void onSuccess(List<Logo> object) {
+//// there has been an old logo in the server/////////////////////////////////////////////////////////
+//                Log.d("Saver", "There is an old logo");
+//                String url = object.get(0).getFile().getUrl();
+//                Ion.with(CoCoinApplication.getAppContext()).load(url)
+//                        .write(new File(CoCoinApplication.getAppContext().getFilesDir()
+//                                + CoCoinUtil.LOGO_NAME))
+//                                .setCallback(new FutureCallback<File>() {
+//                                    @Override
+//                                    public void onCompleted(Exception e, File file) {
+//                                        Bitmap bitmap = BitmapFactory.
+//                                                decodeFile(CoCoinApplication.getAppContext().getFilesDir()
+//                                                        + CoCoinUtil.LOGO_NAME);
+//                                        if (bitmap == null) {
+//                                            Log.d("Saver", "Logo misses");
+//                                        } else {
+//                                            logo.setImageBitmap(bitmap);
+//                                        }
+//                                        SettingManager.getInstance().setHasLogo(true);
+//                                    }
+//                                });
+//                SettingManager.getInstance().setTodayViewLogoShouldChange(true);
+//            }
+//            @Override
+//            public void onError(int code, String msg) {
+//                // the picture is lost
+//                Log.d("Saver", "Can't find the old logo in server.");
+//            }
+//        });
     }
 
 // update a logo to server//////////////////////////////////////////////////////////////////////////
     private void uploadLogoToServer() {
-        if (!SettingManager.getInstance().getHasLogo()) {
-            // the user haven't set the logo
-            return;
-        }
-        final File file = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
-        final User user = getCurrentUser();
-// if login/////////////////////////////////////////////////////////////////////////////////////////
-        if (user != null) {
-            if (user.getLogoObjectId() != "") {
-// if the logo id is not null, then there must be a logo and a logo file in the server//////////////
-// judge whether there is an old logo of the same user//////////////////////////////////////////////
-                BmobQuery<Logo> bmobQuery = new BmobQuery();
-                bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
-                bmobQuery.findObjects(CoCoinApplication.getAppContext()
-                        , new FindListener<Logo>() {
-                    @Override
-                    public void onSuccess(List<Logo> object) {
-// there has been an old logo in the server/////////////////////////////////////////////////////////
-// then there must be an old logo file in server////////////////////////////////////////////////////
-// then we should delete the old one////////////////////////////////////////////////////////////////
-                        Log.d("Saver", "There is an old logo");
-                        String url = object.get(0).getFile().getUrl();
-                        BmobFile oldLogoFile = new BmobFile();
-                        oldLogoFile.setUrl(url);
-                        oldLogoFile.delete(CoCoinApplication.getAppContext(), new DeleteListener() {
-                            @Override
-                            public void onSuccess() {
-                                Log.d("Saver", "Successfully delete the old logo.");
-// after delete, we should upload a new logo file///////////////////////////////////////////////////
-                                final BmobFile newLogoFile = new BmobFile(file);
-                                newLogoFile.uploadblock(CoCoinApplication.getAppContext(),
-                                        new UploadFileListener() {
-                                    @Override
-                                    public void onSuccess() {
-// after upload the new logo file, we should put the new logo the Logo table////////////////////////
-                                        Logo newLogo = new Logo(newLogoFile);
-                                        newLogo.update(CoCoinApplication.getAppContext(),
-                                                user.getLogoObjectId(), new UpdateListener() {
-                                                    @Override
-                                                    public void onSuccess() {
-                                                        Log.d("Saver", "Update logo successfully");
-                                                    }
-
-                                                    @Override
-                                                    public void onFailure(int arg0, String arg1) {
-                                                        Log.d("Saver", "Update logo failed " + arg1);
-                                                    }
-                                                });
-                                    }
-                                    @Override
-                                    public void onProgress(Integer arg0) {
-                                    }
-                                    @Override
-                                    public void onFailure(int arg0, String arg1) {
-                                        Log.d("Saver", "Upload failed " + arg1);
-                                    }
-                                });
-                            }
-                            @Override
-                            public void onFailure(int code, String msg) {
-                                Log.d("Saver", "Fail to delete the old logo. " + msg);
-                            }
-                        });
-                    }
-                    @Override
-                    public void onError(int code, String msg) {
-                        // the picture is lost
-                        Log.d("Saver", "Can't find the old logo in server.");
-                    }
-                });
-            } else {
-// the user has no logo before//////////////////////////////////////////////////////////////////////
-                final BmobFile newLogoFile = new BmobFile(file);
-                newLogoFile.uploadblock(CoCoinApplication.getAppContext(), new UploadFileListener() {
-                    @Override
-                    public void onSuccess() {
-                        String url = newLogoFile.getFileUrl(CoCoinApplication.getAppContext());
-                        Log.d("Saver", "Upload successfully " + url);
-                        final Logo newLogo = new Logo(newLogoFile);
-                        newLogo.save(CoCoinApplication.getAppContext(), new SaveListener() {
-                            @Override
-                            public void onSuccess() {
-                                Log.d("Saver", "Save the new logo successfully.");
-                                SettingManager.getInstance().setLogoObjectId(newLogo.getObjectId());
-                                updateSettingsToServer(UPDATE_LOGO_ID);
-                            }
-                            @Override
-                            public void onFailure(int i, String s) {
-                                Log.d("Saver", "Save the new logo fail.");
-                            }
-                        });
-                    }
-                    @Override
-                    public void onProgress(Integer arg0) {}
-                    @Override
-                    public void onFailure(int arg0, String arg1) {Log.d("Saver", "Upload failed " + arg1);}
-                });
-            }
-        }
+//        if (!SettingManager.getInstance().getHasLogo()) {
+//            // the user haven't set the logo
+//            return;
+//        }
+//        final File file = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
+//        final User user = getCurrentUser();
+//// if login/////////////////////////////////////////////////////////////////////////////////////////
+//        if (user != null) {
+//            if (user.getLogoObjectId() != "") {
+//// if the logo id is not null, then there must be a logo and a logo file in the server//////////////
+//// judge whether there is an old logo of the same user//////////////////////////////////////////////
+//                BmobQuery<Logo> bmobQuery = new BmobQuery();
+//                bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
+//                bmobQuery.findObjects(CoCoinApplication.getAppContext()
+//                        , new FindListener<Logo>() {
+//                    @Override
+//                    public void onSuccess(List<Logo> object) {
+//// there has been an old logo in the server/////////////////////////////////////////////////////////
+//// then there must be an old logo file in server////////////////////////////////////////////////////
+//// then we should delete the old one////////////////////////////////////////////////////////////////
+//                        Log.d("Saver", "There is an old logo");
+//                        String url = object.get(0).getFile().getUrl();
+//                        BmobFile oldLogoFile = new BmobFile();
+//                        oldLogoFile.setUrl(url);
+//                        oldLogoFile.delete(CoCoinApplication.getAppContext(), new DeleteListener() {
+//                            @Override
+//                            public void onSuccess() {
+//                                Log.d("Saver", "Successfully delete the old logo.");
+//// after delete, we should upload a new logo file///////////////////////////////////////////////////
+//                                final BmobFile newLogoFile = new BmobFile(file);
+//                                newLogoFile.uploadblock(CoCoinApplication.getAppContext(),
+//                                        new UploadFileListener() {
+//                                    @Override
+//                                    public void onSuccess() {
+//// after upload the new logo file, we should put the new logo the Logo table////////////////////////
+//                                        Logo newLogo = new Logo(newLogoFile);
+//                                        newLogo.update(CoCoinApplication.getAppContext(),
+//                                                user.getLogoObjectId(), new UpdateListener() {
+//                                                    @Override
+//                                                    public void onSuccess() {
+//                                                        Log.d("Saver", "Update logo successfully");
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onFailure(int arg0, String arg1) {
+//                                                        Log.d("Saver", "Update logo failed " + arg1);
+//                                                    }
+//                                                });
+//                                    }
+//                                    @Override
+//                                    public void onProgress(Integer arg0) {
+//                                    }
+//                                    @Override
+//                                    public void onFailure(int arg0, String arg1) {
+//                                        Log.d("Saver", "Upload failed " + arg1);
+//                                    }
+//                                });
+//                            }
+//                            @Override
+//                            public void onFailure(int code, String msg) {
+//                                Log.d("Saver", "Fail to delete the old logo. " + msg);
+//                            }
+//                        });
+//                    }
+//                    @Override
+//                    public void onError(int code, String msg) {
+//                        // the picture is lost
+//                        Log.d("Saver", "Can't find the old logo in server.");
+//                    }
+//                });
+//            } else {
+//// the user has no logo before//////////////////////////////////////////////////////////////////////
+//                final BmobFile newLogoFile = new BmobFile(file);
+//                newLogoFile.uploadblock(CoCoinApplication.getAppContext(), new UploadFileListener() {
+//                    @Override
+//                    public void onSuccess() {
+//                        String url = newLogoFile.getFileUrl(CoCoinApplication.getAppContext());
+//                        Log.d("Saver", "Upload successfully " + url);
+//                        final Logo newLogo = new Logo(newLogoFile);
+//                        newLogo.save(CoCoinApplication.getAppContext(), new SaveListener() {
+//                            @Override
+//                            public void onSuccess() {
+//                                Log.d("Saver", "Save the new logo successfully.");
+//                                SettingManager.getInstance().setLogoObjectId(newLogo.getObjectId());
+//                                updateSettingsToServer(UPDATE_LOGO_ID);
+//                            }
+//                            @Override
+//                            public void onFailure(int i, String s) {
+//                                Log.d("Saver", "Save the new logo fail.");
+//                            }
+//                        });
+//                    }
+//                    @Override
+//                    public void onProgress(Integer arg0) {}
+//                    @Override
+//                    public void onFailure(int arg0, String arg1) {Log.d("Saver", "Upload failed " + arg1);}
+//                });
+//            }
+//        }
     }
 
 // the user's operation when clicking the first card view///////////////////////////////////////////
@@ -656,14 +649,14 @@ public class AccountBookSettingActivity extends AppCompatActivity
 
 // User log out/////////////////////////////////////////////////////////////////////////////////////
     private void userLogout() {
-        BmobUser.logOut(CoCoinApplication.getAppContext());
-        SettingManager.getInstance().setTodayViewInfoShouldChange(true);
-        SettingManager.getInstance().setLoggenOn(false);
-        SettingManager.getInstance().setUserName(null);
-        SettingManager.getInstance().setUserEmail(null);
-        logo.setImageResource(R.drawable.default_user_logo);
-        updateViews();
-        showToast(8, "");
+//        BmobUser.logOut(CoCoinApplication.getAppContext());
+//        SettingManager.getInstance().setTodayViewInfoShouldChange(true);
+//        SettingManager.getInstance().setLoggenOn(false);
+//        SettingManager.getInstance().setUserName(null);
+//        SettingManager.getInstance().setUserEmail(null);
+//        logo.setImageResource(R.drawable.default_user_logo);
+//        updateViews();
+//        showToast(8, "");
     }
 
 // User login///////////////////////////////////////////////////////////////////////////////////////
@@ -687,100 +680,100 @@ public class AccountBookSettingActivity extends AppCompatActivity
         loginDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginDialog.setCancelable(false);
-                loginDialogButton.setProgress(1);
-// the user ask to login////////////////////////////////////////////////////////////////////////////
-                final User user = new User();
-                user.setUsername(loginUserName.getText().toString());
-                user.setPassword(loginPassword.getText().toString());
-                user.login(CoCoinApplication.getAppContext(), new SaveListener() {
-// try with user name///////////////////////////////////////////////////////////////////////////////
-                    @Override
-                    public void onSuccess() {
-                        loginDialog.setCancelable(true);
-                        loginDialogButton.setProgress(0);
-                        loginDialogButton.setIdleText(getResourceString(R.string.login_complete));
-// login successfully through user name/////////////////////////////////////////////////////////////
-                        SettingManager.getInstance().setTodayViewInfoShouldChange(true);
-                        User loginUser =
-                                BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-                        if (!CoCoinApplication.getAndroidId().equals(loginUser.getAndroidId())) {
-// 2 users on one mobile////////////////////////////////////////////////////////////////////////////
-                            showToast(7, "unique...");
-                            return;
-                        }
-                        SettingManager.getInstance().setLoggenOn(true);
-                        SettingManager.getInstance().setUserName(loginUserName.getText().toString());
-                        SettingManager.getInstance().setUserEmail(
-                                loginUser.getEmail());
-                        updateViews();
-                        // use a new method
-//                        RecordManager.updateOldRecordsToServer();
-                        whetherSyncSettingsFromServer();
-                        showToast(6, loginUserName.getText().toString());
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (loginDialog != null) loginDialog.dismiss();
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS,0);
-                            }
-                        }, 500);
-                    }
-                    // login fail through user name/////////////////////////////////////////////////////////////////////
-                    @Override
-                    public void onFailure(int code, String msg) {
-// try with user email//////////////////////////////////////////////////////////////////////////////
-                        user.setEmail(loginUserName.getText().toString());
-                        user.login(CoCoinApplication.getAppContext(), new SaveListener() {
-                            @Override
-                            public void onSuccess() {
-                                loginDialog.setCancelable(true);
-                                loginDialogButton.setProgress(0);
-                                loginDialogButton.setIdleText(getResourceString(R.string.login_complete));
-// login successfully through user email////////////////////////////////////////////////////////////
-                                SettingManager.getInstance().setTodayViewInfoShouldChange(true);
-                                User loginUser =
-                                        BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-                                if (!CoCoinApplication.getAndroidId().equals(loginUser.getAndroidId())) {
-// 2 users on one mobile////////////////////////////////////////////////////////////////////////////
-                                    showToast(7, "unique...");
-                                    return;
-                                }
-                                String userName = loginUser.getUsername();
-                                SettingManager.getInstance().setLoggenOn(true);
-                                SettingManager.getInstance().setUserName(userName);
-                                SettingManager.getInstance().setUserEmail(loginUserName.getText().toString());
-                                SettingManager.getInstance().setUserPassword(loginPassword.getText().toString());
-                                updateViews();
-                                // use a new method
-//                                RecordManager.updateOldRecordsToServer();
-                                whetherSyncSettingsFromServer();
-                                showToast(6, userName);
-                                final Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (loginDialog != null) loginDialog.dismiss();
-                                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                        imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS,0);
-                                    }
-                                }, 500);
-                            }
-// login fail through user name and email///////////////////////////////////////////////////////////
-                            @Override
-                            public void onFailure(int code, String msg) {
-                                loginDialog.setCancelable(true);
-                                loginDialogButton.setProgress(0);
-                                String tip = getResourceString(R.string.network_disconnection);
-                                if (msg.charAt(0) == 'u') tip = getResourceString(R.string.user_name_or_password_incorrect);
-                                if (msg.charAt(1) == 'n') tip = getResourceString(R.string.user_mobile_exist);
-                                loginDialogButton.setIdleText(tip);
-                            }
-                        });
-                    }
-                });
+//                loginDialog.setCancelable(false);
+//                loginDialogButton.setProgress(1);
+//// the user ask to login////////////////////////////////////////////////////////////////////////////
+//                final User user = new User();
+//                user.setUsername(loginUserName.getText().toString());
+//                user.setPassword(loginPassword.getText().toString());
+//                user.login(CoCoinApplication.getAppContext(), new SaveListener() {
+//// try with user name///////////////////////////////////////////////////////////////////////////////
+//                    @Override
+//                    public void onSuccess() {
+//                        loginDialog.setCancelable(true);
+//                        loginDialogButton.setProgress(0);
+//                        loginDialogButton.setIdleText(getResourceString(R.string.login_complete));
+//// login successfully through user name/////////////////////////////////////////////////////////////
+//                        SettingManager.getInstance().setTodayViewInfoShouldChange(true);
+//                        User loginUser =
+//                                BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+//                        if (!CoCoinApplication.getAndroidId().equals(loginUser.getAndroidId())) {
+//// 2 users on one mobile////////////////////////////////////////////////////////////////////////////
+//                            showToast(7, "unique...");
+//                            return;
+//                        }
+//                        SettingManager.getInstance().setLoggenOn(true);
+//                        SettingManager.getInstance().setUserName(loginUserName.getText().toString());
+//                        SettingManager.getInstance().setUserEmail(
+//                                loginUser.getEmail());
+//                        updateViews();
+//                        // use a new method
+////                        RecordManager.updateOldRecordsToServer();
+//                        whetherSyncSettingsFromServer();
+//                        showToast(6, loginUserName.getText().toString());
+//                        final Handler handler = new Handler();
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (loginDialog != null) loginDialog.dismiss();
+//                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                                imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS,0);
+//                            }
+//                        }, 500);
+//                    }
+//                    // login fail through user name/////////////////////////////////////////////////////////////////////
+//                    @Override
+//                    public void onFailure(int code, String msg) {
+//// try with user email//////////////////////////////////////////////////////////////////////////////
+//                        user.setEmail(loginUserName.getText().toString());
+//                        user.login(CoCoinApplication.getAppContext(), new SaveListener() {
+//                            @Override
+//                            public void onSuccess() {
+//                                loginDialog.setCancelable(true);
+//                                loginDialogButton.setProgress(0);
+//                                loginDialogButton.setIdleText(getResourceString(R.string.login_complete));
+//// login successfully through user email////////////////////////////////////////////////////////////
+//                                SettingManager.getInstance().setTodayViewInfoShouldChange(true);
+//                                User loginUser =
+//                                        BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+//                                if (!CoCoinApplication.getAndroidId().equals(loginUser.getAndroidId())) {
+//// 2 users on one mobile////////////////////////////////////////////////////////////////////////////
+//                                    showToast(7, "unique...");
+//                                    return;
+//                                }
+//                                String userName = loginUser.getUsername();
+//                                SettingManager.getInstance().setLoggenOn(true);
+//                                SettingManager.getInstance().setUserName(userName);
+//                                SettingManager.getInstance().setUserEmail(loginUserName.getText().toString());
+//                                SettingManager.getInstance().setUserPassword(loginPassword.getText().toString());
+//                                updateViews();
+//                                // use a new method
+////                                RecordManager.updateOldRecordsToServer();
+//                                whetherSyncSettingsFromServer();
+//                                showToast(6, userName);
+//                                final Handler handler = new Handler();
+//                                handler.postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        if (loginDialog != null) loginDialog.dismiss();
+//                                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                                        imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS,0);
+//                                    }
+//                                }, 500);
+//                            }
+//// login fail through user name and email///////////////////////////////////////////////////////////
+//                            @Override
+//                            public void onFailure(int code, String msg) {
+//                                loginDialog.setCancelable(true);
+//                                loginDialogButton.setProgress(0);
+//                                String tip = getResourceString(R.string.network_disconnection);
+//                                if (msg.charAt(0) == 'u') tip = getResourceString(R.string.user_name_or_password_incorrect);
+//                                if (msg.charAt(1) == 'n') tip = getResourceString(R.string.user_mobile_exist);
+//                                loginDialogButton.setIdleText(tip);
+//                            }
+//                        });
+//                    }
+//                });
             }
         });
 
@@ -849,79 +842,79 @@ public class AccountBookSettingActivity extends AppCompatActivity
         registerDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerDialogButton.setProgress(1);
-                registerDialog.setCancelable(false);
-// User register, a new user////////////////////////////////////////////////////////////////////////
-                final User user = new User();
-                // basic info
-                user.setUsername(registerUserName.getText().toString());
-                user.setPassword(registerPassword.getText().toString());
-                user.setEmail(registerUserEmail.getText().toString());
-                user.setAndroidId(CoCoinApplication.getAndroidId());
-                if (BuildConfig.DEBUG) Log.d("CoCoin", "Android Id: " + user.getAndroidId());
-                // settings info
-                // user.setLogo();
-                user.setIsMonthLimit(SettingManager.getInstance().getIsMonthLimit());
-                user.setMonthLimit(SettingManager.getInstance().getMonthLimit());
-                user.setIsColorRemind(SettingManager.getInstance().getIsColorRemind());
-                user.setMonthWarning(SettingManager.getInstance().getMonthWarning());
-                user.setRemindColor(SettingManager.getInstance().getRemindColor());
-                user.setIsForbidden(SettingManager.getInstance().getIsForbidden());
-                user.setAccountBookName(SettingManager.getInstance().getAccountBookName());
-                user.setAccountBookPassword(SettingManager.getInstance().getPassword());
-                // Todo store tag order
-                user.setShowPicture(SettingManager.getInstance().getShowPicture());
-                user.setIsHollow(SettingManager.getInstance().getIsHollow());
-                user.setLogoObjectId("");
-                user.signUp(CoCoinApplication.getAppContext(), new SaveListener() {
-                    @Override
-                    public void onSuccess() {
-                        registerDialogButton.setProgress(0);
-                        registerDialog.setCancelable(true);
-                        registerDialogButton.setIdleText(getResourceString(R.string.register_complete));
-// if register successfully/////////////////////////////////////////////////////////////////////////
-                        SettingManager.getInstance().setLoggenOn(true);
-                        SettingManager.getInstance().setUserName(registerUserName.getText().toString());
-                        SettingManager.getInstance().setUserEmail(registerUserEmail.getText().toString());
-                        SettingManager.getInstance().setUserPassword(registerPassword.getText().toString());
-                        showToast(4, registerUserName.getText().toString());
-// if login successfully////////////////////////////////////////////////////////////////////////////
-                        user.login(CoCoinApplication.getAppContext(), new SaveListener() {
-                            @Override
-                            public void onSuccess() {
-                                SettingManager.getInstance().setTodayViewInfoShouldChange(true);
-                                updateViews();
-                                // use a new method
-//                                RecordManager.updateOldRecordsToServer();
-                            }
-                            @Override
-                            public void onFailure(int code, String msg) {
-// if login failed//////////////////////////////////////////////////////////////////////////////////
-                            }
-                        });
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (registerDialog != null) registerDialog.dismiss();
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS,0);
-                            }
-                        }, 500);
-                    }
-                    // if register failed///////////////////////////////////////////////////////////////////////////////
-                    @Override
-                    public void onFailure(int code, String msg) {
-                        if (BuildConfig.DEBUG) Log.d("CoCoin", "Register failed: " + msg);
-                        String tip = getResourceString(R.string.network_disconnection);
-                        if (msg.charAt(1) == 's') tip = getResourceString(R.string.user_name_exist);
-                        if (msg.charAt(0) == 'e') tip = getResourceString(R.string.user_email_exist);
-                        if (msg.charAt(1) == 'n') tip = getResourceString(R.string.user_mobile_exist);
-                        registerDialogButton.setIdleText(tip);
-                        registerDialogButton.setProgress(0);
-                        registerDialog.setCancelable(true);
-                    }
-                });
+//                registerDialogButton.setProgress(1);
+//                registerDialog.setCancelable(false);
+//// User register, a new user////////////////////////////////////////////////////////////////////////
+//                final User user = new User();
+//                // basic info
+//                user.setUsername(registerUserName.getText().toString());
+//                user.setPassword(registerPassword.getText().toString());
+//                user.setEmail(registerUserEmail.getText().toString());
+//                user.setAndroidId(CoCoinApplication.getAndroidId());
+//                if (BuildConfig.DEBUG) Log.d("CoCoin", "Android Id: " + user.getAndroidId());
+//                // settings info
+//                // user.setLogo();
+//                user.setIsMonthLimit(SettingManager.getInstance().getIsMonthLimit());
+//                user.setMonthLimit(SettingManager.getInstance().getMonthLimit());
+//                user.setIsColorRemind(SettingManager.getInstance().getIsColorRemind());
+//                user.setMonthWarning(SettingManager.getInstance().getMonthWarning());
+//                user.setRemindColor(SettingManager.getInstance().getRemindColor());
+//                user.setIsForbidden(SettingManager.getInstance().getIsForbidden());
+//                user.setAccountBookName(SettingManager.getInstance().getAccountBookName());
+//                user.setAccountBookPassword(SettingManager.getInstance().getPassword());
+//                // Todo store tag order
+//                user.setShowPicture(SettingManager.getInstance().getShowPicture());
+//                user.setIsHollow(SettingManager.getInstance().getIsHollow());
+//                user.setLogoObjectId("");
+//                user.signUp(CoCoinApplication.getAppContext(), new SaveListener() {
+//                    @Override
+//                    public void onSuccess() {
+//                        registerDialogButton.setProgress(0);
+//                        registerDialog.setCancelable(true);
+//                        registerDialogButton.setIdleText(getResourceString(R.string.register_complete));
+//// if register successfully/////////////////////////////////////////////////////////////////////////
+//                        SettingManager.getInstance().setLoggenOn(true);
+//                        SettingManager.getInstance().setUserName(registerUserName.getText().toString());
+//                        SettingManager.getInstance().setUserEmail(registerUserEmail.getText().toString());
+//                        SettingManager.getInstance().setUserPassword(registerPassword.getText().toString());
+//                        showToast(4, registerUserName.getText().toString());
+//// if login successfully////////////////////////////////////////////////////////////////////////////
+//                        user.login(CoCoinApplication.getAppContext(), new SaveListener() {
+//                            @Override
+//                            public void onSuccess() {
+//                                SettingManager.getInstance().setTodayViewInfoShouldChange(true);
+//                                updateViews();
+//                                // use a new method
+////                                RecordManager.updateOldRecordsToServer();
+//                            }
+//                            @Override
+//                            public void onFailure(int code, String msg) {
+//// if login failed//////////////////////////////////////////////////////////////////////////////////
+//                            }
+//                        });
+//                        final Handler handler = new Handler();
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (registerDialog != null) registerDialog.dismiss();
+//                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                                imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS,0);
+//                            }
+//                        }, 500);
+//                    }
+//                    // if register failed///////////////////////////////////////////////////////////////////////////////
+//                    @Override
+//                    public void onFailure(int code, String msg) {
+//                        if (BuildConfig.DEBUG) Log.d("CoCoin", "Register failed: " + msg);
+//                        String tip = getResourceString(R.string.network_disconnection);
+//                        if (msg.charAt(1) == 's') tip = getResourceString(R.string.user_name_exist);
+//                        if (msg.charAt(0) == 'e') tip = getResourceString(R.string.user_email_exist);
+//                        if (msg.charAt(1) == 'n') tip = getResourceString(R.string.user_mobile_exist);
+//                        registerDialogButton.setIdleText(tip);
+//                        registerDialogButton.setProgress(0);
+//                        registerDialog.setCancelable(true);
+//                    }
+//                });
             }
         });
 
@@ -1450,6 +1443,11 @@ public class AccountBookSettingActivity extends AppCompatActivity
         SettingManager.getInstance().setMainViewRemindColorShouldChange(true);
     }
 
+    @Override
+    public void onColorChooserDismissed(@NonNull ColorChooserDialog dialog) {
+
+    }
+
     ColorChooserDialog remindColorSelectDialog =
             new ColorChooserDialog.Builder(this, R.string.set_remind_color_dialog_title)
                     .titleSub(R.string.set_remind_color_dialog_sub_title)
@@ -1468,7 +1466,7 @@ public class AccountBookSettingActivity extends AppCompatActivity
                 .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
                 .limitIconToDefaultSize() // limits the displayed icon size to 48dp
                 .title(R.string.sync_dialog_title)
-                .forceStacking(true)
+//                .forceStacking(true)
                 .content(R.string.sync_dialog_content)
                 .positiveText(R.string.sync_dialog_sync_to_local)
                 .negativeText(R.string.sync_dialog_sync_to_server)
@@ -1543,17 +1541,17 @@ public class AccountBookSettingActivity extends AppCompatActivity
                             // Todo tag sort
                             user.setShowPicture(SettingManager.getInstance().getShowPicture());
                             user.setIsHollow(SettingManager.getInstance().getIsHollow());
-                            user.update(CoCoinApplication.getAppContext(),
-                                    user.getObjectId(), new UpdateListener() {
-                                @Override
-                                public void onSuccess() {
-                                    showToast(9, "");
-                                }
-                                @Override
-                                public void onFailure(int code, String msg) {
-                                    showToast(10, msg);
-                                }
-                            });
+//                            user.update(CoCoinApplication.getAppContext(),
+//                                    user.getObjectId(), new UpdateListener() {
+//                                @Override
+//                                public void onSuccess() {
+//                                    showToast(9, "");
+//                                }
+//                                @Override
+//                                public void onFailure(int code, String msg) {
+//                                    showToast(10, msg);
+//                                }
+//                            });
                         }
                         dialog.dismiss();
                     }
@@ -1623,32 +1621,33 @@ public class AccountBookSettingActivity extends AppCompatActivity
                 currentUser.setLogoObjectId(SettingManager.getInstance().getLogoObjectId());
                 break;
         }
-        currentUser.update(CoCoinApplication.getAppContext(),
-                currentUser.getObjectId(), new UpdateListener() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d("Saver", "Update " + setting + " successfully.");
-                        // the new account book name is updated to server successfully
-                        if (setting == UPDATE_ACCOUNT_BOOK_NAME) showToast(0, "");
-                    }
-
-                    @Override
-                    public void onFailure(int code, String msg) {
-                        Log.d("Saver", "Update " + setting + " fail.");
-                        // the new account book name is failed to updated to server
-                        if (setting == UPDATE_ACCOUNT_BOOK_NAME) showToast(1, "");
-                    }
-                });
+//        currentUser.update(CoCoinApplication.getAppContext(),
+//                currentUser.getObjectId(), new UpdateListener() {
+//                    @Override
+//                    public void onSuccess() {
+//                        Log.d("Saver", "Update " + setting + " successfully.");
+//                        // the new account book name is updated to server successfully
+//                        if (setting == UPDATE_ACCOUNT_BOOK_NAME) showToast(0, "");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(int code, String msg) {
+//                        Log.d("Saver", "Update " + setting + " fail.");
+//                        // the new account book name is failed to updated to server
+//                        if (setting == UPDATE_ACCOUNT_BOOK_NAME) showToast(1, "");
+//                    }
+//                });
     }
 
     private void syncUserInfo() {
-        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
 
     }
 
 // Get the current user/////////////////////////////////////////////////////////////////////////////
     private User getCurrentUser() {
-        return BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+        //return BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+        return null;
     }
 
 // Get string///////////////////////////////////////////////////////////////////////////////////////

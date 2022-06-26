@@ -2,13 +2,14 @@ package com.nightonke.saver.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.balysv.materialripple.MaterialRippleLayout;
@@ -32,9 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.Optional;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
 import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
@@ -53,7 +53,7 @@ import lecho.lib.hellocharts.view.PieChartView;
  */
 
 public class TodayViewRecyclerViewAdapter
-        extends RecyclerView.Adapter<TodayViewRecyclerViewAdapter.viewHolder> {
+        extends RecyclerView.Adapter<TodayViewRecyclerViewAdapter.TVviewHolder> {
 
     private OnItemClickListener onItemClickListener;
 
@@ -203,20 +203,20 @@ public class TodayViewRecyclerViewAdapter
     }
 
     @Override
-    public TodayViewRecyclerViewAdapter.viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TVviewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
 
         switch (viewType) {
             case TYPE_HEADER: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_today_view_head, parent, false);
-                return new viewHolder(view) {
+                return new TVviewHolder(view) {
                 };
             }
             case TYPE_BODY: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_today_view_body, parent, false);
-                return new viewHolder(view) {
+                return new TVviewHolder(view) {
                 };
             }
         }
@@ -225,7 +225,7 @@ public class TodayViewRecyclerViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(final viewHolder holder, final int position) {
+    public void onBindViewHolder(final TVviewHolder holder, int position) {
 
         switch (getItemViewType(position)) {
             case TYPE_HEADER:
@@ -643,65 +643,47 @@ public class TodayViewRecyclerViewAdapter
     }
 
 // view holder class////////////////////////////////////////////////////////////////////////////////
-    public static class viewHolder extends RecyclerView.ViewHolder {
-        @Optional
-        @InjectView(R.id.date)
+    public static class TVviewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.date)
         TextView date;
-        @Optional
-        @InjectView(R.id.date_bottom)
+        @BindView(R.id.date_bottom)
         TextView dateBottom;
-        @Optional
-        @InjectView(R.id.expanse)
+        @BindView(R.id.expanse)
         TextView expanseSum;
-        @Optional
-        @InjectView(R.id.empty_tip)
+        @BindView(R.id.empty_tip)
         TextView emptyTip;
-        @Optional
-        @InjectView(R.id.chart_pie)
+        @BindView(R.id.chart_pie)
         PieChartView pie;
-        @Optional
-        @InjectView(R.id.histogram)
+        @BindView(R.id.histogram)
         ColumnChartView histogram;
-        @Optional
-        @InjectView(R.id.icon_left)
+        @BindView(R.id.icon_left)
         MaterialIconView iconLeft;
-        @Optional
-        @InjectView(R.id.icon_right)
+        @BindView(R.id.icon_right)
         MaterialIconView iconRight;
-        @Optional
-        @InjectView(R.id.histogram_icon_left)
+        @BindView(R.id.histogram_icon_left)
         MaterialIconView histogram_icon_left;
-        @Optional
-        @InjectView(R.id.histogram_icon_right)
+        @BindView(R.id.histogram_icon_right)
         MaterialIconView histogram_icon_right;
-        @Optional
-        @InjectView(R.id.icon_reset)
+        @BindView(R.id.icon_reset)
         MaterialIconView reset;
-        @Optional
-        @InjectView(R.id.all)
+        @BindView(R.id.all)
         MaterialIconView all;
-        @Optional
-        @InjectView(R.id.tag_image)
+        @BindView(R.id.tag_image)
         ImageView tagImage;
-        @Optional
-        @InjectView(R.id.money)
+        @BindView(R.id.money)
         TextView money;
-        @Optional
-        @InjectView(R.id.cell_date)
+        @BindView(R.id.cell_date)
         TextView cell_date;
-        @Optional
-        @InjectView(R.id.remark)
+        @BindView(R.id.remark)
         TextView remark;
-        @Optional
-        @InjectView(R.id.index)
+        @BindView(R.id.index)
         TextView index;
-        @Optional
-        @InjectView(R.id.material_ripple_layout)
+        @BindView(R.id.material_ripple_layout)
         MaterialRippleLayout layout;
 
-        viewHolder(View view) {
+        TVviewHolder(View view) {
             super(view);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 

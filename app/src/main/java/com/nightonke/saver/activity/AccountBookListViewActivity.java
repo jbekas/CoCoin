@@ -11,16 +11,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +23,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -79,9 +80,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.listener.FindListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
@@ -167,11 +165,11 @@ public class AccountBookListViewActivity extends AppCompatActivity
         userName.setTypeface(CoCoinUtil.typefaceLatoRegular);
         userEmail.setTypeface(CoCoinUtil.typefaceLatoLight);
 
-        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-        if (user != null) {
-            userName.setText(user.getUsername());
-            userEmail.setText(user.getEmail());
-        }
+//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+//        if (user != null) {
+//            userName.setText(user.getUsername());
+//            userEmail.setText(user.getEmail());
+//        }
 
         int size = RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size();
         if (RecordManager.getInstance(CoCoinApplication.getAppContext()).SELECTED_RECORDS == null) {
@@ -200,7 +198,7 @@ public class AccountBookListViewActivity extends AppCompatActivity
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
+//            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
         } else{
             // do something for phones running an SDK before lollipop
             View statusBarView = (View)findViewById(R.id.status_bar_view);
@@ -777,6 +775,8 @@ public class AccountBookListViewActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         switch (requestCode) {
             case EDITTING_RECORD:
                 if (resultCode == RESULT_OK) {
@@ -894,52 +894,52 @@ public class AccountBookListViewActivity extends AppCompatActivity
     }
 
     private void loadLogo() {
-        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-        if (user != null) {
-            try {
-                File logoFile = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
-                if (!logoFile.exists()) {
-                    // the local logo file is missed
-                    // try to get from the server
-                    BmobQuery<Logo> bmobQuery = new BmobQuery();
-                    bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
-                    bmobQuery.findObjects(CoCoinApplication.getAppContext()
-                            , new FindListener<Logo>() {
-                                @Override
-                                public void onSuccess(List<Logo> object) {
-                                    // there has been an old logo in the server/////////////////////////////////////////////////////////
-                                    String url = object.get(0).getFile().getFileUrl(CoCoinApplication.getAppContext());
-                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Logo in server: " + url);
-                                    Ion.with(CoCoinApplication.getAppContext()).load(url)
-                                            .write(new File(CoCoinApplication.getAppContext().getFilesDir()
-                                                    + CoCoinUtil.LOGO_NAME))
-                                            .setCallback(new FutureCallback<File>() {
-                                                @Override
-                                                public void onCompleted(Exception e, File file) {
-                                                    profileImage.setImageBitmap(BitmapFactory.decodeFile(
-                                                            CoCoinApplication.getAppContext().getFilesDir()
-                                                                    + CoCoinUtil.LOGO_NAME));
-                                                }
-                                            });
-                                }
-                                @Override
-                                public void onError(int code, String msg) {
-                                    // the picture is lost
-                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Can't find the old logo in server.");
-                                }
-                            });
-                } else {
-                    // the user logo is in the storage
-                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(logoFile));
-                    profileImage.setImageBitmap(b);
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else {
-            // use the default logo
-            profileImage.setImageResource(R.drawable.default_user_logo);
-        }
+//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+//        if (user != null) {
+//            try {
+//                File logoFile = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
+//                if (!logoFile.exists()) {
+//                    // the local logo file is missed
+//                    // try to get from the server
+//                    BmobQuery<Logo> bmobQuery = new BmobQuery();
+//                    bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
+//                    bmobQuery.findObjects(CoCoinApplication.getAppContext()
+//                            , new FindListener<Logo>() {
+//                                @Override
+//                                public void onSuccess(List<Logo> object) {
+//                                    // there has been an old logo in the server/////////////////////////////////////////////////////////
+//                                    String url = object.get(0).getFile().getFileUrl(CoCoinApplication.getAppContext());
+//                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Logo in server: " + url);
+//                                    Ion.with(CoCoinApplication.getAppContext()).load(url)
+//                                            .write(new File(CoCoinApplication.getAppContext().getFilesDir()
+//                                                    + CoCoinUtil.LOGO_NAME))
+//                                            .setCallback(new FutureCallback<File>() {
+//                                                @Override
+//                                                public void onCompleted(Exception e, File file) {
+//                                                    profileImage.setImageBitmap(BitmapFactory.decodeFile(
+//                                                            CoCoinApplication.getAppContext().getFilesDir()
+//                                                                    + CoCoinUtil.LOGO_NAME));
+//                                                }
+//                                            });
+//                                }
+//                                @Override
+//                                public void onError(int code, String msg) {
+//                                    // the picture is lost
+//                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Can't find the old logo in server.");
+//                                }
+//                            });
+//                } else {
+//                    // the user logo is in the storage
+//                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(logoFile));
+//                    profileImage.setImageBitmap(b);
+//                }
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            // use the default logo
+//            profileImage.setImageResource(R.drawable.default_user_logo);
+//        }
     }
 
     @Override

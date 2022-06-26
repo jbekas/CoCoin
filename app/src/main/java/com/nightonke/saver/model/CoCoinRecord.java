@@ -7,13 +7,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import cn.bmob.v3.BmobObject;
-
 /**
  * Created by 伟平 on 2015/10/20.
  */
 
-public class CoCoinRecord extends BmobObject {
+public class CoCoinRecord { //extends BmobObject {
 
     private Long id;
     private Float money;

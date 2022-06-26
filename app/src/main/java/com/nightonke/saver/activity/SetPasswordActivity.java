@@ -5,9 +5,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +17,10 @@ import android.view.animation.Interpolator;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.nightonke.saver.R;
@@ -37,8 +38,6 @@ import net.steamcrafted.materialiconlib.MaterialIconView;
 
 import java.lang.reflect.Field;
 
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.listener.UpdateListener;
 
 public class SetPasswordActivity extends AppCompatActivity {
 
@@ -81,7 +80,7 @@ public class SetPasswordActivity extends AppCompatActivity {
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
+//            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
         } else{
             // do something for phones running an SDK before lollipop
         }
@@ -223,21 +222,21 @@ public class SetPasswordActivity extends AppCompatActivity {
                             SettingManager.getInstance().setPassword(newPassword);
                             SettingManager.getInstance().setFirstTime(false);
                             if (SettingManager.getInstance().getLoggenOn()) {
-                                User currentUser = BmobUser.getCurrentUser(
-                                        CoCoinApplication.getAppContext(), User.class);
-                                currentUser.setAccountBookPassword(newPassword);
-                                currentUser.update(CoCoinApplication.getAppContext(),
-                                        currentUser.getObjectId(), new UpdateListener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                Log.d("Saver", "Set password successfully.");
-                                            }
-
-                                            @Override
-                                            public void onFailure(int code, String msg) {
-                                                Log.d("Saver", "Set password failed.");
-                                            }
-                                        });
+//                                User currentUser = BmobUser.getCurrentUser(
+//                                        CoCoinApplication.getAppContext(), User.class);
+//                                currentUser.setAccountBookPassword(newPassword);
+//                                currentUser.update(CoCoinApplication.getAppContext(),
+//                                        currentUser.getObjectId(), new UpdateListener() {
+//                                            @Override
+//                                            public void onSuccess() {
+//                                                Log.d("Saver", "Set password successfully.");
+//                                            }
+//
+//                                            @Override
+//                                            public void onFailure(int code, String msg) {
+//                                                Log.d("Saver", "Set password failed.");
+//                                            }
+//                                        });
                             }
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -248,7 +247,7 @@ public class SetPasswordActivity extends AppCompatActivity {
                             }, 1000);
                         } else {
                             CoCoinFragmentManager.passwordChangeFragment[CURRENT_STATE].clear(4);
-                            ((PasswordChangeFragment)passwordAdapter.getItem(CURRENT_STATE - 1)).init();
+//                            ((PasswordChangeFragment)passwordAdapter.getItem(CURRENT_STATE - 1)).init();
                             CURRENT_STATE = NEW_PASSWORD;
                             viewPager.setCurrentItem(NEW_PASSWORD, true);
                             newPassword = "";
@@ -337,7 +336,7 @@ public class SetPasswordActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         for (int i = 0; i < 3; i++) {
-            CoCoinFragmentManager.passwordChangeFragment[i].onDestroy();
+//            CoCoinFragmentManager.passwordChangeFragment[i].onDestroy();
             CoCoinFragmentManager.passwordChangeFragment[i] = null;
         }
         super.onDestroy();

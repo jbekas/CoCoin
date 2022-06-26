@@ -1,16 +1,10 @@
 package com.nightonke.saver.model;
 
-import com.bmob.BmobPro;
-import com.bmob.BmobProFile;
-
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.datatype.BmobFile;
-
 /**
  * Created by 伟平 on 2015/11/20.
  */
 
-public class User extends BmobUser {
+public class User { //extends BmobUser {
 
     // android id
     private String androidId;

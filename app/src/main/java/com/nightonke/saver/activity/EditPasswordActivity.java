@@ -5,10 +5,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,12 +18,16 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.nightonke.saver.R;
 import com.nightonke.saver.adapter.PasswordChangeButtonGridViewAdapter;
 import com.nightonke.saver.adapter.PasswordChangeFragmentAdapter;
 import com.nightonke.saver.fragment.CoCoinFragmentManager;
-import com.nightonke.saver.fragment.PasswordChangeFragment;
 import com.nightonke.saver.model.SettingManager;
 import com.nightonke.saver.model.User;
 import com.nightonke.saver.ui.FixedSpeedScroller;
@@ -37,9 +37,6 @@ import com.nightonke.saver.util.CoCoinUtil;
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
 import java.lang.reflect.Field;
-
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.listener.UpdateListener;
 
 public class EditPasswordActivity extends AppCompatActivity {
 
@@ -84,7 +81,7 @@ public class EditPasswordActivity extends AppCompatActivity {
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
+//            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
         } else{
             // do something for phones running an SDK before lollipop
         }
@@ -264,23 +261,23 @@ public class EditPasswordActivity extends AppCompatActivity {
                             CURRENT_STATE = -1;
                             showToast(2);
                             SettingManager.getInstance().setPassword(newPassword);
-                            if (SettingManager.getInstance().getLoggenOn()) {
-                                User currentUser = BmobUser.getCurrentUser(
-                                        CoCoinApplication.getAppContext(), User.class);
-                                currentUser.setAccountBookPassword(newPassword);
-                                currentUser.update(CoCoinApplication.getAppContext(),
-                                        currentUser.getObjectId(), new UpdateListener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                Log.d("Saver", "Update password successfully.");
-                                            }
-
-                                            @Override
-                                            public void onFailure(int code, String msg) {
-                                                Log.d("Saver", "Update password failed.");
-                                            }
-                                        });
-                            }
+//                            if (SettingManager.getInstance().getLoggenOn()) {
+//                                User currentUser = BmobUser.getCurrentUser(
+//                                        CoCoinApplication.getAppContext(), User.class);
+//                                currentUser.setAccountBookPassword(newPassword);
+//                                currentUser.update(CoCoinApplication.getAppContext(),
+//                                        currentUser.getObjectId(), new UpdateListener() {
+//                                            @Override
+//                                            public void onSuccess() {
+//                                                Log.d("Saver", "Update password successfully.");
+//                                            }
+//
+//                                            @Override
+//                                            public void onFailure(int code, String msg) {
+//                                                Log.d("Saver", "Update password failed.");
+//                                            }
+//                                        });
+//                            }
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
@@ -379,7 +376,7 @@ public class EditPasswordActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         for (int i = 0; i < 3; i++) {
-            CoCoinFragmentManager.passwordChangeFragment[i].onDestroy();
+//            CoCoinFragmentManager.passwordChangeFragment[i].onDestroy();
             CoCoinFragmentManager.passwordChangeFragment[i] = null;
         }
         super.onDestroy();

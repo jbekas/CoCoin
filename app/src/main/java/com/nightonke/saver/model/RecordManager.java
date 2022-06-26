@@ -24,13 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.listener.DeleteListener;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
-
 /**
  * Created by 伟平 on 2015/10/20.
  */
@@ -219,7 +212,7 @@ public class RecordManager {
         if (deletedNumber > 0) {
             if (BuildConfig.DEBUG) Log.d("CoCoin",
                     "recordManager.deleteRecord: Delete " + coCoinRecord.toString() + " S");
-            User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+//            User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
             // if we can delete the coCoinRecord from server
 //            if (user != null && coCoinRecord.getLocalObjectId() != null) {
 //                coCoinRecord.delete(CoCoinApplication.getAppContext(), new DeleteListener() {
@@ -400,8 +393,9 @@ public class RecordManager {
     private static boolean isLastOne = false;
     public static long updateOldRecordsToServer() {
         long counter = 0;
-        User user = BmobUser
-                .getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+        User user = null;
+//        User user = BmobUser
+//                .getCurrentUser(CoCoinApplication.getAppContext(), User.class);
         if (user != null) {
 // already login////////////////////////////////////////////////////////////////////////////////////
             isLastOne = false;
@@ -412,57 +406,57 @@ public class RecordManager {
 // has been changed/////////////////////////////////////////////////////////////////////////////////
                     if (coCoinRecord.getLocalObjectId() != null) {
 // there is an old coCoinRecord in server, we should update this coCoinRecord///////////////////////////////////
-                        coCoinRecord.setUserId(user.getObjectId());
-                        coCoinRecord.update(CoCoinApplication.getAppContext(),
-                                coCoinRecord.getLocalObjectId(), new UpdateListener() {
-                                    @Override
-                                    public void onSuccess() {
-                                        if (BuildConfig.DEBUG) {
-                                            if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer update online " + coCoinRecord.toString() + " S");
-                                        }
-                                        coCoinRecord.setIsUploaded(true);
-                                        coCoinRecord.setLocalObjectId(coCoinRecord.getObjectId());
-                                        db.updateRecord(coCoinRecord);
-// after updating, get the old records from server//////////////////////////////////////////////////
-                                        if (isLastOne) getRecordsFromServer();
-                                    }
-
-                                    @Override
-                                    public void onFailure(int code, String msg) {
-                                        if (BuildConfig.DEBUG) {
-                                            if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer update online " + coCoinRecord.toString() + " F");
-                                        }
-                                        if (BuildConfig.DEBUG) {
-                                            if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer update online code" + code + " msg " + msg );
-                                        }
-                                    }
-                                });
+//                        coCoinRecord.setUserId(user.getObjectId());
+//                        coCoinRecord.update(CoCoinApplication.getAppContext(),
+//                                coCoinRecord.getLocalObjectId(), new UpdateListener() {
+//                                    @Override
+//                                    public void onSuccess() {
+//                                        if (BuildConfig.DEBUG) {
+//                                            if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer update online " + coCoinRecord.toString() + " S");
+//                                        }
+//                                        coCoinRecord.setIsUploaded(true);
+//                                        coCoinRecord.setLocalObjectId(coCoinRecord.getObjectId());
+//                                        db.updateRecord(coCoinRecord);
+//// after updating, get the old records from server//////////////////////////////////////////////////
+//                                        if (isLastOne) getRecordsFromServer();
+//                                    }
+//
+//                                    @Override
+//                                    public void onFailure(int code, String msg) {
+//                                        if (BuildConfig.DEBUG) {
+//                                            if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer update online " + coCoinRecord.toString() + " F");
+//                                        }
+//                                        if (BuildConfig.DEBUG) {
+//                                            if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer update online code" + code + " msg " + msg );
+//                                        }
+//                                    }
+//                                });
                     } else {
-                        counter++;
-                        coCoinRecord.setUserId(user.getObjectId());
-                        coCoinRecord.save(CoCoinApplication.getAppContext(), new SaveListener() {
-                            @Override
-                            public void onSuccess() {
-                                if (BuildConfig.DEBUG) {
-                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer save online " + coCoinRecord.toString() + " S");
-                                }
-                                coCoinRecord.setIsUploaded(true);
-                                coCoinRecord.setLocalObjectId(coCoinRecord.getObjectId());
-                                db.updateRecord(coCoinRecord);
-// after updating, get the old records from server//////////////////////////////////////////////////
-                                if (isLastOne) getRecordsFromServer();
-                            }
-
-                            @Override
-                            public void onFailure(int code, String msg) {
-                                if (BuildConfig.DEBUG) {
-                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer save online " + coCoinRecord.toString() + " F");
-                                }
-                                if (BuildConfig.DEBUG) {
-                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer save online code" + code + " msg " + msg );
-                                }
-                            }
-                        });
+//                        counter++;
+//                        coCoinRecord.setUserId(user.getObjectId());
+//                        coCoinRecord.save(CoCoinApplication.getAppContext(), new SaveListener() {
+//                            @Override
+//                            public void onSuccess() {
+//                                if (BuildConfig.DEBUG) {
+//                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer save online " + coCoinRecord.toString() + " S");
+//                                }
+//                                coCoinRecord.setIsUploaded(true);
+//                                coCoinRecord.setLocalObjectId(coCoinRecord.getObjectId());
+//                                db.updateRecord(coCoinRecord);
+//// after updating, get the old records from server//////////////////////////////////////////////////
+//                                if (isLastOne) getRecordsFromServer();
+//                            }
+//
+//                            @Override
+//                            public void onFailure(int code, String msg) {
+//                                if (BuildConfig.DEBUG) {
+//                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer save online " + coCoinRecord.toString() + " F");
+//                                }
+//                                if (BuildConfig.DEBUG) {
+//                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.updateOldRecordsToServer save online code" + code + " msg " + msg );
+//                                }
+//                            }
+//                        });
                     }
                 }
             }
@@ -503,67 +497,67 @@ public class RecordManager {
     private static long updateNum;
     public static long getRecordsFromServer() {
         updateNum = 0;
-        BmobQuery<CoCoinRecord> query = new BmobQuery<CoCoinRecord>();
-        query.addWhereEqualTo("userId",
-                BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class).getObjectId());
-        query.setLimit(Integer.MAX_VALUE);
-        query.findObjects(CoCoinApplication.getAppContext(), new FindListener<CoCoinRecord>() {
-            @Override
-            public void onSuccess(List<CoCoinRecord> object) {
-                if (BuildConfig.DEBUG) {
-                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.getRecordsFromServer get " + object.size() + " records from server");
-                }
-                updateNum = object.size();
-                for (CoCoinRecord coCoinRecord : object) {
-                    boolean exist = false;
-                    for (int i = RECORDS.size() - 1; i >= 0; i--) {
-                        if (coCoinRecord.getObjectId().equals(RECORDS.get(i).getLocalObjectId())) {
-                            exist = true;
-                            break;
-                        }
-                    }
-                    if (!exist) {
-                        CoCoinRecord newCoCoinRecord = new CoCoinRecord();
-                        newCoCoinRecord.set(coCoinRecord);
-                        newCoCoinRecord.setId(-1);
-                        RECORDS.add(newCoCoinRecord);
-                    }
-                }
-
-                Collections.sort(RECORDS, new Comparator<CoCoinRecord>() {
-                    @Override
-                    public int compare(CoCoinRecord lhs, CoCoinRecord rhs) {
-                        if (lhs.getCalendar().before(rhs.getCalendar())) {
-                            return -1;
-                        } else if (lhs.getCalendar().after(rhs.getCalendar())) {
-                            return 1;
-                        } else {
-                            return 0;
-                        }
-                    }
-                });
-
-                db.deleteAllRecords();
-
-                SUM = 0;
-                for (int i = 0; i < RECORDS.size(); i++) {
-                    RECORDS.get(i).setLocalObjectId(RECORDS.get(i).getObjectId());
-                    RECORDS.get(i).setIsUploaded(true);
-                    db.saveRecord(RECORDS.get(i));
-                    SUM += (int)RECORDS.get(i).getMoney();
-                }
-
-                if (BuildConfig.DEBUG) {
-                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.getRecordsFromServer save " + RECORDS.size() + " records");
-                }
-            }
-            @Override
-            public void onError(int code, String msg) {
-                if (BuildConfig.DEBUG) {
-                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.getRecordsFromServer error " + msg);
-                }
-            }
-        });
+//        BmobQuery<CoCoinRecord> query = new BmobQuery<CoCoinRecord>();
+//        query.addWhereEqualTo("userId",
+//                BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class).getObjectId());
+//        query.setLimit(Integer.MAX_VALUE);
+//        query.findObjects(CoCoinApplication.getAppContext(), new FindListener<CoCoinRecord>() {
+//            @Override
+//            public void onSuccess(List<CoCoinRecord> object) {
+//                if (BuildConfig.DEBUG) {
+//                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.getRecordsFromServer get " + object.size() + " records from server");
+//                }
+//                updateNum = object.size();
+//                for (CoCoinRecord coCoinRecord : object) {
+//                    boolean exist = false;
+//                    for (int i = RECORDS.size() - 1; i >= 0; i--) {
+//                        if (coCoinRecord.getObjectId().equals(RECORDS.get(i).getLocalObjectId())) {
+//                            exist = true;
+//                            break;
+//                        }
+//                    }
+//                    if (!exist) {
+//                        CoCoinRecord newCoCoinRecord = new CoCoinRecord();
+//                        newCoCoinRecord.set(coCoinRecord);
+//                        newCoCoinRecord.setId(-1);
+//                        RECORDS.add(newCoCoinRecord);
+//                    }
+//                }
+//
+//                Collections.sort(RECORDS, new Comparator<CoCoinRecord>() {
+//                    @Override
+//                    public int compare(CoCoinRecord lhs, CoCoinRecord rhs) {
+//                        if (lhs.getCalendar().before(rhs.getCalendar())) {
+//                            return -1;
+//                        } else if (lhs.getCalendar().after(rhs.getCalendar())) {
+//                            return 1;
+//                        } else {
+//                            return 0;
+//                        }
+//                    }
+//                });
+//
+//                db.deleteAllRecords();
+//
+//                SUM = 0;
+//                for (int i = 0; i < RECORDS.size(); i++) {
+//                    RECORDS.get(i).setLocalObjectId(RECORDS.get(i).getObjectId());
+//                    RECORDS.get(i).setIsUploaded(true);
+//                    db.saveRecord(RECORDS.get(i));
+//                    SUM += (int)RECORDS.get(i).getMoney();
+//                }
+//
+//                if (BuildConfig.DEBUG) {
+//                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.getRecordsFromServer save " + RECORDS.size() + " records");
+//                }
+//            }
+//            @Override
+//            public void onError(int code, String msg) {
+//                if (BuildConfig.DEBUG) {
+//                    if (BuildConfig.DEBUG) Log.d("CoCoin", "recordManager.getRecordsFromServer error " + msg);
+//                }
+//            }
+//        });
 
         return updateNum;
     }

@@ -2,12 +2,11 @@ package com.nightonke.saver.model;
 
 import java.io.File;
 
-import cn.bmob.v3.BmobObject;
 
 /**
  * Created by Weiping on 2016/1/27.
  */
-public class APK extends BmobObject {
+public class APK { //extends BmobObject {
 
     private String name;
     private String fileUrl;

@@ -2,12 +2,13 @@ package com.nightonke.saver.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.nightonke.saver.R;
 import com.nightonke.saver.activity.CoCoinApplication;
@@ -30,9 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.Optional;
 import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SelectedValue;
@@ -46,7 +46,7 @@ import lecho.lib.hellocharts.view.PieChartView;
 // Todo optimise this
 
 public class MonthViewRecyclerViewAdapter
-        extends RecyclerView.Adapter<MonthViewRecyclerViewAdapter.viewHolder> {
+        extends RecyclerView.Adapter<MonthViewRecyclerViewAdapter.MVviewHolder> {
 
     private Context mContext;
 
@@ -256,20 +256,20 @@ public class MonthViewRecyclerViewAdapter
     }
 
     @Override
-    public MonthViewRecyclerViewAdapter.viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MVviewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
 
         switch (viewType) {
             case TYPE_HEADER: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_month_list_view, parent, false);
-                return new viewHolder(view) {
+                return new MVviewHolder(view) {
                 };
             }
             case TYPE_CELL: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_month_list_view, parent, false);
-                return new viewHolder(view) {
+                return new MVviewHolder(view) {
                 };
             }
         }
@@ -278,7 +278,7 @@ public class MonthViewRecyclerViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(final viewHolder holder, final int position) {
+    public void onBindViewHolder(final MVviewHolder holder, int position) {
 
         if (IS_EMPTY) {
             holder.expanseSum.setText("¥0");
@@ -377,35 +377,27 @@ public class MonthViewRecyclerViewAdapter
 
     }
 
-    public static class viewHolder extends RecyclerView.ViewHolder {
-        @Optional
-        @InjectView(R.id.date)
+    public static class MVviewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.date)
         TextView date;
-        @Optional
-        @InjectView(R.id.expanse)
+        @BindView(R.id.expanse)
         TextView expanseSum;
-        @Optional
-        @InjectView(R.id.tags)
+        @BindView(R.id.tags)
         TextView tags;
-        @Optional
-        @InjectView(R.id.empty_tip)
+        @BindView(R.id.empty_tip)
         TextView emptyTip;
-        @Optional
-        @InjectView(R.id.chart_pie)
+        @BindView(R.id.chart_pie)
         PieChartView pie;
-        @Optional
-        @InjectView(R.id.icon_left)
+        @BindView(R.id.icon_left)
         MaterialIconView iconLeft;
-        @Optional
-        @InjectView(R.id.icon_right)
+        @BindView(R.id.icon_right)
         MaterialIconView iconRight;
-        @Optional
-        @InjectView(R.id.all)
+        @BindView(R.id.all)
         MaterialIconView all;
 
-        viewHolder(View view) {
+        MVviewHolder(View view) {
             super(view);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 

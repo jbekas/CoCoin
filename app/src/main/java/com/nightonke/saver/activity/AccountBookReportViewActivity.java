@@ -4,22 +4,17 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.astuetz.PagerSlidingTabStrip;
-import com.github.florent37.materialviewpager.MaterialViewPager;
-import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
-import com.github.florent37.materialviewpager.header.HeaderDesign;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+
 import com.nightonke.saver.R;
 import com.nightonke.saver.adapter.ReportViewFragmentAdapter;
-import com.nightonke.saver.fragment.CoCoinFragmentManager;
 import com.nightonke.saver.fragment.ReportViewFragment;
 import com.nightonke.saver.model.SettingManager;
 import com.nightonke.saver.util.CoCoinUtil;
@@ -28,7 +23,7 @@ public class AccountBookReportViewActivity extends AppCompatActivity
         implements
         ReportViewFragment.OnTitleChangedListener {
 
-    private MaterialViewPager mViewPager;
+    private ViewPager mViewPager;
 
     private Toolbar toolbar;
 
@@ -43,31 +38,31 @@ public class AccountBookReportViewActivity extends AppCompatActivity
         mContext = this;
         setContentView(R.layout.activity_account_book_report_view);
 
-        mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
+        mViewPager = (ViewPager) findViewById(R.id.materialViewPager);
 
         View view = mViewPager.getRootView();
         TextView title = (TextView)view.findViewById(R.id.logo_white);
         title.setTypeface(CoCoinUtil.typefaceLatoLight);
         title.setText(SettingManager.getInstance().getAccountBookName());
 
-        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.getInstance().typefaceLatoLight, Typeface.NORMAL);
-        mViewPager.getPagerTitleStrip().setTextSize(45);
-        mViewPager.getPagerTitleStrip().setUnderlineColor(Color.parseColor("#00000000"));
-        mViewPager.getPagerTitleStrip().setIndicatorColor(Color.parseColor("#00000000"));
-        mViewPager.getPagerTitleStrip().setUnderlineHeight(0);
-        mViewPager.getPagerTitleStrip().setIndicatorHeight(0);
-
-        mViewPager.getPagerTitleStrip().setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
-            @Override
-            public void onTabReselected(int position) {
-//                if (CoCoinFragmentManager.reportViewFragment != null)
-//                    CoCoinFragmentManager.reportViewFragment.showDataDialog();
-            }
-        });
+//        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.getInstance().typefaceLatoLight, Typeface.NORMAL);
+//        mViewPager.getPagerTitleStrip().setTextSize(45);
+//        mViewPager.getPagerTitleStrip().setUnderlineColor(Color.parseColor("#00000000"));
+//        mViewPager.getPagerTitleStrip().setIndicatorColor(Color.parseColor("#00000000"));
+//        mViewPager.getPagerTitleStrip().setUnderlineHeight(0);
+//        mViewPager.getPagerTitleStrip().setIndicatorHeight(0);
+//
+//        mViewPager.getPagerTitleStrip().setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
+//            @Override
+//            public void onTabReselected(int position) {
+////                if (CoCoinFragmentManager.reportViewFragment != null)
+////                    CoCoinFragmentManager.reportViewFragment.showDataDialog();
+//            }
+//        });
 
         setTitle("");
 
-        toolbar = mViewPager.getToolbar();
+//        toolbar = mViewPager.getToolbar();
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -82,32 +77,32 @@ public class AccountBookReportViewActivity extends AppCompatActivity
             }
         }
 
-        View logo = findViewById(R.id.logo_white);
-        if (logo != null) {
-            logo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mViewPager.notifyHeaderChanged();
-                }
-            });
-        }
-
-        reportViewFragmentAdapter = new ReportViewFragmentAdapter(getSupportFragmentManager());
-        mViewPager.getViewPager().setOffscreenPageLimit(1);
-        mViewPager.getViewPager().setAdapter(reportViewFragmentAdapter);
-        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
-
-        mViewPager.getPagerTitleStrip().invalidate();
-
-        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
-            @Override
-            public HeaderDesign getHeaderDesign(int page) {
-                return HeaderDesign.fromColorAndDrawable(
-                        CoCoinUtil.GetTagColor(-3),
-                        CoCoinUtil.GetTagDrawable(-3)
-                );
-            }
-        });
+//        View logo = findViewById(R.id.logo_white);
+//        if (logo != null) {
+//            logo.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mViewPager.notifyHeaderChanged();
+//                }
+//            });
+//        }
+//
+//        reportViewFragmentAdapter = new ReportViewFragmentAdapter(getSupportFragmentManager());
+//        mViewPager.getViewPager().setOffscreenPageLimit(1);
+//        mViewPager.getViewPager().setAdapter(reportViewFragmentAdapter);
+//        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
+//
+//        mViewPager.getPagerTitleStrip().invalidate();
+//
+//        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
+//            @Override
+//            public HeaderDesign getHeaderDesign(int page) {
+//                return HeaderDesign.fromColorAndDrawable(
+//                        CoCoinUtil.GetTagColor(-3),
+//                        CoCoinUtil.GetTagDrawable(-3)
+//                );
+//            }
+//        });
 
     }
 
@@ -123,7 +118,7 @@ public class AccountBookReportViewActivity extends AppCompatActivity
 //        if (CoCoinFragmentManager.reportViewFragment != null)
 //            CoCoinFragmentManager.reportViewFragment.onDestroy();
 //        CoCoinFragmentManager.reportViewFragment = null;
-        MaterialViewPagerHelper.unregister(this);
+//        MaterialViewPagerHelper.unregister(this);
     }
 
     @Override
@@ -144,7 +139,7 @@ public class AccountBookReportViewActivity extends AppCompatActivity
 
     @Override
     public void onTitleChanged() {
-        mViewPager.getPagerTitleStrip().notifyDataSetChanged();
-        mViewPager.getPagerTitleStrip().invalidate();
+//        mViewPager.getPagerTitleStrip().notifyDataSetChanged();
+//        mViewPager.getPagerTitleStrip().invalidate();
     }
 }

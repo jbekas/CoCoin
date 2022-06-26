@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     tools:context="com.nightonke.saver.activity.ShowActivity">
 
-    <com.dev.sacot41.scviewpager.SCViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager_main_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.dev.sacot41.scviewpager.SCViewPager>
+    </androidx.viewpager.widget.ViewPager>
 
-    <com.dev.sacot41.scviewpager.DotsView
+    <View
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -185,11 +185,11 @@
             android:layout_height="wrap_content"
             >
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/Toolbar">
 
-            </android.support.v7.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
 
             <TextView
                 android:id="@+id/title"

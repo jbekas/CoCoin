@@ -9,11 +9,6 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,6 +21,12 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.balysv.materialmenu.MaterialMenuDrawable;
@@ -56,9 +57,8 @@ import com.rey.material.widget.RadioButton;
 
 import java.util.Calendar;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import cn.bmob.v3.BmobUser;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -129,11 +129,11 @@ public class MainActivity extends AppCompatActivity
 
     private AppUpdateManager appUpdateManager;
 
-    @InjectView(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.root)
+    @BindView(R.id.root)
     FrameLayout root;
-    @InjectView(R.id.content_hamburger)
+    @BindView(R.id.content_hamburger)
     View contentHamburger;
 
     private SensorManager sensorManager;
@@ -174,22 +174,22 @@ public class MainActivity extends AppCompatActivity
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
+//            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
         } else{
             // do something for phones running an SDK before lollipop
         }
 
-        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-        if (user != null) {
-            SettingManager.getInstance().setLoggenOn(true);
-            SettingManager.getInstance().setUserName(user.getUsername());
-            SettingManager.getInstance().setUserEmail(user.getEmail());
-            showToast(WELCOME_BACK);
-            // 允许用户使用应用
-        } else {
-            SettingManager.getInstance().setLoggenOn(false);
-            //缓存用户对象为空时， 可打开用户注册界面…
-        }
+//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+//        if (user != null) {
+//            SettingManager.getInstance().setLoggenOn(true);
+//            SettingManager.getInstance().setUserName(user.getUsername());
+//            SettingManager.getInstance().setUserEmail(user.getEmail());
+//            showToast(WELCOME_BACK);
+//            // 允许用户使用应用
+//        } else {
+//            SettingManager.getInstance().setLoggenOn(false);
+//            //缓存用户对象为空时， 可打开用户注册界面…
+//        }
 
         guillotineBackground = findViewById(R.id.guillotine_background);
 
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -395,6 +395,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         switch (requestCode) {
             case SETTING_TAG:
                 if (resultCode == RESULT_OK) {
@@ -600,7 +602,7 @@ public class MainActivity extends AppCompatActivity
                 window.setStatusBarColor(
                         CoCoinUtil.getInstance().getDeeperColor(SettingManager.getInstance().getRemindColor()));
             } else {
-                window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
+//                window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
             }
 
         } else{

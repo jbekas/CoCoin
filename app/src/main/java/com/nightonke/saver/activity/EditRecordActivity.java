@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +13,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import com.github.johnpersano.supertoasts.SuperActivityToast;
 import com.github.johnpersano.supertoasts.SuperToast;
@@ -28,7 +29,6 @@ import com.nightonke.saver.fragment.TagChooseFragment;
 import com.nightonke.saver.model.CoCoinRecord;
 import com.nightonke.saver.model.RecordManager;
 import com.nightonke.saver.ui.CoCoinScrollableViewPager;
-import com.nightonke.saver.ui.CoCoinUnscrollableViewPager;
 import com.nightonke.saver.ui.MyGridView;
 import com.nightonke.saver.util.CoCoinUtil;
 
@@ -86,7 +86,7 @@ public class EditRecordActivity extends AppCompatActivity
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
+//            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
         } else{
             // do something for phones running an SDK before lollipop
         }
@@ -98,26 +98,26 @@ public class EditRecordActivity extends AppCompatActivity
         editAdapter = new EditMoneyRemarkFragmentAdapter(
                 getSupportFragmentManager(), CoCoinFragmentManager.EDIT_RECORD_ACTIVITY_FRAGMENT);
 
-        editViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == 1) {
-                    CoCoinFragmentManager.editRecordActivityEditRemarkFragment.editRequestFocus();
-                } else {
-                    CoCoinFragmentManager.editRecordActivityEditMoneyFragment.editRequestFocus();
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+//        editViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//                if (position == 1) {
+//                    CoCoinFragmentManager.editRecordActivityEditRemarkFragment.editRequestFocus();
+//                } else {
+//                    CoCoinFragmentManager.editRecordActivityEditMoneyFragment.editRequestFocus();
+//                }
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
 
         editViewPager.setAdapter(editAdapter);
         

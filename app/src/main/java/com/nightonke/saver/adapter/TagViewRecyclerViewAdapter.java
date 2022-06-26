@@ -2,17 +2,17 @@ package com.nightonke.saver.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.nightonke.saver.R;
 import com.nightonke.saver.fragment.RecordCheckDialogFragment;
-import com.nightonke.saver.model.CoCoin;
 import com.nightonke.saver.model.CoCoinRecord;
 import com.nightonke.saver.model.RecordManager;
 import com.nightonke.saver.model.SettingManager;
@@ -34,9 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.Optional;
 import lecho.lib.hellocharts.listener.ColumnChartOnValueSelectListener;
 import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.Axis;
@@ -57,7 +56,7 @@ import lecho.lib.hellocharts.view.PieChartView;
 // Todo optimize this
 
 public class TagViewRecyclerViewAdapter
-        extends RecyclerView.Adapter<TagViewRecyclerViewAdapter.viewHolder> {
+        extends RecyclerView.Adapter<TagViewRecyclerViewAdapter.TVviewHolder> {
 
     private Context mContext;
 
@@ -250,7 +249,7 @@ public class TagViewRecyclerViewAdapter
     }
 
     @Override
-    public TagViewRecyclerViewAdapter.viewHolder onCreateViewHolder(
+    public TVviewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
 
         View view;
@@ -259,7 +258,7 @@ public class TagViewRecyclerViewAdapter
             case TYPE_HEADER: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.tag_list_view_head, parent, false);
-                return new viewHolder(view) {
+                return new TVviewHolder(view) {
                 };
             }
             case TYPE_CELL: {
@@ -267,17 +266,17 @@ public class TagViewRecyclerViewAdapter
                     case PIE:
                         view = LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.tag_list_view_pie_body, parent, false);
-                        return new viewHolder(view) {
+                        return new TVviewHolder(view) {
                         };
                     case HISTOGRAM:
                         view = LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.tag_list_view_histogram_body, parent, false);
-                        return new viewHolder(view) {
+                        return new TVviewHolder(view) {
                         };
                     case SUM_HISTOGRAM:
                     view = LayoutInflater.from(parent.getContext())
                             .inflate(R.layout.tag_list_view_histogram_body, parent, false);
-                        return new viewHolder(view) {
+                        return new TVviewHolder(view) {
                         };
                 }
             }
@@ -287,7 +286,7 @@ public class TagViewRecyclerViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(final viewHolder holder, final int position) {
+    public void onBindViewHolder(final TVviewHolder holder, int position) {
 
         switch (getItemViewType(position)) {
             case TYPE_HEADER:
@@ -642,38 +641,29 @@ public class TagViewRecyclerViewAdapter
         }
     }
 
-    public static class viewHolder extends RecyclerView.ViewHolder {
-        @Optional
-        @InjectView(R.id.from)
+    public static class TVviewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.from)
         TextView from;
-        @Optional
-        @InjectView(R.id.sum)
+        @BindView(R.id.sum)
         TextView sum;
-        @Optional
-        @InjectView(R.id.to)
+        @BindView(R.id.to)
         TextView to;
-        @Optional
-        @InjectView(R.id.chart_pie)
+        @BindView(R.id.chart_pie)
         PieChartView pie;
-        @Optional
-        @InjectView(R.id.chart)
+        @BindView(R.id.chart)
         ColumnChartView chart;
-        @Optional
-        @InjectView(R.id.date)
+        @BindView(R.id.date)
         TextView date;
-        @Optional
-        @InjectView(R.id.expanse)
+        @BindView(R.id.expanse)
         TextView expanse;
-        @Optional
-        @InjectView(R.id.icon_left)
+        @BindView(R.id.icon_left)
         MaterialIconView iconLeft;
-        @Optional
-        @InjectView(R.id.icon_right)
+        @BindView(R.id.icon_right)
         MaterialIconView iconRight;
 
-        viewHolder(View view) {
+        TVviewHolder(View view) {
             super(view);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 

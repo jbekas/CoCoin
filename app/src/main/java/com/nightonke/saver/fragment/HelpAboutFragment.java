@@ -5,16 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.github.florent37.materialviewpager.MaterialViewPagerHelper;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.melnykov.fab.ObservableScrollView;
 import com.nightonke.saver.R;
 import com.nightonke.saver.util.CoCoinUtil;
 
@@ -58,7 +58,7 @@ public class HelpAboutFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mScrollView = (ObservableScrollView) view.findViewById(R.id.scrollView);
-        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
+//        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
         ((TextView)view.findViewById(R.id.content_0)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         ((TextView)view.findViewById(R.id.content_1)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);

@@ -13,7 +13,7 @@
         android:textColor="@color/drawer_text"
         android:textSize="12sp" />
 
-    <com.rengwuxian.materialedittext.MaterialEditText
+    <EditText
         android:id="@+id/register_user_name"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -21,10 +21,6 @@
         android:textSize="20sp"
         android:hint=""
         android:singleLine="true"
-        app:met_baseColor="@color/my_blue"
-        app:met_maxCharacters="16"
-        app:met_minCharacters="1"
-        app:met_clearButton="true"
         />
 
     <TextView
@@ -35,7 +31,7 @@
         android:textColor="@color/drawer_text"
         android:textSize="12sp" />
 
-    <com.rengwuxian.materialedittext.MaterialEditText
+    <EditText
         android:id="@+id/register_user_email"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -43,8 +39,6 @@
         android:textSize="20sp"
         android:hint=""
         android:singleLine="true"
-        app:met_baseColor="@color/my_blue"
-        app:met_clearButton="true"
         />
 
     <TextView
@@ -56,7 +50,7 @@
         android:textColor="@color/drawer_text"
         android:textSize="12sp" />
 
-    <com.rengwuxian.materialedittext.MaterialEditText
+    <EditText
         android:id="@+id/register_password"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -64,9 +58,6 @@
         android:textSize="20sp"
         android:hint=""
         android:singleLine="true"
-        app:met_baseColor="@color/my_blue"
-        app:met_minCharacters="1"
-        app:met_clearButton="true"
         />
 
     <com.dd.CircularProgressButton
