@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -370,7 +371,7 @@ public class MainActivity extends AppCompatActivity
             YoYo.with(Techniques.Bounce).delay(0).duration(1000).playOn(radioButton3);
             statusButton.animateState(MaterialMenuDrawable.IconState.CHECK);
             statusButton.setClickable(false);
-//            showToast(PASSWORD_CORRECT_TOAST);
+            showToast(PASSWORD_CORRECT_TOAST);
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -564,18 +565,18 @@ public class MainActivity extends AppCompatActivity
 
         switch (toastType) {
             case NO_TAG_TOAST:
-                CoCoinToast.getInstance().showToast(R.string.toast_no_tag, SuperToast.Background.RED);
+                CoCoinToast.showToast(R.string.toast_no_tag, SuperToast.Background.RED);
                 tagAnimation();
                 break;
             case NO_MONEY_TOAST:
-                CoCoinToast.getInstance().showToast(R.string.toast_no_money, SuperToast.Background.RED);
+                CoCoinToast.showToast(R.string.toast_no_money, SuperToast.Background.RED);
                 break;
             case PASSWORD_WRONG_TOAST:
-                CoCoinToast.getInstance().showToast(R.string.toast_password_wrong, SuperToast.Background.RED);
+                CoCoinToast.showToast(R.string.toast_password_wrong, SuperToast.Background.RED);
                 break;
             case PASSWORD_CORRECT_TOAST:
                 Timber.d("PASSWORD_CORRECT_TOAST start");
-                CoCoinToast.getInstance().showToast(R.string.toast_password_correct, SuperToast.Background.BLUE);
+                CoCoinToast.showToast(R.string.toast_password_correct, SuperToast.Background.BLUE);
                 Timber.d("PASSWORD_CORRECT_TOAST finish");
                 break;
             case SAVE_SUCCESSFULLY_TOAST:
@@ -583,10 +584,10 @@ public class MainActivity extends AppCompatActivity
             case SAVE_FAILED_TOAST:
                 break;
             case PRESS_AGAIN_TO_EXIT:
-                CoCoinToast.getInstance().showToast(R.string.toast_press_again_to_exit, SuperToast.Background.BLUE);
+                CoCoinToast.showToast(R.string.toast_press_again_to_exit, SuperToast.Background.BLUE);
                 break;
             case WELCOME_BACK:
-                CoCoinToast.getInstance().showToast(CoCoinApplication.getAppContext()
+                CoCoinToast.showToast(CoCoinApplication.getAppContext()
                         .getResources().getString(R.string.welcome_back)
                         + "\n" + SettingManager.getInstance().getUserName(), SuperToast.Background.BLUE);
             default:

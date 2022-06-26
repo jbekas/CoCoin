@@ -96,7 +96,7 @@ dependencies {
     implementation 'com.github.code-mc:material-icon-lib:1.1.5'
 
     // toasts
-    implementation 'com.github.johnpersano:supertoasts:1.3.4@aar'
+    implementation 'com.github.johnpersano:supertoasts:1.3.4.1@aar'
 
     // memory leak
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
