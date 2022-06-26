@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -643,49 +644,67 @@ public class TodayViewRecyclerViewAdapter
     }
 
 // view holder class////////////////////////////////////////////////////////////////////////////////
-    public static class TVviewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.date)
-        TextView date;
-        @BindView(R.id.date_bottom)
-        TextView dateBottom;
-        @BindView(R.id.expanse)
-        TextView expanseSum;
-        @BindView(R.id.empty_tip)
-        TextView emptyTip;
-        @BindView(R.id.chart_pie)
-        PieChartView pie;
-        @BindView(R.id.histogram)
-        ColumnChartView histogram;
-        @BindView(R.id.icon_left)
-        MaterialIconView iconLeft;
-        @BindView(R.id.icon_right)
-        MaterialIconView iconRight;
-        @BindView(R.id.histogram_icon_left)
-        MaterialIconView histogram_icon_left;
-        @BindView(R.id.histogram_icon_right)
-        MaterialIconView histogram_icon_right;
-        @BindView(R.id.icon_reset)
-        MaterialIconView reset;
-        @BindView(R.id.all)
-        MaterialIconView all;
-        @BindView(R.id.tag_image)
-        ImageView tagImage;
-        @BindView(R.id.money)
-        TextView money;
-        @BindView(R.id.cell_date)
-        TextView cell_date;
-        @BindView(R.id.remark)
-        TextView remark;
-        @BindView(R.id.index)
-        TextView index;
-        @BindView(R.id.material_ripple_layout)
-        MaterialRippleLayout layout;
+public static class TVviewHolder extends RecyclerView.ViewHolder {
+    @Nullable
+    @BindView(R.id.date)
+    TextView date;
+    @Nullable
+    @BindView(R.id.date_bottom)
+    TextView dateBottom;
+    @Nullable
+    @BindView(R.id.expanse)
+    TextView expanseSum;
+    @Nullable
+    @BindView(R.id.empty_tip)
+    TextView emptyTip;
+    @Nullable
+    @BindView(R.id.chart_pie)
+    PieChartView pie;
+    @Nullable
+    @BindView(R.id.histogram)
+    ColumnChartView histogram;
+    @Nullable
+    @BindView(R.id.icon_left)
+    MaterialIconView iconLeft;
+    @Nullable
+    @BindView(R.id.icon_right)
+    MaterialIconView iconRight;
+    @Nullable
+    @BindView(R.id.histogram_icon_left)
+    MaterialIconView histogram_icon_left;
+    @Nullable
+    @BindView(R.id.histogram_icon_right)
+    MaterialIconView histogram_icon_right;
+    @Nullable
+    @BindView(R.id.icon_reset)
+    MaterialIconView reset;
+    @Nullable
+    @BindView(R.id.all)
+    MaterialIconView all;
+    @Nullable
+    @BindView(R.id.tag_image)
+    ImageView tagImage;
+    @Nullable
+    @BindView(R.id.money)
+    TextView money;
+    @Nullable
+    @BindView(R.id.cell_date)
+    TextView cell_date;
+    @Nullable
+    @BindView(R.id.remark)
+    TextView remark;
+    @Nullable
+    @BindView(R.id.index)
+    TextView index;
+    @Nullable
+    @BindView(R.id.material_ripple_layout)
+    MaterialRippleLayout layout;
 
-        TVviewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
+    TVviewHolder(View view) {
+        super(view);
+        ButterKnife.bind(this, view);
     }
+}
 
     public interface OnItemClickListener {
         void onItemClick(View view , int position);

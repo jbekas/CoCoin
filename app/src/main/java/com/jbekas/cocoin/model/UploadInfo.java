@@ -1,10 +1,12 @@
 package com.jbekas.cocoin.model;
 
 
+import cn.bmob.v3.BmobObject;
+
 /**
  * Created by Weiping on 2016/1/27.
  */
-public class UploadInfo { //extends BmobObject {
+public class UploadInfo extends BmobObject {
 
     private String userId;
     private Integer recordNumber;

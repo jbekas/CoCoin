@@ -2,6 +2,9 @@ package com.jbekas.cocoin.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,8 +21,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.bmob.BmobProFile;
+import com.bmob.btp.callback.DeleteFileListener;
+import com.bmob.btp.callback.DownloadListener;
+import com.bmob.btp.callback.UploadListener;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
@@ -55,7 +64,14 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 public class AccountBookTodayViewActivity extends AppCompatActivity {
 
@@ -110,18 +126,22 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         userEmail = (TextView)findViewById(R.id.user_email);
         userName.setTypeface(CoCoinUtil.typefaceLatoRegular);
         userEmail.setTypeface(CoCoinUtil.typefaceLatoLight);
-//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-//        if (user != null) {
-//            userName.setText(user.getUsername());
-//            userEmail.setText(user.getEmail());
-//        }
+        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+        if (user != null) {
+            userName.setText(user.getUsername());
+            userEmail.setText(user.getEmail());
+        }
 
         setFonts();
 
         View view = mViewPager.getRootView();
-        title = (TextView)view.findViewById(R.id.logo_white);
-        title.setTypeface(CoCoinUtil.typefaceLatoLight);
-        title.setText(SettingManager.getInstance().getAccountBookName());
+//        title = (TextView)view.findViewById(R.id.logo_white);
+//        if (title != null) {
+//            Timber.d("title: %s", title);
+//            Timber.d("CoCoinUtil.typefaceLatoLight: %s", CoCoinUtil.typefaceLatoLight);
+//            title.setTypeface(CoCoinUtil.typefaceLatoLight);
+//            title.setText(SettingManager.getInstance().getAccountBookName());
+//        }
 
 //        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.GetTypeface(), Typeface.NORMAL);
 
@@ -158,14 +178,14 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
 
-//            final ActionBar actionBar = getSupportActionBar();
-//            if (actionBar != null) {
-//                actionBar.setDisplayHomeAsUpEnabled(true);
-//                actionBar.setDisplayShowHomeEnabled(true);
-//                actionBar.setDisplayShowTitleEnabled(true);
-//                actionBar.setDisplayUseLogoEnabled(false);
-//                actionBar.setHomeButtonEnabled(true);
-//            }
+            final ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setDisplayShowHomeEnabled(true);
+                actionBar.setDisplayShowTitleEnabled(true);
+                actionBar.setDisplayUseLogoEnabled(false);
+                actionBar.setHomeButtonEnabled(true);
+            }
         }
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, 0, 0) {
@@ -184,18 +204,22 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 
 
         View logo = findViewById(R.id.logo_white);
-//        if (logo != null) {
-//            logo.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
+        if (logo != null) {
+            logo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Timber.e("onClick not implemented.");
 //                    mViewPager.notifyHeaderChanged();
-//                }
-//            });
-//        }
+                    mViewPager.notify();
+                }
+            });
+        }
 
         todayModeAdapter = new TodayViewFragmentAdapter(getSupportFragmentManager());
 //        mViewPager.getViewPager().setOffscreenPageLimit(todayModeAdapter.getCount());
 //        mViewPager.getViewPager().setAdapter(todayModeAdapter);
+        mViewPager.setOffscreenPageLimit(todayModeAdapter.getCount());
+        mViewPager.setAdapter(todayModeAdapter);
 //        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
 //
 //        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
@@ -241,6 +265,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 
         loadLogo();
 
+        Timber.d("onCreate has finished.");
     }
 
     @Override
@@ -315,105 +340,106 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         if (!SettingManager.getInstance().getLoggenOn()) {
             CoCoinUtil.showToast(mContext, R.string.login_tip);
         } else {
-//            syncSuccessNumber = 0;
-//            syncFailedNumber = 0;
-//            syncQueryDialog = new MaterialDialog.Builder(this)
-//                    .title(R.string.sync_querying_title)
-//                    .content(R.string.sync_querying_content)
-//                    .negativeText(R.string.cancel)
-//                    .progress(true, 0)
-//                    .onAny(new MaterialDialog.SingleButtonCallback() {
-//                        @Override
-//                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                            if (which == DialogAction.NEGATIVE) {
-//
-//                            }
-//                        }
-//                    })
-//                    .show();
-//            final User user = BmobUser
-//                    .getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-//            final MyQuery myQuery = new MyQuery();
-//            myQuery.setTask(++TaskManager.QUERY_UPDATE_TASK);
-//            myQuery.query = new BmobQuery<>();
-//            myQuery.query.addWhereEqualTo("userId", user.getObjectId());
-//            myQuery.query.setLimit(1);
-//            myQuery.query.findObjects(CoCoinApplication.getAppContext(), new FindListener<UploadInfo>() {
-//                @Override
-//                public void onSuccess(List<UploadInfo> object) {
-//                    if (myQuery.getTask() != TaskManager.QUERY_UPDATE_TASK) return;
-//                    else {
-//                        syncQueryDialog.dismiss();
-//                        cloudRecordNumber = 0;
-//                        Calendar cal = null;
-//                        if (object.size() == 0) {
-//
-//                        } else {
-//                            cloudRecordNumber = object.get(0).getRecordNumber();
-//                            cloudOldDatabaseUrl = object.get(0).getDatabaseUrl();
-//                            cloudOldDatabaseFileName = object.get(0).getFileName();
+            syncSuccessNumber = 0;
+            syncFailedNumber = 0;
+            syncQueryDialog = new MaterialDialog.Builder(this)
+                    .title(R.string.sync_querying_title)
+                    .content(R.string.sync_querying_content)
+                    .negativeText(R.string.cancel)
+                    .progress(true, 0)
+                    .onAny(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            if (which == DialogAction.NEGATIVE) {
+
+                            }
+                        }
+                    })
+                    .show();
+            final User user = BmobUser
+                    .getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+            final MyQuery myQuery = new MyQuery();
+            myQuery.setTask(++TaskManager.QUERY_UPDATE_TASK);
+            myQuery.query = new BmobQuery<>();
+            myQuery.query.addWhereEqualTo("userId", user.getObjectId());
+            myQuery.query.setLimit(1);
+            myQuery.query.findObjects(CoCoinApplication.getAppContext(), new FindListener<UploadInfo>() {
+                @Override
+                public void onSuccess(List<UploadInfo> object) {
+                    if (myQuery.getTask() != TaskManager.QUERY_UPDATE_TASK) return;
+                    else {
+                        syncQueryDialog.dismiss();
+                        cloudRecordNumber = 0;
+                        Calendar cal = null;
+                        if (object.size() == 0) {
+
+                        } else {
+                            cloudRecordNumber = object.get(0).getRecordNumber();
+                            cloudOldDatabaseUrl = object.get(0).getDatabaseUrl();
+                            cloudOldDatabaseFileName = object.get(0).getFileName();
 //                            uploadObjectId = object.get(0).getObjectId();
-//                            cal = Calendar.getInstance();
-//                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            cal = Calendar.getInstance();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Timber.e("cal.setTime not enabled.");
 //                            try {
 //                                cal.setTime(sdf.parse(object.get(0).getUpdatedAt()));
 //                            } catch (ParseException p) {
 //
 //                            }
-//                        }
-//                        String content
-//                                = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_record_0)
-//                                + cloudRecordNumber
-//                                + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_record_1)
-//                                + (cal == null ? CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_time_2) : CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_time_0) + CoCoinUtil.GetCalendarString(CoCoinApplication.getAppContext(), cal) + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_time_1))
-//                                + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_record_0)
-//                                + RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size()
-//                                + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_record_1)
-//                                + (SettingManager.getInstance().getRecentlySyncTime() == null ? CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_time_2) : CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_time_0) + CoCoinUtil.GetCalendarString(CoCoinApplication.getAppContext(), SettingManager.getInstance().getRecentlySyncTime()) + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_time_1))
-//                                + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_choose_content);
-//                        syncChooseDialog = new MaterialDialog.Builder(mContext)
-//                                .title(R.string.sync_choose_title)
-//                                .content(content)
-//                                .positiveText(R.string.sync_to_cloud)
-//                                .negativeText(R.string.sync_to_mobile)
-//                                .neutralText(R.string.cancel)
-//                                .onAny(new MaterialDialog.SingleButtonCallback() {
-//                                    @Override
-//                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                        syncChooseDialog.dismiss();
-//                                        if (which == DialogAction.POSITIVE) {
-//                                            // sync to cloud
-//                                            String subContent = "";
-//                                            if (RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() == 0) {
-//                                                subContent = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.mobile_record_empty);
-//                                                new MaterialDialog.Builder(mContext)
-//                                                        .title(R.string.sync)
-//                                                        .content(subContent)
-//                                                        .positiveText(R.string.ok_1)
-//                                                        .show();
-//                                                return;
-//                                            } else {
-//                                                subContent
-//                                                        = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_cloud_0)
-//                                                        + RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size()
-//                                                        + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_cloud_1);
-//                                            }
-//                                            new MaterialDialog.Builder(mContext)
-//                                                    .title(R.string.sync)
-//                                                    .content(subContent)
-//                                                    .positiveText(R.string.ok_1)
-//                                                    .negativeText(R.string.cancel)
-//                                                    .onAny(new MaterialDialog.SingleButtonCallback() {
-//                                                        @Override
-//                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                                            if (which == DialogAction.POSITIVE) {
-//                                                                syncProgressDialog = new MaterialDialog.Builder(mContext)
-//                                                                        .title(R.string.syncing)
-//                                                                        .content(CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_0) + "1" + CoCoinUtil.GetString(mContext, R.string.uploading_1))
-//                                                                        .progress(false, RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size(), true)
-//                                                                        .cancelable(false)
-//                                                                        .show();
-//                                                                final String databasePath = CoCoinUtil.GetRecordDatabasePath(CoCoinApplication.getAppContext());
+                        }
+                        String content
+                                = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_record_0)
+                                + cloudRecordNumber
+                                + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_record_1)
+                                + (cal == null ? CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_time_2) : CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_time_0) + CoCoinUtil.GetCalendarString(CoCoinApplication.getAppContext(), cal) + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_cloud_time_1))
+                                + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_record_0)
+                                + RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size()
+                                + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_record_1)
+                                + (SettingManager.getInstance().getRecentlySyncTime() == null ? CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_time_2) : CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_time_0) + CoCoinUtil.GetCalendarString(CoCoinApplication.getAppContext(), SettingManager.getInstance().getRecentlySyncTime()) + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_time_1))
+                                + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_choose_content);
+                        syncChooseDialog = new MaterialDialog.Builder(mContext)
+                                .title(R.string.sync_choose_title)
+                                .content(content)
+                                .positiveText(R.string.sync_to_cloud)
+                                .negativeText(R.string.sync_to_mobile)
+                                .neutralText(R.string.cancel)
+                                .onAny(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        syncChooseDialog.dismiss();
+                                        if (which == DialogAction.POSITIVE) {
+                                            // sync to cloud
+                                            String subContent = "";
+                                            if (RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() == 0) {
+                                                subContent = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.mobile_record_empty);
+                                                new MaterialDialog.Builder(mContext)
+                                                        .title(R.string.sync)
+                                                        .content(subContent)
+                                                        .positiveText(R.string.ok_1)
+                                                        .show();
+                                                return;
+                                            } else {
+                                                subContent
+                                                        = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_cloud_0)
+                                                        + RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size()
+                                                        + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_cloud_1);
+                                            }
+                                            new MaterialDialog.Builder(mContext)
+                                                    .title(R.string.sync)
+                                                    .content(subContent)
+                                                    .positiveText(R.string.ok_1)
+                                                    .negativeText(R.string.cancel)
+                                                    .onAny(new MaterialDialog.SingleButtonCallback() {
+                                                        @Override
+                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                            if (which == DialogAction.POSITIVE) {
+                                                                syncProgressDialog = new MaterialDialog.Builder(mContext)
+                                                                        .title(R.string.syncing)
+                                                                        .content(CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_0) + "1" + CoCoinUtil.GetString(mContext, R.string.uploading_1))
+                                                                        .progress(false, RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size(), true)
+                                                                        .cancelable(false)
+                                                                        .show();
+                                                                final String databasePath = CoCoinUtil.GetRecordDatabasePath(CoCoinApplication.getAppContext());
 //                                                                final BmobFile bmobFile = new BmobFile(new File(databasePath));
 //                                                                bmobFile.uploadblock(mContext, new UploadFileListener() {
 //
@@ -493,203 +519,203 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 //                                                                                .show();
 //                                                                    }
 //                                                                });
-//                                                                BmobProFile.getInstance(CoCoinApplication.getAppContext()).upload(databasePath, new UploadListener() {
-//                                                                    @Override
-//                                                                    public void onSuccess(String fileName, String url, BmobFile file) {
-//                                                                        CoCoinUtil.deleteBmobUploadCach(CoCoinApplication.getAppContext());
-//                                                                        if (BuildConfig.DEBUG) {
-//                                                                            Log.d("CoCoin", "Upload successfully fileName: " + fileName);
-//                                                                            Log.d("CoCoin", "Upload successfully url: " + url);
-//                                                                        }
-//                                                                        // the new database is uploaded successfully
-//                                                                        // delete the old database(if there is)
-//                                                                        if (cloudOldDatabaseFileName != null) {
-//                                                                            deleteOldDatabaseOnCloud(cloudOldDatabaseFileName);
-//                                                                        }
-//                                                                        // update the UploadInfo record for the new url
-//                                                                        UploadInfo uploadInfo = new UploadInfo();
-//                                                                        uploadInfo.setUserId(user.getObjectId());
-//                                                                        uploadInfo.setRecordNumber(RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size());
-//                                                                        uploadInfo.setDatabaseUrl(file.getFileUrl(CoCoinApplication.getAppContext()));
-//                                                                        uploadInfo.setFileName(fileName);
-//                                                                        if (uploadObjectId == null) {
-//                                                                            // insert
-//                                                                            uploadInfo.save(CoCoinApplication.getAppContext(), new SaveListener() {
-//                                                                                @Override
-//                                                                                public void onSuccess() {
-//                                                                                    // upload successfully
-//                                                                                    syncProgressDialog.dismiss();
-//                                                                                    new MaterialDialog.Builder(mContext)
-//                                                                                            .title(R.string.sync_completely_title)
-//                                                                                            .content(RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_fail_1))
-//                                                                                            .positiveText(R.string.ok_1)
-//                                                                                            .cancelable(false)
-//                                                                                            .show();
-//                                                                                }
-//                                                                                @Override
-//                                                                                public void onFailure(int code, String arg0) {
-//                                                                                    uploadFailed(code, arg0);
-//                                                                                }
-//                                                                            });
-//                                                                        } else {
-//                                                                            // update
-//                                                                            uploadInfo.update(CoCoinApplication.getAppContext(), uploadObjectId, new UpdateListener() {
-//                                                                                @Override
-//                                                                                public void onSuccess() {
-//                                                                                    // upload successfully
-//                                                                                    syncProgressDialog.dismiss();
-//                                                                                    new MaterialDialog.Builder(mContext)
-//                                                                                            .title(R.string.sync_completely_title)
-//                                                                                            .content(RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_fail_1))
-//                                                                                            .positiveText(R.string.ok_1)
-//                                                                                            .cancelable(false)
-//                                                                                            .show();
-//                                                                                }
-//                                                                                @Override
-//                                                                                public void onFailure(int code, String msg) {
-//                                                                                    uploadFailed(code, msg);
-//                                                                                }
-//                                                                            });
-//                                                                        }
-//                                                                    }
-//                                                                    @Override
-//                                                                    public void onProgress(int progress) {
-//                                                                        syncProgressDialog.setProgress((int)(progress * 1.0 / 100 * RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size()));
-//                                                                    }
-//
-//                                                                    @Override
-//                                                                    public void onError(int statuscode, String errormsg) {
-//                                                                        // upload failed
-//                                                                        uploadFailed(statuscode, errormsg);
-//                                                                    }
-//                                                                });
-//                                                            }
-//                                                        }
-//                                                    })
-//                                                    .show();
-//                                        } else if (which == DialogAction.NEGATIVE) {
-//                                            // sync to mobile
-//                                            String subContent = "";
-//                                            if (cloudRecordNumber == 0) {
-//                                                subContent = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.cloud_record_empty);
-//                                                new MaterialDialog.Builder(mContext)
-//                                                        .title(R.string.sync)
-//                                                        .content(subContent)
-//                                                        .positiveText(R.string.ok_1)
-//                                                        .show();
-//                                                return;
-//                                            } else {
-//                                                subContent
-//                                                        = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_mobile_0)
-//                                                        + cloudRecordNumber
-//                                                        + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_mobile_1);
-//                                            }
-//                                            new MaterialDialog.Builder(mContext)
-//                                                    .title(R.string.sync)
-//                                                    .content(subContent)
-//                                                    .positiveText(R.string.ok_1)
-//                                                    .negativeText(R.string.cancel)
-//                                                    .onAny(new MaterialDialog.SingleButtonCallback() {
-//                                                        @Override
-//                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                                            if (which == DialogAction.POSITIVE) {
-//                                                                syncProgressDialog = new MaterialDialog.Builder(mContext)
-//                                                                        .title(R.string.syncing)
-//                                                                        .content(CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.downloading_0) + "1" + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.downloading_1))
-//                                                                        .progress(false, cloudRecordNumber, true)
-//                                                                        .cancelable(false)
-//                                                                        .show();
-//                                                                // download the database file to mobile
-//                                                                BmobProFile.getInstance(CoCoinApplication.getAppContext()).download(cloudOldDatabaseFileName, new DownloadListener() {
-//                                                                    @Override
-//                                                                    public void onSuccess(String fullPath) {
-//                                                                        // download completely
-//                                                                        // delete the original database in mobile
-//                                                                        // copy the new database to mobile
-//                                                                        try {
-//                                                                            Log.d("CoCoin", "Download successfully " + fullPath);
-//                                                                            syncProgressDialog.setContent(R.string.sync_completely_content);
-//                                                                            byte[] buffer = new byte[1024];
-//                                                                            File file = new File(fullPath);
-//                                                                            InputStream inputStream = new FileInputStream(file);
-//                                                                            String outFileNameString = CoCoinUtil.GetRecordDatabasePath(CoCoinApplication.getAppContext());
-//                                                                            OutputStream outputStream = new FileOutputStream(outFileNameString);
-//                                                                            int length;
-//                                                                            while ((length = inputStream.read(buffer)) > 0) {
-//                                                                                outputStream.write(buffer, 0, length);
-//                                                                            }
-//                                                                            Log.d("CoCoin", "Download successfully copy completely");
-//                                                                            outputStream.flush();
-//                                                                            outputStream.close();
-//                                                                            inputStream.close();
-//                                                                            file.delete();
-//                                                                            Log.d("CoCoin", "Download successfully delete completely");
-//                                                                            // refresh data
-//                                                                            RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.clear();
-//                                                                            RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS = null;
-//                                                                            RecordManager.getInstance(CoCoinApplication.getAppContext());
-//                                                                            todayModeAdapter.notifyDataSetChanged();
-//                                                                            Log.d("CoCoin", "Download successfully refresh completely");
-//                                                                            syncProgressDialog.dismiss();
-//                                                                            new MaterialDialog.Builder(mContext)
-//                                                                                    .title(R.string.sync_completely_title)
-//                                                                                    .content(cloudRecordNumber + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.downloading_fail_1))
-//                                                                                    .positiveText(R.string.ok_1)
-//                                                                                    .cancelable(false)
-//                                                                                    .show();
-//                                                                        } catch (IOException i) {
-//                                                                            i.printStackTrace();
-//                                                                        }
-//                                                                    }
-//
-//                                                                    @Override
-//                                                                    public void onProgress(String localPath, int percent) {
-//                                                                        syncProgressDialog.setProgress((int) (((float) percent / 100) * RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size()));
-//                                                                    }
-//
-//                                                                    @Override
-//                                                                    public void onError(int statuscode, String errormsg) {
-//                                                                        downloadFailed(statuscode, errormsg);
-//                                                                    }
-//                                                                });
-//                                                            }
-//                                                        }
-//                                                    })
-//                                                    .show();
-//                                        } else {
-//                                        }
-//                                    }
-//                                })
-//                                .show();
-//                    }
-//                }
-//                @Override
-//                public void onError(int code, String msg) {
-//                    syncQueryDialog.dismiss();
-//                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Query: " + msg);
-//                    if (syncQueryDialog != null) syncQueryDialog.dismiss();
-//                    new MaterialDialog.Builder(mContext)
-//                            .title(R.string.sync_querying_fail_title)
-//                            .content(R.string.sync_querying_fail_content)
-//                            .positiveText(R.string.ok_1)
-//                            .show();
-//                }
-//            });
+                                                                BmobProFile.getInstance(CoCoinApplication.getAppContext()).upload(databasePath, new UploadListener() {
+                                                                    @Override
+                                                                    public void onSuccess(String fileName, String url, BmobFile file) {
+                                                                        CoCoinUtil.deleteBmobUploadCach(CoCoinApplication.getAppContext());
+                                                                        if (BuildConfig.DEBUG) {
+                                                                            Log.d("CoCoin", "Upload successfully fileName: " + fileName);
+                                                                            Log.d("CoCoin", "Upload successfully url: " + url);
+                                                                        }
+                                                                        // the new database is uploaded successfully
+                                                                        // delete the old database(if there is)
+                                                                        if (cloudOldDatabaseFileName != null) {
+                                                                            deleteOldDatabaseOnCloud(cloudOldDatabaseFileName);
+                                                                        }
+                                                                        // update the UploadInfo record for the new url
+                                                                        UploadInfo uploadInfo = new UploadInfo();
+                                                                        uploadInfo.setUserId(user.getObjectId());
+                                                                        uploadInfo.setRecordNumber(RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size());
+                                                                        uploadInfo.setDatabaseUrl(file.getFileUrl(CoCoinApplication.getAppContext()));
+                                                                        uploadInfo.setFileName(fileName);
+                                                                        if (uploadObjectId == null) {
+                                                                            // insert
+                                                                            uploadInfo.save(CoCoinApplication.getAppContext(), new SaveListener() {
+                                                                                @Override
+                                                                                public void onSuccess() {
+                                                                                    // upload successfully
+                                                                                    syncProgressDialog.dismiss();
+                                                                                    new MaterialDialog.Builder(mContext)
+                                                                                            .title(R.string.sync_completely_title)
+                                                                                            .content(RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_fail_1))
+                                                                                            .positiveText(R.string.ok_1)
+                                                                                            .cancelable(false)
+                                                                                            .show();
+                                                                                }
+                                                                                @Override
+                                                                                public void onFailure(int code, String arg0) {
+                                                                                    uploadFailed(code, arg0);
+                                                                                }
+                                                                            });
+                                                                        } else {
+                                                                            // update
+                                                                            uploadInfo.update(CoCoinApplication.getAppContext(), uploadObjectId, new UpdateListener() {
+                                                                                @Override
+                                                                                public void onSuccess() {
+                                                                                    // upload successfully
+                                                                                    syncProgressDialog.dismiss();
+                                                                                    new MaterialDialog.Builder(mContext)
+                                                                                            .title(R.string.sync_completely_title)
+                                                                                            .content(RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_fail_1))
+                                                                                            .positiveText(R.string.ok_1)
+                                                                                            .cancelable(false)
+                                                                                            .show();
+                                                                                }
+                                                                                @Override
+                                                                                public void onFailure(int code, String msg) {
+                                                                                    uploadFailed(code, msg);
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                    @Override
+                                                                    public void onProgress(int progress) {
+                                                                        syncProgressDialog.setProgress((int)(progress * 1.0 / 100 * RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size()));
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onError(int statuscode, String errormsg) {
+                                                                        // upload failed
+                                                                        uploadFailed(statuscode, errormsg);
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    })
+                                                    .show();
+                                        } else if (which == DialogAction.NEGATIVE) {
+                                            // sync to mobile
+                                            String subContent = "";
+                                            if (cloudRecordNumber == 0) {
+                                                subContent = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.cloud_record_empty);
+                                                new MaterialDialog.Builder(mContext)
+                                                        .title(R.string.sync)
+                                                        .content(subContent)
+                                                        .positiveText(R.string.ok_1)
+                                                        .show();
+                                                return;
+                                            } else {
+                                                subContent
+                                                        = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_mobile_0)
+                                                        + cloudRecordNumber
+                                                        + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_mobile_1);
+                                            }
+                                            new MaterialDialog.Builder(mContext)
+                                                    .title(R.string.sync)
+                                                    .content(subContent)
+                                                    .positiveText(R.string.ok_1)
+                                                    .negativeText(R.string.cancel)
+                                                    .onAny(new MaterialDialog.SingleButtonCallback() {
+                                                        @Override
+                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                            if (which == DialogAction.POSITIVE) {
+                                                                syncProgressDialog = new MaterialDialog.Builder(mContext)
+                                                                        .title(R.string.syncing)
+                                                                        .content(CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.downloading_0) + "1" + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.downloading_1))
+                                                                        .progress(false, cloudRecordNumber, true)
+                                                                        .cancelable(false)
+                                                                        .show();
+                                                                // download the database file to mobile
+                                                                BmobProFile.getInstance(CoCoinApplication.getAppContext()).download(cloudOldDatabaseFileName, new DownloadListener() {
+                                                                    @Override
+                                                                    public void onSuccess(String fullPath) {
+                                                                        // download completely
+                                                                        // delete the original database in mobile
+                                                                        // copy the new database to mobile
+                                                                        try {
+                                                                            Log.d("CoCoin", "Download successfully " + fullPath);
+                                                                            syncProgressDialog.setContent(R.string.sync_completely_content);
+                                                                            byte[] buffer = new byte[1024];
+                                                                            File file = new File(fullPath);
+                                                                            InputStream inputStream = new FileInputStream(file);
+                                                                            String outFileNameString = CoCoinUtil.GetRecordDatabasePath(CoCoinApplication.getAppContext());
+                                                                            OutputStream outputStream = new FileOutputStream(outFileNameString);
+                                                                            int length;
+                                                                            while ((length = inputStream.read(buffer)) > 0) {
+                                                                                outputStream.write(buffer, 0, length);
+                                                                            }
+                                                                            Log.d("CoCoin", "Download successfully copy completely");
+                                                                            outputStream.flush();
+                                                                            outputStream.close();
+                                                                            inputStream.close();
+                                                                            file.delete();
+                                                                            Log.d("CoCoin", "Download successfully delete completely");
+                                                                            // refresh data
+                                                                            RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.clear();
+                                                                            RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS = null;
+                                                                            RecordManager.getInstance(CoCoinApplication.getAppContext());
+                                                                            todayModeAdapter.notifyDataSetChanged();
+                                                                            Log.d("CoCoin", "Download successfully refresh completely");
+                                                                            syncProgressDialog.dismiss();
+                                                                            new MaterialDialog.Builder(mContext)
+                                                                                    .title(R.string.sync_completely_title)
+                                                                                    .content(cloudRecordNumber + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.downloading_fail_1))
+                                                                                    .positiveText(R.string.ok_1)
+                                                                                    .cancelable(false)
+                                                                                    .show();
+                                                                        } catch (IOException i) {
+                                                                            i.printStackTrace();
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onProgress(String localPath, int percent) {
+                                                                        syncProgressDialog.setProgress((int) (((float) percent / 100) * RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size()));
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onError(int statuscode, String errormsg) {
+                                                                        downloadFailed(statuscode, errormsg);
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    })
+                                                    .show();
+                                        } else {
+                                        }
+                                    }
+                                })
+                                .show();
+                    }
+                }
+                @Override
+                public void onError(int code, String msg) {
+                    syncQueryDialog.dismiss();
+                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Query: " + msg);
+                    if (syncQueryDialog != null) syncQueryDialog.dismiss();
+                    new MaterialDialog.Builder(mContext)
+                            .title(R.string.sync_querying_fail_title)
+                            .content(R.string.sync_querying_fail_content)
+                            .positiveText(R.string.ok_1)
+                            .show();
+                }
+            });
         }
     }
 
-//    private void deleteOldDatabaseOnCloud(final String fileName) {
-//        BmobProFile.getInstance(CoCoinApplication.getAppContext()).deleteFile(fileName, new DeleteFileListener() {
-//            @Override
-//            public void onError(int errorcode, String errormsg) {
-//                if (BuildConfig.DEBUG) Log.d("CoCoin", "Delete old cloud database failed " + cloudOldDatabaseUrl);
-//            }
-//            @Override
-//            public void onSuccess() {
-//                if (BuildConfig.DEBUG) Log.d("CoCoin", "Delete old cloud database successfully " + cloudOldDatabaseUrl);
-//            }
-//        });
-//    }
+    private void deleteOldDatabaseOnCloud(final String fileName) {
+        BmobProFile.getInstance(CoCoinApplication.getAppContext()).deleteFile(fileName, new DeleteFileListener() {
+            @Override
+            public void onError(int errorcode, String errormsg) {
+                if (BuildConfig.DEBUG) Log.d("CoCoin", "Delete old cloud database failed " + cloudOldDatabaseUrl);
+            }
+            @Override
+            public void onSuccess() {
+                if (BuildConfig.DEBUG) Log.d("CoCoin", "Delete old cloud database successfully " + cloudOldDatabaseUrl);
+            }
+        });
+    }
 
     private void uploadFailed(int code, String msg) {
         // upload failed
@@ -715,39 +741,39 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                 .show();
     }
 
-//    private SaveListener uploadCounter = new SaveListener() {
-//        @Override
-//        public void onSuccess() {
-//            syncSuccessNumber++;
-//            syncProgressDialog.incrementProgress(1);
-//            if (syncSuccessNumber == RecordManager.getInstance(mContext).RECORDS.size()) {
-//                syncProgressDialog.setContent(R.string.sync_completely_content);
-//            } else {
-//                syncProgressDialog.setContent(CoCoinUtil.GetString(mContext, R.string.uploading_0) + (syncSuccessNumber + 1) + CoCoinUtil.GetString(mContext, R.string.uploading_1));
-//            }
-//            if (syncSuccessNumber + syncFailedNumber == RecordManager.getInstance(mContext).RECORDS.size()) {
-//                syncProgressDialog.dismiss();
-//                new MaterialDialog.Builder(mContext)
-//                        .title(R.string.sync_completely_title)
-//                        .content(syncSuccessNumber + CoCoinUtil.GetString(mContext, R.string.uploading_fail_1))
-//                        .positiveText(R.string.ok_1)
-//                        .show();
-//            }
-//        }
-//        @Override
-//        public void onFailure(int code, String arg0) {
-//            syncFailedNumber++;
-//            syncProgressDialog.incrementProgress(1);
-//            if (syncSuccessNumber + syncFailedNumber == RecordManager.getInstance(mContext).RECORDS.size()) {
-//                syncProgressDialog.dismiss();
-//                new MaterialDialog.Builder(mContext)
-//                        .title(R.string.sync_completely_title)
-//                        .content(syncSuccessNumber + CoCoinUtil.GetString(mContext, R.string.uploading_fail_1))
-//                        .positiveText(R.string.ok_1)
-//                        .show();
-//            }
-//        }
-//    };
+    private SaveListener uploadCounter = new SaveListener() {
+        @Override
+        public void onSuccess() {
+            syncSuccessNumber++;
+            syncProgressDialog.incrementProgress(1);
+            if (syncSuccessNumber == RecordManager.getInstance(mContext).RECORDS.size()) {
+                syncProgressDialog.setContent(R.string.sync_completely_content);
+            } else {
+                syncProgressDialog.setContent(CoCoinUtil.GetString(mContext, R.string.uploading_0) + (syncSuccessNumber + 1) + CoCoinUtil.GetString(mContext, R.string.uploading_1));
+            }
+            if (syncSuccessNumber + syncFailedNumber == RecordManager.getInstance(mContext).RECORDS.size()) {
+                syncProgressDialog.dismiss();
+                new MaterialDialog.Builder(mContext)
+                        .title(R.string.sync_completely_title)
+                        .content(syncSuccessNumber + CoCoinUtil.GetString(mContext, R.string.uploading_fail_1))
+                        .positiveText(R.string.ok_1)
+                        .show();
+            }
+        }
+        @Override
+        public void onFailure(int code, String arg0) {
+            syncFailedNumber++;
+            syncProgressDialog.incrementProgress(1);
+            if (syncSuccessNumber + syncFailedNumber == RecordManager.getInstance(mContext).RECORDS.size()) {
+                syncProgressDialog.dismiss();
+                new MaterialDialog.Builder(mContext)
+                        .title(R.string.sync_completely_title)
+                        .content(syncSuccessNumber + CoCoinUtil.GetString(mContext, R.string.uploading_fail_1))
+                        .positiveText(R.string.ok_1)
+                        .show();
+            }
+        }
+    };
 
     private void loadSettings() {
 
@@ -797,18 +823,18 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         }
 
         if (SettingManager.getInstance().getTodayViewInfoShouldChange()) {
-//            setIconEnable(syncIcon, SettingManager.getInstance().getLoggenOn());
-//            User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-//            if (user != null) {
-//                userName.setText(user.getUsername());
-//                userEmail.setText(user.getEmail());
-//                loadLogo();
-//            } else {
-//                userName.setText("");
-//                userEmail.setText("");
-//                loadLogo();
-//            }
-//            SettingManager.getInstance().setTodayViewInfoShouldChange(false);
+            setIconEnable(syncIcon, SettingManager.getInstance().getLoggenOn());
+            User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+            if (user != null) {
+                userName.setText(user.getUsername());
+                userEmail.setText(user.getEmail());
+                loadLogo();
+            } else {
+                userName.setText("");
+                userEmail.setText("");
+                loadLogo();
+            }
+            SettingManager.getInstance().setTodayViewInfoShouldChange(false);
         }
     }
 
@@ -912,53 +938,53 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
     }
 
     private void loadLogo() {
-//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-//        if (user != null) {
-//            try {
-//                File logoFile = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
-//                if (!logoFile.exists()) {
-//                    // the local logo file is missed
-//                    // try to get from the server
-//                    BmobQuery<Logo> bmobQuery = new BmobQuery();
-//                    Log.d("CoCoin", user.getLogoObjectId());
-//                    bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
-//                    bmobQuery.findObjects(CoCoinApplication.getAppContext()
-//                            , new FindListener<Logo>() {
-//                        @Override
-//                        public void onSuccess(List<Logo> object) {
-//                            // there has been an old logo in the server/////////////////////////////////////////////////////////
-//                            String url = object.get(0).getFile().getFileUrl(CoCoinApplication.getAppContext());
-//                            if (BuildConfig.DEBUG) Log.d("CoCoin", "Logo in server: " + url);
-//                            Ion.with(CoCoinApplication.getAppContext()).load(url)
-//                                    .write(new File(CoCoinApplication.getAppContext().getFilesDir()
-//                                            + CoCoinUtil.LOGO_NAME))
-//                                    .setCallback(new FutureCallback<File>() {
-//                                        @Override
-//                                        public void onCompleted(Exception e, File file) {
-//                                            profileImage.setImageBitmap(BitmapFactory.decodeFile(
-//                                                    CoCoinApplication.getAppContext().getFilesDir()
-//                                                            + CoCoinUtil.LOGO_NAME));
-//                                        }
-//                                    });
-//                        }
-//                        @Override
-//                        public void onError(int code, String msg) {
-//                            // the picture is lost
-//                            if (BuildConfig.DEBUG) Log.d("CoCoin", "Can't find the old logo in server.");
-//                        }
-//                    });
-//                } else {
-//                    // the user logo is in the storage
-//                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(logoFile));
-//                    profileImage.setImageBitmap(b);
-//                }
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            // use the default logo
-//            profileImage.setImageResource(R.drawable.default_user_logo);
-//        }
+        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+        if (user != null) {
+            try {
+                File logoFile = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
+                if (!logoFile.exists()) {
+                    // the local logo file is missed
+                    // try to get from the server
+                    BmobQuery<Logo> bmobQuery = new BmobQuery();
+                    Log.d("CoCoin", user.getLogoObjectId());
+                    bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
+                    bmobQuery.findObjects(CoCoinApplication.getAppContext()
+                            , new FindListener<Logo>() {
+                                @Override
+                                public void onSuccess(List<Logo> object) {
+                                    // there has been an old logo in the server/////////////////////////////////////////////////////////
+                                    String url = object.get(0).getFile().getFileUrl(CoCoinApplication.getAppContext());
+                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Logo in server: " + url);
+                                    Ion.with(CoCoinApplication.getAppContext()).load(url)
+                                            .write(new File(CoCoinApplication.getAppContext().getFilesDir()
+                                                    + CoCoinUtil.LOGO_NAME))
+                                            .setCallback(new FutureCallback<File>() {
+                                                @Override
+                                                public void onCompleted(Exception e, File file) {
+                                                    profileImage.setImageBitmap(BitmapFactory.decodeFile(
+                                                            CoCoinApplication.getAppContext().getFilesDir()
+                                                                    + CoCoinUtil.LOGO_NAME));
+                                                }
+                                            });
+                                }
+                                @Override
+                                public void onError(int code, String msg) {
+                                    // the picture is lost
+                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Can't find the old logo in server.");
+                                }
+                            });
+                } else {
+                    // the user logo is in the storage
+                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(logoFile));
+                    profileImage.setImageBitmap(b);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // use the default logo
+            profileImage.setImageResource(R.drawable.default_user_logo);
+        }
     }
 
     private void setIconEnable(MaterialIconView icon, boolean enable) {

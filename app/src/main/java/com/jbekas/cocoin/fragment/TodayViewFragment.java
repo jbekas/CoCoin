@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.activity.CoCoinApplication;
 import com.jbekas.cocoin.adapter.TodayViewRecyclerViewAdapter;
@@ -36,7 +38,7 @@ public class TodayViewFragment extends Fragment {
     private Context mContext;
 
     private RecyclerView mRecyclerView;
-    //private RecyclerViewMaterialAdapter mAdapter;
+    private RecyclerViewMaterialAdapter mAdapter;
     private RecyclerView.Adapter adapter;
 
     private RecyclerView.LayoutManager layoutManager;
@@ -195,12 +197,12 @@ public class TodayViewFragment extends Fragment {
                 break;
         }
 
-//        adapter = new TodayViewRecyclerViewAdapter(start, end, mContext, position);
-//
-//        mAdapter = new RecyclerViewMaterialAdapter(adapter);
-//        mRecyclerView.setAdapter(mAdapter);
-//
-//        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
+        adapter = new TodayViewRecyclerViewAdapter(start, end, mContext, position);
+
+        mAdapter = new RecyclerViewMaterialAdapter(adapter);
+        mRecyclerView.setAdapter(mAdapter);
+
+        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
     }
 
     @Override

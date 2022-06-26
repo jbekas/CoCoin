@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.activity.CoCoinApplication;
 import com.jbekas.cocoin.adapter.TagViewRecyclerViewAdapter;
@@ -81,10 +83,10 @@ public class TagViewFragment extends Fragment {
             }
         }
 
-//        mAdapter = new RecyclerViewMaterialAdapter(new TagViewRecyclerViewAdapter(list, mContext, position));
-//        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new RecyclerViewMaterialAdapter(new TagViewRecyclerViewAdapter(list, mContext, position));
+        mRecyclerView.setAdapter(mAdapter);
 
-//        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
+        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.jbekas.cocoin.ui;
 
 import com.jbekas.cocoin.model.UploadInfo;
 
+import cn.bmob.v3.BmobQuery;
+
 /**
  * Created by Weiping on 2016/1/27.
  */
@@ -9,7 +11,7 @@ import com.jbekas.cocoin.model.UploadInfo;
 public class MyQuery {
 
     private int task;
-//    public BmobQuery<UploadInfo> query;
+    public BmobQuery<UploadInfo> query;
 
     public int getTask() {
         return task;

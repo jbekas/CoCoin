@@ -115,9 +115,13 @@
     <color name="colorAccent">@color/blue_5</color>
     <color name="navigationBarColor">@color/blue_5</color>
     <color name="drawerArrowColor">@color/blue_5</color>
+    <color name="statusBarColor">@color/blue_5</color>
 
     <color name="blue_1">#00101f</color>
     <color name="blue_5">#0078ff</color>
     <color name="red">#ff0000</color>
-    <color name="blue">#0000ff</color>
+    <color name="blue">#303F9F</color>
+
+    <color name="accent_color">@color/blue</color>
+
 </resources>

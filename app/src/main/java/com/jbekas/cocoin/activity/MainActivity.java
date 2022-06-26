@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity
             Window window = this.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
+            window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
         } else{
             // do something for phones running an SDK before lollipop
         }
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity
 // edit viewpager///////////////////////////////////////////////////////////////////////////////////
         editViewPager = (CoCoinScrollableViewPager) findViewById(R.id.edit_pager);
         editAdapter = new EditMoneyRemarkFragmentAdapter(getSupportFragmentManager(), CoCoinFragmentManager.MAIN_ACTIVITY_FRAGMENT);
-        
+
         editViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity
         statusButton.setOnClickListener(statusButtonOnClickListener);
 
         animation = new GuillotineAnimation.GuillotineBuilder(guillotineMenu,
-                        guillotineMenu.findViewById(R.id.guillotine_hamburger), contentHamburger)
+                guillotineMenu.findViewById(R.id.guillotine_hamburger), contentHamburger)
                 .setStartDelay(RIPPLE_DURATION)
                 .setActionBarViewForAnimation(toolbar)
                 .setClosedOnStart(true)
@@ -330,7 +330,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        Timber.d("${SettingManager.getInstance().getFirstTime()}: %s", SettingManager.getInstance().getFirstTime());
         if (SettingManager.getInstance().getFirstTime()) {
             Intent intent = new Intent(mContext, ShowActivity.class);
             startActivity(intent);
@@ -361,19 +360,22 @@ public class MainActivity extends AppCompatActivity
 
 
     private void checkPassword() {
+        Timber.d("checkPassword called.");
         if (inputPassword.length() != 4) {
             return;
         }
         if (SettingManager.getInstance().getPassword().equals(inputPassword)) {
+            Timber.d("Path 1");
             isLoading = true;
             YoYo.with(Techniques.Bounce).delay(0).duration(1000).playOn(radioButton3);
             statusButton.animateState(MaterialMenuDrawable.IconState.CHECK);
             statusButton.setClickable(false);
-            showToast(PASSWORD_CORRECT_TOAST);
+//            showToast(PASSWORD_CORRECT_TOAST);
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Timber.i("starting activity for result: AccountBookTodayViewActivity");
                     Intent intent = new Intent(mContext, AccountBookTodayViewActivity.class);
                     startActivityForResult(intent, SETTING_TAG);
                     isLoading = false;
@@ -383,10 +385,12 @@ public class MainActivity extends AppCompatActivity
             handler2.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    Timber.i("Running animation.close()");
                     animation.close();
                 }
             }, 3000);
         } else {
+            Timber.d("Path 2");
             showToast(PASSWORD_WRONG_TOAST);
             YoYo.with(Techniques.Shake).duration(700).playOn(radioButtonLy);
             radioButton0.setChecked(false);
@@ -400,8 +404,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         switch (requestCode) {
             case SETTING_TAG:
                 if (resultCode == RESULT_OK) {
@@ -436,8 +438,6 @@ public class MainActivity extends AppCompatActivity
     };
 
     private void buttonClickOperation(boolean longClick, int position) {
-        Timber.d("buttonClickOperation invoked.");
-
         if (editViewPager.getCurrentItem() == 1) return;
         if (!isPassword) {
             if (CoCoinFragmentManager.mainActivityEditMoneyFragment.getNumberText().toString().equals("0")
@@ -458,8 +458,8 @@ public class MainActivity extends AppCompatActivity
                     } else {
                         CoCoinFragmentManager.mainActivityEditMoneyFragment.setNumberText(
                                 CoCoinFragmentManager.mainActivityEditMoneyFragment.getNumberText().toString()
-                                .substring(0, CoCoinFragmentManager.mainActivityEditMoneyFragment
-                                        .getNumberText().toString().length() - 1));
+                                        .substring(0, CoCoinFragmentManager.mainActivityEditMoneyFragment
+                                                .getNumberText().toString().length() - 1));
                         if (CoCoinFragmentManager.mainActivityEditMoneyFragment
                                 .getNumberText().toString().length() == 0) {
                             CoCoinFragmentManager.mainActivityEditMoneyFragment.setNumberText("0");
@@ -560,6 +560,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showToast(int toastType) {
+        Timber.d("showToast: %d", toastType);
+
         switch (toastType) {
             case NO_TAG_TOAST:
                 CoCoinToast.getInstance().showToast(R.string.toast_no_tag, SuperToast.Background.RED);
@@ -572,7 +574,9 @@ public class MainActivity extends AppCompatActivity
                 CoCoinToast.getInstance().showToast(R.string.toast_password_wrong, SuperToast.Background.RED);
                 break;
             case PASSWORD_CORRECT_TOAST:
+                Timber.d("PASSWORD_CORRECT_TOAST start");
                 CoCoinToast.getInstance().showToast(R.string.toast_password_correct, SuperToast.Background.BLUE);
+                Timber.d("PASSWORD_CORRECT_TOAST finish");
                 break;
             case SAVE_SUCCESSFULLY_TOAST:
                 break;
@@ -609,7 +613,7 @@ public class MainActivity extends AppCompatActivity
                 window.setStatusBarColor(
                         CoCoinUtil.getInstance().getDeeperColor(SettingManager.getInstance().getRemindColor()));
             } else {
-//                window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
+                window.setStatusBarColor(ContextCompat.getColor(mContext, R.color.statusBarColor));
             }
 
         } else{
@@ -775,5 +779,4 @@ public class MainActivity extends AppCompatActivity
 
         }
     };
-
 }
