@@ -6,8 +6,11 @@ import android.provider.Settings;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.jbekas.cocoin.BuildConfig;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+
+import timber.log.Timber;
 
 /**
  * Created by 伟平 on 2015/11/2.
@@ -31,6 +34,8 @@ public class CoCoinApplication extends MultiDexApplication {
 
         refWatcher = LeakCanary.install(this);
         CoCoinApplication.mContext = getApplicationContext();
+
+        setupTimber();
     }
 
     public static Context getAppContext() {
@@ -42,4 +47,11 @@ public class CoCoinApplication extends MultiDexApplication {
                 getAppContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
+    public void setupTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } //else {
+            //Timber.plant(new Timber.Tree());
+        //}
+    }
 }

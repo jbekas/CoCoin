@@ -42,6 +42,7 @@ import com.jbekas.cocoin.adapter.TagChooseFragmentAdapter;
 import com.jbekas.cocoin.fragment.CoCoinFragmentManager;
 import com.jbekas.cocoin.fragment.TagChooseFragment;
 import com.jbekas.cocoin.model.AppUpdateManager;
+import com.jbekas.cocoin.model.CoCoin;
 import com.jbekas.cocoin.model.CoCoinRecord;
 import com.jbekas.cocoin.model.RecordManager;
 import com.jbekas.cocoin.model.SettingManager;
@@ -59,6 +60,9 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -146,10 +150,10 @@ public class MainActivity extends AppCompatActivity
 
         mContext = this;
 
-//        Bmob.initialize(CoCoinApplication.getAppContext(), CoCoin.APPLICATION_ID);
+        Bmob.initialize(CoCoinApplication.getAppContext(), CoCoin.APPLICATION_ID);
 //        CrashReport.initCrashReport(CoCoinApplication.getAppContext(), "900016815", false);
-//        RecordManager.getInstance(CoCoinApplication.getAppContext());
-//        CoCoinUtil.init(CoCoinApplication.getAppContext());
+        RecordManager.getInstance(CoCoinApplication.getAppContext());
+        CoCoinUtil.init(CoCoinApplication.getAppContext());
 
         appUpdateManager = new AppUpdateManager(mContext);
         appUpdateManager.checkUpdateInfo(false);
@@ -167,7 +171,7 @@ public class MainActivity extends AppCompatActivity
 
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 
-        Log.d("Saver", "Version number: " + currentapiVersion);
+        Timber.d("Version number: %s", currentapiVersion);
 
         if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
             // Do something for lollipop and above versions
@@ -179,17 +183,17 @@ public class MainActivity extends AppCompatActivity
             // do something for phones running an SDK before lollipop
         }
 
-//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-//        if (user != null) {
-//            SettingManager.getInstance().setLoggenOn(true);
-//            SettingManager.getInstance().setUserName(user.getUsername());
-//            SettingManager.getInstance().setUserEmail(user.getEmail());
-//            showToast(WELCOME_BACK);
-//            // 允许用户使用应用
-//        } else {
-//            SettingManager.getInstance().setLoggenOn(false);
-//            //缓存用户对象为空时， 可打开用户注册界面…
-//        }
+        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+        if (user != null) {
+            SettingManager.getInstance().setLoggenOn(true);
+            SettingManager.getInstance().setUserName(user.getUsername());
+            SettingManager.getInstance().setUserEmail(user.getEmail());
+            showToast(WELCOME_BACK);
+            // 允许用户使用应用
+        } else {
+            SettingManager.getInstance().setLoggenOn(false);
+            //缓存用户对象为空时， 可打开用户注册界面…
+        }
 
         guillotineBackground = findViewById(R.id.guillotine_background);
 
@@ -326,6 +330,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        Timber.d("${SettingManager.getInstance().getFirstTime()}: %s", SettingManager.getInstance().getFirstTime());
         if (SettingManager.getInstance().getFirstTime()) {
             Intent intent = new Intent(mContext, ShowActivity.class);
             startActivity(intent);
@@ -431,6 +436,8 @@ public class MainActivity extends AppCompatActivity
     };
 
     private void buttonClickOperation(boolean longClick, int position) {
+        Timber.d("buttonClickOperation invoked.");
+
         if (editViewPager.getCurrentItem() == 1) return;
         if (!isPassword) {
             if (CoCoinFragmentManager.mainActivityEditMoneyFragment.getNumberText().toString().equals("0")

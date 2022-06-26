@@ -1,10 +1,12 @@
 package com.jbekas.cocoin.model;
 
+import cn.bmob.v3.BmobUser;
+
 /**
  * Created by 伟平 on 2015/11/20.
  */
 
-public class User { //extends BmobUser {
+public class User extends BmobUser {
 
     // android id
     private String androidId;

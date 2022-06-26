@@ -15,7 +15,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +22,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.dev.sacot41.scviewpager.SCPositionAnimation;
+import com.dev.sacot41.scviewpager.SCViewAnimation;
+import com.dev.sacot41.scviewpager.SCViewAnimationUtil;
+import com.dev.sacot41.scviewpager.SCViewPager;
+import com.dev.sacot41.scviewpager.SCViewPagerAdapter;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.adapter.PasswordChangeButtonGridViewAdapter;
@@ -36,8 +40,11 @@ import com.jbekas.cocoin.util.CoCoinUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.UpdateListener;
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
-import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.Line;
@@ -47,17 +54,18 @@ import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.model.SubcolumnValue;
 import lecho.lib.hellocharts.model.ValueShape;
-import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import lecho.lib.hellocharts.view.LineChartView;
 import lecho.lib.hellocharts.view.PieChartView;
+import timber.log.Timber;
 
 public class ShowActivity extends AppCompatActivity {
 
     private static final int NUM_PAGES = 5;
 
-//    private SCViewPager mViewPager;
-//    private SCViewPagerAdapter mPageAdapter;
+    @BindView(R.id.viewpager_main_activity)
+    protected SCViewPager mViewPager;
+    private SCViewPagerAdapter mPageAdapter;
 //    private DotsView mDotsView;
 
     private View toolbarLayout;
@@ -87,11 +95,15 @@ public class ShowActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Timber.d("Starting ShowActivity");
+
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
+
+        ButterKnife.bind(this);
 
         mContext = this;
 
@@ -100,61 +112,60 @@ public class ShowActivity extends AppCompatActivity {
         title.setTypeface(CoCoinUtil.typefaceLatoLight);
         title.setText(mContext.getResources().getString(R.string.app_name));
 
-//        mViewPager = (SCViewPager) findViewById(R.id.viewpager_main_activity);
 //        mDotsView = (DotsView) findViewById(R.id.dotsview_main);
 //        mDotsView.setDotRessource(R.drawable.dot_selected, R.drawable.dot_unselected);
 //        mDotsView.setNumberOfPage(NUM_PAGES);
-//
-//        mPageAdapter = new SCViewPagerAdapter(getSupportFragmentManager());
-//        mPageAdapter.setNumberOfPage(NUM_PAGES);
-//        mPageAdapter.setFragmentBackgroundColor(R.color.my_blue);
-//        mViewPager.setAdapter(mPageAdapter);
-//        mViewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
-//
-//        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                mDotsView.selectDot(position);
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//            }
-//        });
-//
-//        final Point size = SCViewAnimationUtil.getDisplaySize(this);
-//
-//        int iconOffsetX = CoCoinUtil.getInstance().dpToPx(28);
-//        int iconOffsetY = CoCoinUtil.getInstance().dpToPx(28);
-//
-//        SCViewAnimation sc0 = new SCViewAnimation(findViewById(R.id.icon_4));
-//        sc0.startToPosition(size.x / 4 - iconOffsetX, size.y * 2 / 7 - iconOffsetY);
-//        sc0.addPageAnimation(new SCPositionAnimation(this, 0, 0, size.y));
-//        mViewPager.addAnimation(sc0);
-//
-//        SCViewAnimation sc1 = new SCViewAnimation(findViewById(R.id.icon_11));
-//        sc1.startToPosition(size.x * 3 / 4 - iconOffsetX, size.y * 3 / 7 - iconOffsetY);
-//        sc1.addPageAnimation(new SCPositionAnimation(this, 0, -size.x, 0));
-//        mViewPager.addAnimation(sc1);
-//
-//        SCViewAnimation sc2 = new SCViewAnimation(findViewById(R.id.icon_12));
-//        sc2.startToPosition(size.x / 4 - iconOffsetX, size.y * 4 / 7 - iconOffsetY);
-//        sc2.addPageAnimation(new SCPositionAnimation(this, 0, size.x, 0));
-//        mViewPager.addAnimation(sc2);
-//
-//        SCViewAnimation sc3 = new SCViewAnimation(findViewById(R.id.icon_19));
-//        sc3.startToPosition(size.x * 3 / 4 - iconOffsetX, size.y * 5 / 7 - iconOffsetY);
-//        sc3.addPageAnimation(new SCPositionAnimation(this, 0, 0, -size.y));
-//        mViewPager.addAnimation(sc3);
-//
-//        ((TextView)findViewById(R.id.text_0)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-//        SCViewAnimation sc4 = new SCViewAnimation(findViewById(R.id.text_0));
-//        sc4.addPageAnimation(new SCPositionAnimation(this, 0, -size.x, 0));
-//        mViewPager.addAnimation(sc4);
+
+        mPageAdapter = new SCViewPagerAdapter(getSupportFragmentManager());
+        mPageAdapter.setNumberOfPage(NUM_PAGES);
+        mPageAdapter.setFragmentBackgroundColor(R.color.my_blue);
+        mViewPager.setAdapter(mPageAdapter);
+        mViewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //mDotsView.selectDot(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        final Point size = SCViewAnimationUtil.getDisplaySize(this);
+
+        int iconOffsetX = CoCoinUtil.getInstance().dpToPx(28);
+        int iconOffsetY = CoCoinUtil.getInstance().dpToPx(28);
+
+        SCViewAnimation sc0 = new SCViewAnimation(findViewById(R.id.icon_4));
+        sc0.startToPosition(size.x / 4 - iconOffsetX, size.y * 2 / 7 - iconOffsetY);
+        sc0.addPageAnimation(new SCPositionAnimation(this, 0, 0, size.y));
+        mViewPager.addAnimation(sc0);
+
+        SCViewAnimation sc1 = new SCViewAnimation(findViewById(R.id.icon_11));
+        sc1.startToPosition(size.x * 3 / 4 - iconOffsetX, size.y * 3 / 7 - iconOffsetY);
+        sc1.addPageAnimation(new SCPositionAnimation(this, 0, -size.x, 0));
+        mViewPager.addAnimation(sc1);
+
+        SCViewAnimation sc2 = new SCViewAnimation(findViewById(R.id.icon_12));
+        sc2.startToPosition(size.x / 4 - iconOffsetX, size.y * 4 / 7 - iconOffsetY);
+        sc2.addPageAnimation(new SCPositionAnimation(this, 0, size.x, 0));
+        mViewPager.addAnimation(sc2);
+
+        SCViewAnimation sc3 = new SCViewAnimation(findViewById(R.id.icon_19));
+        sc3.startToPosition(size.x * 3 / 4 - iconOffsetX, size.y * 5 / 7 - iconOffsetY);
+        sc3.addPageAnimation(new SCPositionAnimation(this, 0, 0, -size.y));
+        mViewPager.addAnimation(sc3);
+
+        ((TextView)findViewById(R.id.text_0)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+        SCViewAnimation sc4 = new SCViewAnimation(findViewById(R.id.text_0));
+        sc4.addPageAnimation(new SCPositionAnimation(this, 0, -size.x, 0));
+        mViewPager.addAnimation(sc4);
 
         PieChartView pie = (PieChartView)findViewById(R.id.pie);
         List<SliceValue> values = new ArrayList<SliceValue>();
@@ -169,11 +180,11 @@ public class ShowActivity extends AppCompatActivity {
         pieData.setHasCenterCircle(true);
         pie.setPieChartData(pieData);
         pie.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
-//        SCViewAnimation sc5 = new SCViewAnimation(pie);
-//        sc5.startToPosition(size.x / 2, size.y / 9 - size.y);
-//        sc5.addPageAnimation(new SCPositionAnimation(this, 0, 0, size.y));
-//        sc5.addPageAnimation(new SCPositionAnimation(this, 1, 0, size.y));
-//        mViewPager.addAnimation(sc5);
+        SCViewAnimation sc5 = new SCViewAnimation(pie);
+        sc5.startToPosition(size.x / 2, size.y / 9 - size.y);
+        sc5.addPageAnimation(new SCPositionAnimation(this, 0, 0, size.y));
+        sc5.addPageAnimation(new SCPositionAnimation(this, 1, 0, size.y));
+        mViewPager.addAnimation(sc5);
 
         LineChartView line = (LineChartView)findViewById(R.id.line);
         List<Line> lines = new ArrayList<Line>();
@@ -205,11 +216,11 @@ public class ShowActivity extends AppCompatActivity {
         linedata.setBaseValue(Float.NEGATIVE_INFINITY);
         line.setLineChartData(linedata);
         line.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
-//        SCViewAnimation sc6 = new SCViewAnimation(line);
-//        sc6.startToPosition(-size.x, null);
-//        sc6.addPageAnimation(new SCPositionAnimation(this, 0, size.x, 0));
-//        sc6.addPageAnimation(new SCPositionAnimation(this, 1, size.x, 0));
-//        mViewPager.addAnimation(sc6);
+        SCViewAnimation sc6 = new SCViewAnimation(line);
+        sc6.startToPosition(-size.x, null);
+        sc6.addPageAnimation(new SCPositionAnimation(this, 0, size.x, 0));
+        sc6.addPageAnimation(new SCPositionAnimation(this, 1, size.x, 0));
+        mViewPager.addAnimation(sc6);
 
         ColumnChartView histogram = (ColumnChartView)findViewById(R.id.histogram);
         List<Column> columns = new ArrayList<Column>();
@@ -227,75 +238,75 @@ public class ShowActivity extends AppCompatActivity {
         ColumnChartData histogramData = new ColumnChartData(columns);
         histogram.setColumnChartData(histogramData);
         histogram.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
-//        SCViewAnimation sc7 = new SCViewAnimation(histogram);
-//        sc7.startToPosition(size.x / 2 - CoCoinUtil.getInstance().dpToPx(140), size.y * 8 / 9 - CoCoinUtil.getInstance().dpToPx(140) + size.y);
-//        sc7.addPageAnimation(new SCPositionAnimation(this, 0, 0, -size.y));
-//        sc7.addPageAnimation(new SCPositionAnimation(this, 1, 0, size.y));
-//        mViewPager.addAnimation(sc7);
-//
-//        ((TextView)findViewById(R.id.text_1)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-//        SCViewAnimation sc8 = new SCViewAnimation(findViewById(R.id.text_1));
-//        sc8.startToPosition(size.x, null);
-//        sc8.addPageAnimation(new SCPositionAnimation(this, 0, -size.x, 0));
-//        sc8.addPageAnimation(new SCPositionAnimation(this, 1, -size.x, 0));
-//        mViewPager.addAnimation(sc8);
-//
-//        SCViewAnimation sc9 = new SCViewAnimation(findViewById(R.id.cloud));
-//        sc9.startToPosition(size.x / 2 - CoCoinUtil.getInstance().dpToPx(100) + size.x, size.y / 7);
-//        sc9.addPageAnimation(new SCPositionAnimation(this, 1, -size.x, 0));
-//        sc9.addPageAnimation(new SCPositionAnimation(this, 2, 0, size.y));
-//        mViewPager.addAnimation(sc9);
-//
-//        SCViewAnimation sc10 = new SCViewAnimation(findViewById(R.id.mobile));
-//        sc10.startToPosition(size.x / 2 - size.x, size.y * 6 / 7 - CoCoinUtil.getInstance().dpToPx(100));
-//        sc10.addPageAnimation(new SCPositionAnimation(this, 1, size.x, 0));
-//        sc10.addPageAnimation(new SCPositionAnimation(this, 2, 0, -size.y));
-//        mViewPager.addAnimation(sc10);
-//
-//        ((TextView)findViewById(R.id.text_2)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-//        SCViewAnimation sc11 = new SCViewAnimation(findViewById(R.id.text_2));
-//        sc11.startToPosition(size.x, null);
-//        sc11.addPageAnimation(new SCPositionAnimation(this, 1, -size.x, 0));
-//        sc11.addPageAnimation(new SCPositionAnimation(this, 2, -size.x, 0));
-//        mViewPager.addAnimation(sc11);
-//
-//        ImageView remind1 = (ImageView)findViewById(R.id.remind_1);
-//        remind1.getLayoutParams().width = size.x / 3;
-//        remind1.getLayoutParams().height = size.x / 3 * 653 / 320;
-//        SCViewAnimation sc12 = new SCViewAnimation(findViewById(R.id.remind_1));
-//        sc12.startToPosition(size.x / 2 - size.x, size.y / 11);
-//        sc12.addPageAnimation(new SCPositionAnimation(this, 2, size.x, 0));
-//        sc12.addPageAnimation(new SCPositionAnimation(this, 3, size.x, 0));
-//        mViewPager.addAnimation(sc12);
-//
-//        ImageView remind2 = (ImageView)findViewById(R.id.remind_2);
-//        remind2.getLayoutParams().width = size.x / 3;
-//        remind2.getLayoutParams().height = size.x / 3 * 653 / 320;
-//        SCViewAnimation sc13 = new SCViewAnimation(findViewById(R.id.remind_2));
-//        sc13.startToPosition(size.x / 2 + size.x - size.x / 3, size.y * 10 / 11 - remind1.getLayoutParams().height);
-//        sc13.addPageAnimation(new SCPositionAnimation(this, 2, -size.x, 0));
-//        sc13.addPageAnimation(new SCPositionAnimation(this, 3, -size.x, 0));
-//        mViewPager.addAnimation(sc13);
-//
-//        ((TextView)findViewById(R.id.text_3)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-//        SCViewAnimation sc14 = new SCViewAnimation(findViewById(R.id.text_3));
-//        sc14.startToPosition(size.x, null);
-//        sc14.addPageAnimation(new SCPositionAnimation(this, 2, -size.x, 0));
-//        sc14.addPageAnimation(new SCPositionAnimation(this, 3, -size.x, 0));
-//        mViewPager.addAnimation(sc14);
-//
-//        View statusBar = findViewById(R.id.status_bar);
-//        statusBar.setLayoutParams(new RelativeLayout.LayoutParams(statusBar.getLayoutParams().width, getStatusBarHeight()));
-//        SCViewAnimation statusBarAnimation = new SCViewAnimation(statusBar);
-//        statusBarAnimation.startToPosition(null, -getStatusBarHeight());
-//        statusBarAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, getStatusBarHeight()));
-//        mViewPager.addAnimation(statusBarAnimation);
-//
-//        toolbarLayout = findViewById(R.id.toolbar_layout);
-//        SCViewAnimation toolbarLayoutAnimation = new SCViewAnimation(toolbarLayout);
-//        toolbarLayoutAnimation.startToPosition(null, -size.y / 2);
-//        toolbarLayoutAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, size.y / 2));
-//        mViewPager.addAnimation(toolbarLayoutAnimation);
+        SCViewAnimation sc7 = new SCViewAnimation(histogram);
+        sc7.startToPosition(size.x / 2 - CoCoinUtil.getInstance().dpToPx(140), size.y * 8 / 9 - CoCoinUtil.getInstance().dpToPx(140) + size.y);
+        sc7.addPageAnimation(new SCPositionAnimation(this, 0, 0, -size.y));
+        sc7.addPageAnimation(new SCPositionAnimation(this, 1, 0, size.y));
+        mViewPager.addAnimation(sc7);
+
+        ((TextView)findViewById(R.id.text_1)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+        SCViewAnimation sc8 = new SCViewAnimation(findViewById(R.id.text_1));
+        sc8.startToPosition(size.x, null);
+        sc8.addPageAnimation(new SCPositionAnimation(this, 0, -size.x, 0));
+        sc8.addPageAnimation(new SCPositionAnimation(this, 1, -size.x, 0));
+        mViewPager.addAnimation(sc8);
+
+        SCViewAnimation sc9 = new SCViewAnimation(findViewById(R.id.cloud));
+        sc9.startToPosition(size.x / 2 - CoCoinUtil.getInstance().dpToPx(100) + size.x, size.y / 7);
+        sc9.addPageAnimation(new SCPositionAnimation(this, 1, -size.x, 0));
+        sc9.addPageAnimation(new SCPositionAnimation(this, 2, 0, size.y));
+        mViewPager.addAnimation(sc9);
+
+        SCViewAnimation sc10 = new SCViewAnimation(findViewById(R.id.mobile));
+        sc10.startToPosition(size.x / 2 - size.x, size.y * 6 / 7 - CoCoinUtil.getInstance().dpToPx(100));
+        sc10.addPageAnimation(new SCPositionAnimation(this, 1, size.x, 0));
+        sc10.addPageAnimation(new SCPositionAnimation(this, 2, 0, -size.y));
+        mViewPager.addAnimation(sc10);
+
+        ((TextView)findViewById(R.id.text_2)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+        SCViewAnimation sc11 = new SCViewAnimation(findViewById(R.id.text_2));
+        sc11.startToPosition(size.x, null);
+        sc11.addPageAnimation(new SCPositionAnimation(this, 1, -size.x, 0));
+        sc11.addPageAnimation(new SCPositionAnimation(this, 2, -size.x, 0));
+        mViewPager.addAnimation(sc11);
+
+        ImageView remind1 = (ImageView)findViewById(R.id.remind_1);
+        remind1.getLayoutParams().width = size.x / 3;
+        remind1.getLayoutParams().height = size.x / 3 * 653 / 320;
+        SCViewAnimation sc12 = new SCViewAnimation(findViewById(R.id.remind_1));
+        sc12.startToPosition(size.x / 2 - size.x, size.y / 11);
+        sc12.addPageAnimation(new SCPositionAnimation(this, 2, size.x, 0));
+        sc12.addPageAnimation(new SCPositionAnimation(this, 3, size.x, 0));
+        mViewPager.addAnimation(sc12);
+
+        ImageView remind2 = (ImageView)findViewById(R.id.remind_2);
+        remind2.getLayoutParams().width = size.x / 3;
+        remind2.getLayoutParams().height = size.x / 3 * 653 / 320;
+        SCViewAnimation sc13 = new SCViewAnimation(findViewById(R.id.remind_2));
+        sc13.startToPosition(size.x / 2 + size.x - size.x / 3, size.y * 10 / 11 - remind1.getLayoutParams().height);
+        sc13.addPageAnimation(new SCPositionAnimation(this, 2, -size.x, 0));
+        sc13.addPageAnimation(new SCPositionAnimation(this, 3, -size.x, 0));
+        mViewPager.addAnimation(sc13);
+
+        ((TextView)findViewById(R.id.text_3)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+        SCViewAnimation sc14 = new SCViewAnimation(findViewById(R.id.text_3));
+        sc14.startToPosition(size.x, null);
+        sc14.addPageAnimation(new SCPositionAnimation(this, 2, -size.x, 0));
+        sc14.addPageAnimation(new SCPositionAnimation(this, 3, -size.x, 0));
+        mViewPager.addAnimation(sc14);
+
+        View statusBar = findViewById(R.id.status_bar);
+        statusBar.setLayoutParams(new RelativeLayout.LayoutParams(statusBar.getLayoutParams().width, getStatusBarHeight()));
+        SCViewAnimation statusBarAnimation = new SCViewAnimation(statusBar);
+        statusBarAnimation.startToPosition(null, -getStatusBarHeight());
+        statusBarAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, getStatusBarHeight()));
+        mViewPager.addAnimation(statusBarAnimation);
+
+        toolbarLayout = findViewById(R.id.toolbar_layout);
+        SCViewAnimation toolbarLayoutAnimation = new SCViewAnimation(toolbarLayout);
+        toolbarLayoutAnimation.startToPosition(null, -size.y / 2);
+        toolbarLayoutAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, size.y / 2));
+        mViewPager.addAnimation(toolbarLayoutAnimation);
 
         passwordAdapter = new PasswordChangeFragmentAdapter(
                 getSupportFragmentManager());
@@ -337,21 +348,21 @@ public class ShowActivity extends AppCompatActivity {
 
         superToast = new SuperToast(this);
 
-//        SCViewAnimation gridViewAnimation = new SCViewAnimation(myGridView);
-//        gridViewAnimation.startToPosition(null, size.y);
-//        gridViewAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, -size.y));
-//        mViewPager.addAnimation(gridViewAnimation);
-//
-//        SCViewAnimation viewpagerAnimation = new SCViewAnimation(viewPager);
-//        viewpagerAnimation.startToPosition(null, -size.y);
-//        viewpagerAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, size.y));
-//        mViewPager.addAnimation(viewpagerAnimation);
-//
-//        View background = findViewById(R.id.background);
-//        SCViewAnimation backgroundAnimation = new SCViewAnimation(background);
-//        backgroundAnimation.startToPosition(null, -size.y - 100);
-//        backgroundAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, size.y + 100));
-//        mViewPager.addAnimation(backgroundAnimation);
+        SCViewAnimation gridViewAnimation = new SCViewAnimation(myGridView);
+        gridViewAnimation.startToPosition(null, size.y);
+        gridViewAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, -size.y));
+        mViewPager.addAnimation(gridViewAnimation);
+
+        SCViewAnimation viewpagerAnimation = new SCViewAnimation(viewPager);
+        viewpagerAnimation.startToPosition(null, -size.y);
+        viewpagerAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, size.y));
+        mViewPager.addAnimation(viewpagerAnimation);
+
+        View background = findViewById(R.id.background);
+        SCViewAnimation backgroundAnimation = new SCViewAnimation(background);
+        backgroundAnimation.startToPosition(null, -size.y - 100);
+        backgroundAnimation.addPageAnimation(new SCPositionAnimation(this, 3, 0, size.y + 100));
+        mViewPager.addAnimation(backgroundAnimation);
 
     }
 
@@ -434,21 +445,21 @@ public class ShowActivity extends AppCompatActivity {
                             SettingManager.getInstance().setPassword(newPassword);
                             SettingManager.getInstance().setFirstTime(false);
                             if (SettingManager.getInstance().getLoggenOn()) {
-//                                User currentUser = BmobUser.getCurrentUser(
-//                                        CoCoinApplication.getAppContext(), User.class);
-//                                currentUser.setAccountBookPassword(newPassword);
-//                                currentUser.update(CoCoinApplication.getAppContext(),
-//                                        currentUser.getObjectId(), new UpdateListener() {
-//                                            @Override
-//                                            public void onSuccess() {
-//                                                Log.d("Saver", "Set password successfully.");
-//                                            }
-//
-//                                            @Override
-//                                            public void onFailure(int code, String msg) {
-//                                                Log.d("Saver", "Set password failed.");
-//                                            }
-//                                        });
+                                User currentUser = BmobUser.getCurrentUser(
+                                        CoCoinApplication.getAppContext(), User.class);
+                                currentUser.setAccountBookPassword(newPassword);
+                                currentUser.update(CoCoinApplication.getAppContext(),
+                                        currentUser.getObjectId(), new UpdateListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Log.d("Saver", "Set password successfully.");
+                                            }
+
+                                            @Override
+                                            public void onFailure(int code, String msg) {
+                                                Log.d("Saver", "Set password failed.");
+                                            }
+                                        });
                             }
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
@@ -517,38 +528,38 @@ public class ShowActivity extends AppCompatActivity {
         superToast.show();
     }
 
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//
-//        switch (ev.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                x1 = ev.getX();
-//                y1 = ev.getY();
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                x2 = ev.getX();
-//                y2 = ev.getY();
-//                if (Math.abs(x1 - x2) > 20) {
-//                    return true;
-//                }
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                x2 = ev.getX();
-//                y2 = ev.getY();
-//                if (Math.abs(x1 - x2) > 20) {
-//                    return true;
-//                }
-//                break;
-//            default:
-//                break;
-//        }
-//        return super.dispatchTouchEvent(ev);
-//    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                x1 = ev.getX();
+                y1 = ev.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                x2 = ev.getX();
+                y2 = ev.getY();
+                if (Math.abs(x1 - x2) > 20) {
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = ev.getX();
+                y2 = ev.getY();
+                if (Math.abs(x1 - x2) > 20) {
+                    return true;
+                }
+                break;
+            default:
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 
     @Override
     protected void onDestroy() {
         for (int i = 0; i < 3; i++) {
-//            CoCoinFragmentManager.passwordChangeFragment[i].onDestroy();
+            CoCoinFragmentManager.passwordChangeFragment[i].onDestroy();
             CoCoinFragmentManager.passwordChangeFragment[i] = null;
         }
         super.onDestroy();

@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     tools:context="com.jbekas.cocoin.activity.ShowActivity">
 
-    <androidx.viewpager.widget.ViewPager
+    <com.dev.sacot41.scviewpager.SCViewPager
         android:id="@+id/viewpager_main_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </androidx.viewpager.widget.ViewPager>
+    </com.dev.sacot41.scviewpager.SCViewPager>
 
     <View
         android:orientation="horizontal"
