@@ -629,7 +629,7 @@ public class TodayViewRecyclerViewAdapter
                                 .limitIconToDefaultSize()
                                 .title(subTitle)
                                 .customView(R.layout.dialog_a_record, true)
-                                .positiveText(R.string.get)
+                                .positiveText(android.R.string.ok)
                                 .show();
                         dialogView = dialog.getCustomView();
                         TextView remark = (TextView)dialogView.findViewById(R.id.remark);

@@ -64,7 +64,7 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
         builder.setTitle("Title");
 
         builder.setView(view);
-        builder.setPositiveButton(mContext.getResources().getString(R.string.get),
+        builder.setPositiveButton(mContext.getResources().getString(android.R.string.ok),
                 new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -120,7 +120,7 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
                 .limitIconToDefaultSize()
                 .title(subTitle)
                 .customView(R.layout.dialog_a_record, true)
-                .positiveText(R.string.get)
+                .positiveText(android.R.string.ok)
                 .show();
         dialogView = dialog.getCustomView();
         TextView remark = (TextView)dialogView.findViewById(R.id.remark);

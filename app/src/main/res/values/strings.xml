@@ -105,8 +105,6 @@
     <string name="today_view_this_year">This Year</string>
     <string name="today_view_last_year">Last Year</string>
 
-    <string name="get">Get!</string>
-
     <string name="tag_sum_pie">Sum Pie</string>
     <string name="tag_sum_histogram">Sum Histogram</string>
     <string name="tag_meal">Dinner</string>
