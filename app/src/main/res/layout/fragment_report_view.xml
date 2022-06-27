@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:fab="http://schemas.android.com/tools">
 
-    <ScrollView
+    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/scrollView"
@@ -20,6 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <include layout="@layout/material_view_pager_placeholder"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -284,10 +286,13 @@
 
                         </com.balysv.materialripple.MaterialRippleLayout>
 
-                        <RelativeLayout
+                        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                             android:id="@+id/expand_highest_tag"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:ael_expanded="false"
+                            app:ael_duration="200"
+                            app:ael_orientation="vertical"
                             android:background="@color/report_card"
                             >
 
@@ -324,7 +329,7 @@
                             </FrameLayout>
 
 
-                        </RelativeLayout>
+                        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
                         <com.balysv.materialripple.MaterialRippleLayout
                             android:layout_width="match_parent"
@@ -497,10 +502,13 @@
 
                         </com.balysv.materialripple.MaterialRippleLayout>
 
-                        <RelativeLayout
+                        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                             android:id="@+id/expand_lowest_tag"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:ael_expanded="false"
+                            app:ael_duration="200"
+                            app:ael_orientation="vertical"
                             android:background="@color/report_card"
                             >
 
@@ -537,7 +545,7 @@
                             </FrameLayout>
 
 
-                        </RelativeLayout>
+                        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
                         <com.balysv.materialripple.MaterialRippleLayout
                             android:layout_width="match_parent"
@@ -793,10 +801,13 @@
 
                         </com.balysv.materialripple.MaterialRippleLayout>
 
-                        <RelativeLayout
+                        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                             android:id="@+id/expand_highest_month"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:ael_expanded="false"
+                            app:ael_duration="200"
+                            app:ael_orientation="vertical"
                             android:background="@color/report_card"
                             >
 
@@ -832,7 +843,7 @@
 
                             </FrameLayout>
 
-                        </RelativeLayout>
+                        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
                         <com.balysv.materialripple.MaterialRippleLayout
                             android:layout_width="match_parent"
@@ -1058,7 +1069,7 @@
                             </LinearLayout>
 
                         </com.balysv.materialripple.MaterialRippleLayout>
-                        
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -1179,10 +1190,13 @@
 
                         </com.balysv.materialripple.MaterialRippleLayout>
 
-                        <RelativeLayout
+                        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                             android:id="@+id/expand_highest_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:ael_expanded="false"
+                            app:ael_duration="200"
+                            app:ael_orientation="vertical"
                             android:background="@color/report_card"
                             >
 
@@ -1219,7 +1233,7 @@
                             </FrameLayout>
 
 
-                        </RelativeLayout>
+                        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
                         <com.balysv.materialripple.MaterialRippleLayout
                             android:layout_width="match_parent"
@@ -1395,10 +1409,13 @@
 
                         </com.balysv.materialripple.MaterialRippleLayout>
 
-                        <RelativeLayout
+                        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                             android:id="@+id/expand_lowest_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:ael_expanded="false"
+                            app:ael_duration="200"
+                            app:ael_orientation="vertical"
                             android:background="@color/report_card"
                             >
 
@@ -1433,8 +1450,8 @@
                                     />
 
                             </FrameLayout>
-                            
-                        </RelativeLayout>
+
+                        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
                         <com.balysv.materialripple.MaterialRippleLayout
                             android:layout_width="match_parent"
@@ -1565,7 +1582,7 @@
                         </com.balysv.materialripple.MaterialRippleLayout>
 
                     </LinearLayout>
-                    
+
                     <FrameLayout
                         android:layout_height="60dp"
                         android:layout_width="match_parent"
@@ -1591,7 +1608,7 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-    </ScrollView>
+    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/button"

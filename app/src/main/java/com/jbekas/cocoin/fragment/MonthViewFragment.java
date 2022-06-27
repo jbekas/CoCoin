@@ -11,8 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.florent37.materialviewpager.adapter.RecyclerViewMaterialAdapter;
 import com.jbekas.cocoin.R;
-import com.jbekas.cocoin.activity.CoCoinApplication;
 import com.jbekas.cocoin.adapter.MonthViewRecyclerViewAdapter;
 import com.jbekas.cocoin.model.CoCoinRecord;
 import com.jbekas.cocoin.model.RecordManager;
@@ -112,16 +113,16 @@ public class MonthViewFragment extends Fragment {
                 }
             }
 
-//            mAdapter = new RecyclerViewMaterialAdapter(
-//                    new MonthViewRecyclerViewAdapter(start, end, mContext, position, monthNumber));
-//            mRecyclerView.setAdapter(mAdapter);
+            mAdapter = new RecyclerViewMaterialAdapter(
+                    new MonthViewRecyclerViewAdapter(start, end, mContext, position, monthNumber));
+            mRecyclerView.setAdapter(mAdapter);
         } else {
-//            mAdapter = new RecyclerViewMaterialAdapter(
-//                    new MonthViewRecyclerViewAdapter(-1, -1, mContext, 0, -1));
-//            mRecyclerView.setAdapter(mAdapter);
+            mAdapter = new RecyclerViewMaterialAdapter(
+                    new MonthViewRecyclerViewAdapter(-1, -1, mContext, 0, -1));
+            mRecyclerView.setAdapter(mAdapter);
         }
 
-//        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
+        MaterialViewPagerHelper.registerRecyclerView(getActivity(), mRecyclerView, null);
     }
 
     @Override

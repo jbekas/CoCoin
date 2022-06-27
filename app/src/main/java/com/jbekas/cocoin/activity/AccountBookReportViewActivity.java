@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.astuetz.PagerSlidingTabStrip;
+import com.florent37.materialviewpager.MaterialViewPager;
+import com.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.florent37.materialviewpager.header.HeaderDesign;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.adapter.ReportViewFragmentAdapter;
 import com.jbekas.cocoin.fragment.ReportViewFragment;
@@ -23,7 +27,7 @@ public class AccountBookReportViewActivity extends AppCompatActivity
         implements
         ReportViewFragment.OnTitleChangedListener {
 
-    private ViewPager mViewPager;
+    private MaterialViewPager mViewPager;
 
     private Toolbar toolbar;
 
@@ -38,31 +42,31 @@ public class AccountBookReportViewActivity extends AppCompatActivity
         mContext = this;
         setContentView(R.layout.activity_account_book_report_view);
 
-        mViewPager = (ViewPager) findViewById(R.id.materialViewPager);
+        mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
 
         View view = mViewPager.getRootView();
         TextView title = (TextView)view.findViewById(R.id.logo_white);
         title.setTypeface(CoCoinUtil.typefaceLatoLight);
         title.setText(SettingManager.getInstance().getAccountBookName());
 
-//        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.getInstance().typefaceLatoLight, Typeface.NORMAL);
-//        mViewPager.getPagerTitleStrip().setTextSize(45);
-//        mViewPager.getPagerTitleStrip().setUnderlineColor(Color.parseColor("#00000000"));
-//        mViewPager.getPagerTitleStrip().setIndicatorColor(Color.parseColor("#00000000"));
-//        mViewPager.getPagerTitleStrip().setUnderlineHeight(0);
-//        mViewPager.getPagerTitleStrip().setIndicatorHeight(0);
-//
-//        mViewPager.getPagerTitleStrip().setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
-//            @Override
-//            public void onTabReselected(int position) {
-////                if (CoCoinFragmentManager.reportViewFragment != null)
-////                    CoCoinFragmentManager.reportViewFragment.showDataDialog();
-//            }
-//        });
+        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.getInstance().typefaceLatoLight, Typeface.NORMAL);
+        mViewPager.getPagerTitleStrip().setTextSize(45);
+        mViewPager.getPagerTitleStrip().setUnderlineColor(Color.parseColor("#00000000"));
+        mViewPager.getPagerTitleStrip().setIndicatorColor(Color.parseColor("#00000000"));
+        mViewPager.getPagerTitleStrip().setUnderlineHeight(0);
+        mViewPager.getPagerTitleStrip().setIndicatorHeight(0);
+
+        mViewPager.getPagerTitleStrip().setOnTabReselectedListener(new PagerSlidingTabStrip.OnTabReselectedListener() {
+            @Override
+            public void onTabReselected(int position) {
+//                if (CoCoinFragmentManager.reportViewFragment != null)
+//                    CoCoinFragmentManager.reportViewFragment.showDataDialog();
+            }
+        });
 
         setTitle("");
 
-//        toolbar = mViewPager.getToolbar();
+        toolbar = mViewPager.getToolbar();
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -78,31 +82,31 @@ public class AccountBookReportViewActivity extends AppCompatActivity
         }
 
 //        View logo = findViewById(R.id.logo_white);
-//        if (logo != null) {
-//            logo.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    mViewPager.notifyHeaderChanged();
-//                }
-//            });
-//        }
-//
-//        reportViewFragmentAdapter = new ReportViewFragmentAdapter(getSupportFragmentManager());
-//        mViewPager.getViewPager().setOffscreenPageLimit(1);
-//        mViewPager.getViewPager().setAdapter(reportViewFragmentAdapter);
-//        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
-//
-//        mViewPager.getPagerTitleStrip().invalidate();
-//
-//        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
-//            @Override
-//            public HeaderDesign getHeaderDesign(int page) {
-//                return HeaderDesign.fromColorAndDrawable(
-//                        CoCoinUtil.GetTagColor(-3),
-//                        CoCoinUtil.GetTagDrawable(-3)
-//                );
-//            }
-//        });
+        if (title != null) {
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mViewPager.notifyHeaderChanged();
+                }
+            });
+        }
+
+        reportViewFragmentAdapter = new ReportViewFragmentAdapter(getSupportFragmentManager());
+        mViewPager.getViewPager().setOffscreenPageLimit(1);
+        mViewPager.getViewPager().setAdapter(reportViewFragmentAdapter);
+        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
+
+        mViewPager.getPagerTitleStrip().invalidate();
+
+        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
+            @Override
+            public HeaderDesign getHeaderDesign(int page) {
+                return HeaderDesign.fromColorAndDrawable(
+                        CoCoinUtil.GetTagColor(-3),
+                        CoCoinUtil.GetTagDrawable(-3)
+                );
+            }
+        });
 
     }
 
@@ -118,7 +122,7 @@ public class AccountBookReportViewActivity extends AppCompatActivity
 //        if (CoCoinFragmentManager.reportViewFragment != null)
 //            CoCoinFragmentManager.reportViewFragment.onDestroy();
 //        CoCoinFragmentManager.reportViewFragment = null;
-//        MaterialViewPagerHelper.unregister(this);
+        MaterialViewPagerHelper.unregister(this);
     }
 
     @Override
@@ -139,7 +143,7 @@ public class AccountBookReportViewActivity extends AppCompatActivity
 
     @Override
     public void onTitleChanged() {
-//        mViewPager.getPagerTitleStrip().notifyDataSetChanged();
-//        mViewPager.getPagerTitleStrip().invalidate();
+        mViewPager.getPagerTitleStrip().notifyDataSetChanged();
+        mViewPager.getPagerTitleStrip().invalidate();
     }
 }
