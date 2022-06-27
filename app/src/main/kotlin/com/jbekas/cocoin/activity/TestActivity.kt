@@ -2,55 +2,64 @@ package com.jbekas.cocoin.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.jbekas.cocoin.R
+import com.jbekas.cocoin.ui.CoCoinTheme
 import timber.log.Timber
 
-//import com.jbekas.cocoin.ui.CoCoinTheme
-
-//@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 class TestActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        setContentView(R.layout.dummy_layout);
-
         Timber.d("hello world");
 
-//        setContent {
-//            CoCoinTheme {
-//                val widthSizeClass = calculateWindowSizeClass(this).widthSizeClass
-//
-//                val navController = rememberNavController()
-//                NavHost(navController = navController, startDestination = Routes.Home.route) {
-//                    composable(Routes.Home.route) {
-//                        val mainViewModel = hiltViewModel<MainViewModel>()
-//                        MainScreen(
-//                            widthSize = widthSizeClass,
-//                            onExploreItemClicked = {
-//                                launchDetailsActivity(context = this@MainActivity, item = it)
-//                            },
-//                            onDateSelectionClicked = {
-//                                navController.navigate(Routes.Calendar.route)
-//                            },
-//                            mainViewModel = mainViewModel
-//                        )
-//                    }
-//                    composable(Routes.Calendar.route) {
-//                        val parentEntry = remember {
-//                            navController.getBackStackEntry(Routes.Home.route)
-//                        }
-//                        val parentViewModel = hiltViewModel<MainViewModel>(
-//                            parentEntry
-//                        )
-//                        CalendarScreen(onBackPressed = {
-//                            navController.popBackStack()
-//                        }, mainViewModel = parentViewModel)
-//                    }
-//                }
-//            }
-//        }
+        setContent {
+            CoCoinTheme {
+                TestComposable()
+            }
+        }
+    }
+
+    @Composable
+    fun TestComposable() {
+        CoCoinTheme {
+            Scaffold(modifier = Modifier.windowInsetsPadding(
+                WindowInsets.navigationBars.only(WindowInsetsSides.Start + WindowInsetsSides.End)
+            )
+//                bottomBar = { BottomNavigation() }
+            ) { padding ->
+                HomeScreen(Modifier.padding(paddingValues = padding))
+            }
+        }
+    }
+
+    @Composable
+    fun HomeScreen(modifier: Modifier = Modifier) {
+        Column(
+            modifier
+                .verticalScroll(rememberScrollState())
+                .padding(vertical = 48.dp)
+        ) {
+            Text(stringResource(R.string.title_activity_account_book))
+        }
+    }
+
+    @Preview(widthDp = 360, heightDp = 640)
+    @Composable
+    fun TestComposablePreview() {
+        TestComposable()
     }
 }

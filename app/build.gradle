@@ -39,19 +39,27 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    buildFeatures {
+        // Enables Jetpack Compose for this module
+        compose true
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.1'
+    }
 }
 
 dependencies {
+//    implementation 'androidx.core:core:1.8.0'
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.21"
 
     implementation "androidx.multidex:multidex:2.0.1"
 
-    implementation 'androidx.core:core:1.8.0'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
@@ -161,7 +169,25 @@ dependencies {
     implementation 'com.flaviofaria:kenburnsview:1.0.7'
     implementation 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     implementation 'com.jpardogo.materialtabstrip:library:1.1.1'
-    implementation 'androidx.core:core-ktx:+'
+
+
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    // Compose Material Design
+    implementation 'androidx.compose.material:material:1.2.0-rc02'
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.2.0-rc02'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.2.0-rc02'
+
+    implementation 'androidx.compose.foundation:foundation:1.2.0-rc02'
+    implementation 'androidx.compose.foundation:foundation-layout:1.2.0-rc02'
+    implementation 'androidx.compose.material3:material3-window-size-class:1.0.0-alpha13'
+
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-rc02'
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.0'
 }
