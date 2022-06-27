@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,7 +58,7 @@ import lecho.lib.hellocharts.view.PieChartView;
 // Todo optimize this
 
 public class TagViewRecyclerViewAdapter
-        extends RecyclerView.Adapter<TagViewRecyclerViewAdapter.TVviewHolder> {
+        extends RecyclerView.Adapter<TagViewRecyclerViewAdapter.ViewHolder> {
 
     private Context mContext;
 
@@ -249,7 +251,7 @@ public class TagViewRecyclerViewAdapter
     }
 
     @Override
-    public TVviewHolder onCreateViewHolder(
+    public ViewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
 
         View view;
@@ -258,7 +260,7 @@ public class TagViewRecyclerViewAdapter
             case TYPE_HEADER: {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.tag_list_view_head, parent, false);
-                return new TVviewHolder(view) {
+                return new ViewHolder(view) {
                 };
             }
             case TYPE_CELL: {
@@ -266,17 +268,17 @@ public class TagViewRecyclerViewAdapter
                     case PIE:
                         view = LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.tag_list_view_pie_body, parent, false);
-                        return new TVviewHolder(view) {
+                        return new ViewHolder(view) {
                         };
                     case HISTOGRAM:
                         view = LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.tag_list_view_histogram_body, parent, false);
-                        return new TVviewHolder(view) {
+                        return new ViewHolder(view) {
                         };
                     case SUM_HISTOGRAM:
-                    view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.tag_list_view_histogram_body, parent, false);
-                        return new TVviewHolder(view) {
+                        view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.tag_list_view_histogram_body, parent, false);
+                        return new ViewHolder(view) {
                         };
                 }
             }
@@ -286,7 +288,7 @@ public class TagViewRecyclerViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(final TVviewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
         switch (getItemViewType(position)) {
             case TYPE_HEADER:
@@ -467,11 +469,11 @@ public class TagViewRecyclerViewAdapter
                                     SelectedPosition[position]
                                             = (SelectedPosition[position] + 1) % columns.size();
                                 } while (holder.chart.getChartData().getColumns()
-                                         .get(SelectedPosition[position])
-                                         .getValues().size() == 0 ||
-                                         holder.chart.getChartData().getColumns()
-                                         .get(SelectedPosition[position])
-                                         .getValues().get(0).getValue() == 0);
+                                        .get(SelectedPosition[position])
+                                        .getValues().size() == 0 ||
+                                        holder.chart.getChartData().getColumns()
+                                                .get(SelectedPosition[position])
+                                                .getValues().get(0).getValue() == 0);
                                 SelectedValue selectedValue =
                                         new SelectedValue(
                                                 SelectedPosition[position],
@@ -489,11 +491,11 @@ public class TagViewRecyclerViewAdapter
                                             = (SelectedPosition[position] - 1 + columns.size())
                                             % columns.size();
                                 } while (holder.chart.getChartData().getColumns()
-                                         .get(SelectedPosition[position])
-                                         .getValues().size() == 0 ||
-                                         holder.chart.getChartData().getColumns()
-                                                 .get(SelectedPosition[position])
-                                         .getValues().get(0).getValue() == 0);
+                                        .get(SelectedPosition[position])
+                                        .getValues().size() == 0 ||
+                                        holder.chart.getChartData().getColumns()
+                                                .get(SelectedPosition[position])
+                                                .getValues().get(0).getValue() == 0);
                                 SelectedValue selectedValue =
                                         new SelectedValue(
                                                 SelectedPosition[position],
@@ -600,11 +602,11 @@ public class TagViewRecyclerViewAdapter
                                     SelectedPosition[position]
                                             = (SelectedPosition[position] + 1) % columns.size();
                                 } while (holder.chart.getChartData().getColumns()
-                                         .get(SelectedPosition[position])
-                                         .getValues().size() == 0 ||
-                                         holder.chart.getChartData().getColumns()
-                                                 .get(SelectedPosition[position])
-                                         .getValues().get(0).getValue() == 0);
+                                        .get(SelectedPosition[position])
+                                        .getValues().size() == 0 ||
+                                        holder.chart.getChartData().getColumns()
+                                                .get(SelectedPosition[position])
+                                                .getValues().get(0).getValue() == 0);
                                 SelectedValue selectedValue =
                                         new SelectedValue(
                                                 SelectedPosition[position],
@@ -623,10 +625,10 @@ public class TagViewRecyclerViewAdapter
                                             % columns.size();
                                 } while (holder.chart.getChartData().getColumns()
                                         .get(SelectedPosition[position])
-                                         .getValues().size() == 0 ||
+                                        .getValues().size() == 0 ||
                                         holder.chart.getChartData().getColumns()
-                                         .get(SelectedPosition[position])
-                                         .getValues().get(0).getValue() == 0);
+                                                .get(SelectedPosition[position])
+                                                .getValues().get(0).getValue() == 0);
                                 SelectedValue selectedValue =
                                         new SelectedValue(
                                                 SelectedPosition[position],
@@ -641,27 +643,36 @@ public class TagViewRecyclerViewAdapter
         }
     }
 
-    public static class TVviewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        @Nullable
         @BindView(R.id.from)
         TextView from;
+        @Nullable
         @BindView(R.id.sum)
         TextView sum;
+        @Nullable
         @BindView(R.id.to)
         TextView to;
+        @Nullable
         @BindView(R.id.chart_pie)
         PieChartView pie;
+        @Nullable
         @BindView(R.id.chart)
         ColumnChartView chart;
+        @Nullable
         @BindView(R.id.date)
         TextView date;
+        @Nullable
         @BindView(R.id.expanse)
         TextView expanse;
+        @Nullable
         @BindView(R.id.icon_left)
         MaterialIconView iconLeft;
+        @Nullable
         @BindView(R.id.icon_right)
         MaterialIconView iconRight;
 
-        TVviewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
@@ -907,9 +918,9 @@ public class TagViewRecyclerViewAdapter
                 text = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) +
                         CoCoinUtil.GetPercentString(percent) + "\n" +
                         "于" + CoCoinUtil.GetTagName(tagId);
-                    dialogTitle = mContext.getResources().getString(R.string.in) + timeString +
-                            CoCoinUtil.GetSpendString((int) sliceValue.getValue()) + "\n" +
-                            "于" + CoCoinUtil.GetTagName(tagId);
+                dialogTitle = mContext.getResources().getString(R.string.in) + timeString +
+                        CoCoinUtil.GetSpendString((int) sliceValue.getValue()) + "\n" +
+                        "于" + CoCoinUtil.GetTagName(tagId);
 
             } else {
                 text = CoCoinUtil.GetSpendString((int) sliceValue.getValue()) +

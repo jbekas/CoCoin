@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -27,6 +28,9 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.florent37.materialviewpager.MaterialViewPager;
+import com.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.florent37.materialviewpager.header.HeaderDesign;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.jbekas.cocoin.BuildConfig;
@@ -47,11 +51,14 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.FindListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AccountBookTagViewActivity extends AppCompatActivity {
 
-    private ViewPager mViewPager;
+    private MaterialViewPager mViewPager;
 
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -78,18 +85,18 @@ public class AccountBookTagViewActivity extends AppCompatActivity {
         mContext = this;
         setContentView(R.layout.activity_account_book_tag_view);
 
-        mViewPager = (ViewPager) findViewById(R.id.materialViewPager);
+        mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
 
         View view = mViewPager.getRootView();
         TextView title = (TextView)view.findViewById(R.id.logo_white);
         title.setTypeface(CoCoinUtil.typefaceLatoLight);
         title.setText(SettingManager.getInstance().getAccountBookName());
 
-//        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.typefaceLatoLight, Typeface.NORMAL);
+        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.typefaceLatoLight, Typeface.NORMAL);
 
         setTitle("");
 
-//        toolbar = mViewPager.getToolbar();
+        toolbar = mViewPager.getToolbar();
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         userName = (TextView)findViewById(R.id.user_name);
@@ -97,63 +104,63 @@ public class AccountBookTagViewActivity extends AppCompatActivity {
         userName.setTypeface(CoCoinUtil.typefaceLatoRegular);
         userEmail.setTypeface(CoCoinUtil.typefaceLatoLight);
 
-//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-//        if (user != null) {
-//            userName.setText(user.getUsername());
-//            userEmail.setText(user.getEmail());
-//        }
-//
-//        if (toolbar != null) {
-//            setSupportActionBar(toolbar);
-//
-//            final ActionBar actionBar = getSupportActionBar();
-//            if (actionBar != null) {
-//                actionBar.setDisplayHomeAsUpEnabled(true);
-//                actionBar.setDisplayShowHomeEnabled(true);
-//                actionBar.setDisplayShowTitleEnabled(true);
-//                actionBar.setDisplayUseLogoEnabled(false);
-//                actionBar.setHomeButtonEnabled(true);
-//            }
-//        }
+        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+        if (user != null) {
+            userName.setText(user.getUsername());
+            userEmail.setText(user.getEmail());
+        }
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+
+            final ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setDisplayShowHomeEnabled(true);
+                actionBar.setDisplayShowTitleEnabled(true);
+                actionBar.setDisplayUseLogoEnabled(false);
+                actionBar.setHomeButtonEnabled(true);
+            }
+        }
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, 0, 0);
         mDrawer.setDrawerListener(mDrawerToggle);
 
-//        View logo = findViewById(R.id.logo_white);
-//        if (logo != null) {
-//            logo.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    mViewPager.notifyHeaderChanged();
-//                }
-//            });
-//        }
+        View logo = findViewById(R.id.logo_white);
+        if (logo != null) {
+            logo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mViewPager.notifyHeaderChanged();
+                }
+            });
+        }
 
         tagModeAdapter = new TagViewFragmentAdapter(getSupportFragmentManager());
-//        mViewPager.getViewPager().setOffscreenPageLimit(tagModeAdapter.getCount());
-//        mViewPager.getViewPager().setAdapter(tagModeAdapter);
-//        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
+        mViewPager.getViewPager().setOffscreenPageLimit(tagModeAdapter.getCount());
+        mViewPager.getViewPager().setAdapter(tagModeAdapter);
+        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
 
-//        mViewPager.clearAnimation();
-//        if (SettingManager.getInstance().getShowPicture()) {
-//            mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
-//                @Override
-//                public HeaderDesign getHeaderDesign(int page) {
-//                    return HeaderDesign.fromColorAndUrl(
-//                            CoCoinUtil.GetTagColor(RecordManager.TAGS.get(page).getId()),
-//                            CoCoinUtil.GetTagUrl(RecordManager.TAGS.get(page).getId()));
-//                }
-//            });
-//        } else {
-//            mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
-//                @Override
-//                public HeaderDesign getHeaderDesign(int page) {
-//                    return HeaderDesign.fromColorAndDrawable(
-//                            CoCoinUtil.GetTagColor(RecordManager.TAGS.get(page).getId()),
-//                            CoCoinUtil.GetTagDrawable(-3));
-//                }
-//            });
-//        }
+        mViewPager.clearAnimation();
+        if (SettingManager.getInstance().getShowPicture()) {
+            mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
+                @Override
+                public HeaderDesign getHeaderDesign(int page) {
+                    return HeaderDesign.fromColorAndUrl(
+                            CoCoinUtil.GetTagColor(RecordManager.TAGS.get(page).getId()),
+                            CoCoinUtil.GetTagUrl(RecordManager.TAGS.get(page).getId()));
+                }
+            });
+        } else {
+            mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
+                @Override
+                public HeaderDesign getHeaderDesign(int page) {
+                    return HeaderDesign.fromColorAndDrawable(
+                            CoCoinUtil.GetTagColor(RecordManager.TAGS.get(page).getId()),
+                            CoCoinUtil.GetTagDrawable(-3));
+                }
+            });
+        }
 
         myGridView = (MyGridView)mDrawer.findViewById(R.id.grid_view);
         drawerTagChooseAdapter = new DrawerTagChooseGridViewAdapter(mContext);
@@ -163,7 +170,7 @@ public class AccountBookTagViewActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 YoYo.with(Techniques.Bounce).delay(0).duration(700).playOn(view);
-//                mViewPager.getViewPager().setCurrentItem(position);
+                mViewPager.getViewPager().setCurrentItem(position);
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -228,7 +235,7 @@ public class AccountBookTagViewActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-//        MaterialViewPagerHelper.unregister(this);
+        MaterialViewPagerHelper.unregister(this);
     }
 
     @Override
@@ -267,52 +274,52 @@ public class AccountBookTagViewActivity extends AppCompatActivity {
     }
 
     private void loadLogo() {
-//        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
-//        if (user != null) {
-//            try {
-//                File logoFile = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
-//                if (!logoFile.exists()) {
-//                    // the local logo file is missed
-//                    // try to get from the server
-//                    BmobQuery<Logo> bmobQuery = new BmobQuery();
-//                    bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
-//                    bmobQuery.findObjects(CoCoinApplication.getAppContext()
-//                            , new FindListener<Logo>() {
-//                                @Override
-//                                public void onSuccess(List<Logo> object) {
-//                                    // there has been an old logo in the server/////////////////////////////////////////////////////////
-//                                    String url = object.get(0).getFile().getFileUrl(CoCoinApplication.getAppContext());
-//                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Logo in server: " + url);
-//                                    Ion.with(CoCoinApplication.getAppContext()).load(url)
-//                                            .write(new File(CoCoinApplication.getAppContext().getFilesDir()
-//                                                    + CoCoinUtil.LOGO_NAME))
-//                                            .setCallback(new FutureCallback<File>() {
-//                                                @Override
-//                                                public void onCompleted(Exception e, File file) {
-//                                                    profileImage.setImageBitmap(BitmapFactory.decodeFile(
-//                                                            CoCoinApplication.getAppContext().getFilesDir()
-//                                                                    + CoCoinUtil.LOGO_NAME));
-//                                                }
-//                                            });
-//                                }
-//                                @Override
-//                                public void onError(int code, String msg) {
-//                                    // the picture is lost
-//                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Can't find the old logo in server.");
-//                                }
-//                            });
-//                } else {
-//                    // the user logo is in the storage
-//                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(logoFile));
-//                    profileImage.setImageBitmap(b);
-//                }
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        } else {
-//            // use the default logo
-//            profileImage.setImageResource(R.drawable.default_user_logo);
-//        }
+        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
+        if (user != null) {
+            try {
+                File logoFile = new File(CoCoinApplication.getAppContext().getFilesDir() + CoCoinUtil.LOGO_NAME);
+                if (!logoFile.exists()) {
+                    // the local logo file is missed
+                    // try to get from the server
+                    BmobQuery<Logo> bmobQuery = new BmobQuery();
+                    bmobQuery.addWhereEqualTo("objectId", user.getLogoObjectId());
+                    bmobQuery.findObjects(CoCoinApplication.getAppContext()
+                            , new FindListener<Logo>() {
+                                @Override
+                                public void onSuccess(List<Logo> object) {
+                                    // there has been an old logo in the server/////////////////////////////////////////////////////////
+                                    String url = object.get(0).getFile().getFileUrl(CoCoinApplication.getAppContext());
+                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Logo in server: " + url);
+                                    Ion.with(CoCoinApplication.getAppContext()).load(url)
+                                            .write(new File(CoCoinApplication.getAppContext().getFilesDir()
+                                                    + CoCoinUtil.LOGO_NAME))
+                                            .setCallback(new FutureCallback<File>() {
+                                                @Override
+                                                public void onCompleted(Exception e, File file) {
+                                                    profileImage.setImageBitmap(BitmapFactory.decodeFile(
+                                                            CoCoinApplication.getAppContext().getFilesDir()
+                                                                    + CoCoinUtil.LOGO_NAME));
+                                                }
+                                            });
+                                }
+                                @Override
+                                public void onError(int code, String msg) {
+                                    // the picture is lost
+                                    if (BuildConfig.DEBUG) Log.d("CoCoin", "Can't find the old logo in server.");
+                                }
+                            });
+                } else {
+                    // the user logo is in the storage
+                    Bitmap b = BitmapFactory.decodeStream(new FileInputStream(logoFile));
+                    profileImage.setImageBitmap(b);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // use the default logo
+            profileImage.setImageResource(R.drawable.default_user_logo);
+        }
     }
 
 }
