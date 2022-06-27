@@ -8,8 +8,8 @@ import androidx.multidex.MultiDexApplication;
 
 import com.jbekas.cocoin.BuildConfig;
 import com.jbekas.cocoin.util.CoCoinToast;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.RefWatcher;
 
 import timber.log.Timber;
 
@@ -23,17 +23,17 @@ public class CoCoinApplication extends MultiDexApplication {
 
     private static Context mContext;
 
-    public static RefWatcher getRefWatcher(Context context) {
-        CoCoinApplication application = (CoCoinApplication) context.getApplicationContext();
-        return application.refWatcher;
-    }
-
-    private RefWatcher refWatcher;
+//    public static RefWatcher getRefWatcher(Context context) {
+//        CoCoinApplication application = (CoCoinApplication) context.getApplicationContext();
+//        return application.refWatcher;
+//    }
+//
+//    private RefWatcher refWatcher;
 
     @Override public void onCreate() {
         super.onCreate();
 
-        refWatcher = LeakCanary.install(this);
+//        refWatcher = LeakCanary.install(this);
         CoCoinToast.initialize(this);
         // TODO Remove the following static context
         CoCoinApplication.mContext = getApplicationContext();

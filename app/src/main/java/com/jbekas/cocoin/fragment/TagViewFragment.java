@@ -18,7 +18,7 @@ import com.jbekas.cocoin.activity.CoCoinApplication;
 import com.jbekas.cocoin.adapter.TagViewRecyclerViewAdapter;
 import com.jbekas.cocoin.model.CoCoinRecord;
 import com.jbekas.cocoin.model.RecordManager;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,8 +92,8 @@ public class TagViewFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher refWatcher = CoCoinApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CoCoinApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
 }

@@ -25,7 +25,7 @@ import com.nispok.snackbar.Snackbar;
 import com.nispok.snackbar.SnackbarManager;
 import com.nispok.snackbar.enums.SnackbarType;
 import com.nispok.snackbar.listeners.ActionClickListener;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.RefWatcher;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
@@ -241,8 +241,8 @@ public class CustomViewFragment extends Fragment {
 
         super.onDestroy();
 
-        RefWatcher refWatcher = CoCoinApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CoCoinApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
     }
 
     private void select() {

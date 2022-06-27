@@ -19,7 +19,7 @@ import com.jbekas.cocoin.adapter.TodayViewRecyclerViewAdapter;
 import com.jbekas.cocoin.model.CoCoinRecord;
 import com.jbekas.cocoin.model.RecordManager;
 import com.jbekas.cocoin.util.CoCoinUtil;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -209,8 +209,8 @@ public class TodayViewFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        RefWatcher refWatcher = CoCoinApplication.getRefWatcher(getActivity());
-        refWatcher.watch(this);
+//        RefWatcher refWatcher = CoCoinApplication.getRefWatcher(getActivity());
+//        refWatcher.watch(this);
 
     }
 
