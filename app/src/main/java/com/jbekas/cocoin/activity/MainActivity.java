@@ -9,7 +9,6 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -53,21 +51,28 @@ import com.jbekas.cocoin.ui.DummyOperation;
 import com.jbekas.cocoin.ui.MyGridView;
 import com.jbekas.cocoin.ui.guillotine.animation.GuillotineAnimation;
 import com.jbekas.cocoin.ui.guillotine.interfaces.GuillotineListener;
-import com.jbekas.cocoin.util.CoCoinToast;
+import com.jbekas.cocoin.service.ToastService;
 import com.jbekas.cocoin.util.CoCoinUtil;
 import com.rey.material.widget.RadioButton;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
+import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity
         implements
         TagChooseFragment.OnTagItemSelectedListener {
+
+    @Inject
+    protected ToastService coCoinToast;
 
     private final int SETTING_TAG = 0;
 
@@ -565,18 +570,18 @@ public class MainActivity extends AppCompatActivity
 
         switch (toastType) {
             case NO_TAG_TOAST:
-                CoCoinToast.showToast(R.string.toast_no_tag, SuperToast.Background.RED);
+                coCoinToast.showToast(R.string.toast_no_tag, SuperToast.Background.RED);
                 tagAnimation();
                 break;
             case NO_MONEY_TOAST:
-                CoCoinToast.showToast(R.string.toast_no_money, SuperToast.Background.RED);
+                coCoinToast.showToast(R.string.toast_no_money, SuperToast.Background.RED);
                 break;
             case PASSWORD_WRONG_TOAST:
-                CoCoinToast.showToast(R.string.toast_password_wrong, SuperToast.Background.RED);
+                coCoinToast.showToast(R.string.toast_password_wrong, SuperToast.Background.RED);
                 break;
             case PASSWORD_CORRECT_TOAST:
                 Timber.d("PASSWORD_CORRECT_TOAST start");
-                CoCoinToast.showToast(R.string.toast_password_correct, SuperToast.Background.BLUE);
+                coCoinToast.showToast(R.string.toast_password_correct, SuperToast.Background.BLUE);
                 Timber.d("PASSWORD_CORRECT_TOAST finish");
                 break;
             case SAVE_SUCCESSFULLY_TOAST:
@@ -584,10 +589,10 @@ public class MainActivity extends AppCompatActivity
             case SAVE_FAILED_TOAST:
                 break;
             case PRESS_AGAIN_TO_EXIT:
-                CoCoinToast.showToast(R.string.toast_press_again_to_exit, SuperToast.Background.BLUE);
+                coCoinToast.showToast(R.string.toast_press_again_to_exit, SuperToast.Background.BLUE);
                 break;
             case WELCOME_BACK:
-                CoCoinToast.showToast(CoCoinApplication.getAppContext()
+                coCoinToast.showToast(CoCoinApplication.getAppContext()
                         .getResources().getString(R.string.welcome_back)
                         + "\n" + SettingManager.getInstance().getUserName(), SuperToast.Background.BLUE);
             default:

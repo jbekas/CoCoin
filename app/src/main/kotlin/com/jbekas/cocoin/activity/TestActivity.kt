@@ -16,15 +16,24 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.jbekas.cocoin.R
 import com.jbekas.cocoin.ui.CoCoinTheme
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
+import javax.inject.Named
 
+@AndroidEntryPoint
 class TestActivity : ComponentActivity() {
+    @Inject
+    @Named("String1")
+    lateinit var testString: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        Timber.d("hello world");
+        Timber.d("hello world")
+        Timber.d("teststring: $testString")
 
         setContent {
             CoCoinTheme {

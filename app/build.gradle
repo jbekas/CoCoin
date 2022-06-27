@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'dagger.hilt.android.plugin'
+    id "org.jetbrains.kotlin.kapt"
 }
 
 repositories {
@@ -23,7 +25,6 @@ android {
         renderscriptTargetApi 20
         renderscriptSupportModeEnabled true
 
-        //javaCompileOptions.annotationProcessorOptions.includeCompileClasspath true
         vectorDrawables.useSupportLibrary true
     }
 
@@ -54,9 +55,8 @@ android {
 }
 
 dependencies {
-//    implementation 'androidx.core:core:1.8.0'
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.21"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation "androidx.multidex:multidex:2.0.1"
 
@@ -74,8 +74,9 @@ dependencies {
     // material edittext
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 
-    // butterknife
+    // Butterknife
     implementation 'com.jakewharton:butterknife:8.0.0'
+    kapt 'com.jakewharton:butterknife-compiler:8.0.0'
 
     // material viewpager
 //    implementation ('com.github.anasanasanas123:materialviewpager:1.1.3'){
@@ -174,22 +175,24 @@ dependencies {
     // Integration with activities
     implementation 'androidx.activity:activity-compose:1.4.0'
     // Compose Material Design
-    implementation 'androidx.compose.material:material:1.2.0-rc02'
+    implementation "androidx.compose.material:material:$compose_version"
     // Animations
-    implementation 'androidx.compose.animation:animation:1.2.0-rc02'
+    implementation "androidx.compose.animation:animation:$compose_version"
     // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.2.0-rc02'
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
 
-    implementation 'androidx.compose.foundation:foundation:1.2.0-rc02'
-    implementation 'androidx.compose.foundation:foundation-layout:1.2.0-rc02'
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.foundation:foundation-layout:$compose_version"
     implementation 'androidx.compose.material3:material3-window-size-class:1.0.0-alpha13'
 
     // Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
     // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-rc02'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.0.0'
+    //Dagger - Hilt
+    implementation 'com.google.dagger:hilt-android:2.42'
+    kapt 'com.google.dagger:hilt-compiler:2.42'
 }
 
 //bugly {
