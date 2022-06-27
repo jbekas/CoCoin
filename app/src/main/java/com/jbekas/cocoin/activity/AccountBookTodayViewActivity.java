@@ -32,6 +32,8 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.florent37.materialviewpager.MaterialViewPager;
+import com.florent37.materialviewpager.header.HeaderDesign;
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -79,7 +81,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
     private static final String FILE_PATH = Environment.getExternalStorageDirectory() + FILE_SEPARATOR +"CoCoin" + FILE_SEPARATOR;
     private static final String FILE_NAME = FILE_PATH + "CoCoin Database.db";
 
-    private ViewPager mViewPager;
+    private MaterialViewPager mViewPager;
 
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -121,7 +123,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 
         mContext = this;
 
-        mViewPager = (ViewPager) findViewById(R.id.materialViewPager);
+        mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
         userName = (TextView)findViewById(R.id.user_name);
         userEmail = (TextView)findViewById(R.id.user_email);
         userName.setTypeface(CoCoinUtil.typefaceLatoRegular);
@@ -135,19 +137,19 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         setFonts();
 
         View view = mViewPager.getRootView();
-//        title = (TextView)view.findViewById(R.id.logo_white);
-//        if (title != null) {
-//            Timber.d("title: %s", title);
-//            Timber.d("CoCoinUtil.typefaceLatoLight: %s", CoCoinUtil.typefaceLatoLight);
-//            title.setTypeface(CoCoinUtil.typefaceLatoLight);
-//            title.setText(SettingManager.getInstance().getAccountBookName());
-//        }
+        title = (TextView)view.findViewById(R.id.logo_white);
+        if (title != null) {
+            Timber.d("title: %s", title);
+            Timber.d("CoCoinUtil.typefaceLatoLight: %s", CoCoinUtil.typefaceLatoLight);
+            title.setTypeface(CoCoinUtil.typefaceLatoLight);
+            title.setText(SettingManager.getInstance().getAccountBookName());
+        }
 
-//        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.GetTypeface(), Typeface.NORMAL);
+        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.GetTypeface(), Typeface.NORMAL);
 
         setTitle("");
 
-//        toolbar = mViewPager.getToolbar();
+        toolbar = mViewPager.getToolbar();
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         custom = (MaterialRippleLayout)mDrawer.findViewById(R.id.custom_layout);
@@ -202,35 +204,31 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         };
         mDrawer.setDrawerListener(mDrawerToggle);
 
-
         View logo = findViewById(R.id.logo_white);
         if (logo != null) {
             logo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Timber.e("onClick not implemented.");
-//                    mViewPager.notifyHeaderChanged();
-                    mViewPager.notify();
+                    mViewPager.notifyHeaderChanged();
                 }
             });
         }
 
         todayModeAdapter = new TodayViewFragmentAdapter(getSupportFragmentManager());
-//        mViewPager.getViewPager().setOffscreenPageLimit(todayModeAdapter.getCount());
-//        mViewPager.getViewPager().setAdapter(todayModeAdapter);
-        mViewPager.setOffscreenPageLimit(todayModeAdapter.getCount());
-        mViewPager.setAdapter(todayModeAdapter);
-//        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
-//
-//        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
-//            @Override
-//            public HeaderDesign getHeaderDesign(int page) {
-//                return HeaderDesign.fromColorAndDrawable(
-//                        CoCoinUtil.GetTagColor(page - 2),
-//                        CoCoinUtil.GetTagDrawable(-3)
-//                );
-//            }
-//        });
+        mViewPager.getViewPager().setOffscreenPageLimit(todayModeAdapter.getCount());
+        mViewPager.getViewPager().setAdapter(todayModeAdapter);
+        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
+
+        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
+            @Override
+            public HeaderDesign getHeaderDesign(int page) {
+                return HeaderDesign.fromColorAndDrawable(
+                        CoCoinUtil.GetTagColor(page - 2),
+                        CoCoinUtil.GetTagDrawable(-3)
+                );
+            }
+        });
 
         setListeners();
 

@@ -11,10 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
+import com.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.github.johnpersano.supertoasts.SuperToast;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.melnykov.fab.FloatingActionButton;
-import com.melnykov.fab.ObservableScrollView;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.activity.CoCoinApplication;
 import com.jbekas.cocoin.model.CoCoinRecord;
@@ -141,7 +143,7 @@ public class CustomViewFragment extends Fragment {
 
         mScrollView = (ObservableScrollView) view.findViewById(R.id.scrollView);
 
-//        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
+        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
         fromDate = (TextView)view.findViewById(R.id.from_date);
         fromDate.setTypeface(CoCoinUtil.GetTypeface());
@@ -464,11 +466,11 @@ public class CustomViewFragment extends Fragment {
                             to.get(Calendar.YEAR) + " " +
                             "in " + CoCoinUtil.GetTagName(tagId);
                 }
-//                ((FragmentActivity)mContext).getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .add(new RecordCheckDialogFragment(
-//                                mContext, data, dialogTitle), "MyDialog")
-//                        .commit();
+                ((FragmentActivity)mContext).getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(new RecordCheckDialogFragment(
+                                mContext, data, dialogTitle), "MyDialog")
+                        .commit();
             }
         });
     }
@@ -477,11 +479,11 @@ public class CustomViewFragment extends Fragment {
         @Override
         public void onActionClicked(Snackbar snackbar) {
             List<CoCoinRecord> shownCoCoinRecords = Expanse.get(tagId);
-//            ((FragmentActivity)mContext).getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .add(new RecordCheckDialogFragment(
-//                            mContext, shownCoCoinRecords, dialogTitle), "MyDialog")
-//                    .commit();
+            ((FragmentActivity)mContext).getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(new RecordCheckDialogFragment(
+                            mContext, shownCoCoinRecords, dialogTitle), "MyDialog")
+                    .commit();
         }
     }
 }

@@ -7,10 +7,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.florent37.materialviewpager.MaterialViewPager;
+import com.florent37.materialviewpager.header.HeaderDesign;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.adapter.CustomViewFragmentAdapter;
 import com.jbekas.cocoin.model.SettingManager;
@@ -18,7 +21,7 @@ import com.jbekas.cocoin.util.CoCoinUtil;
 
 public class AccountBookCustomViewActivity extends AppCompatActivity {
 
-    private ViewPager mViewPager;
+    private MaterialViewPager mViewPager;
 
     private Toolbar toolbar;
 
@@ -33,57 +36,57 @@ public class AccountBookCustomViewActivity extends AppCompatActivity {
         mContext = this;
         setContentView(R.layout.activity_account_book_custom_view);
 
-        mViewPager = (ViewPager) findViewById(R.id.materialViewPager);
+        mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
 
         View view = mViewPager.getRootView();
         TextView title = (TextView)view.findViewById(R.id.logo_white);
         title.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         title.setText(SettingManager.getInstance().getAccountBookName());
 
-//        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.GetTypeface(), Typeface.NORMAL);
-//        mViewPager.getPagerTitleStrip().setVisibility(View.INVISIBLE);
+        mViewPager.getPagerTitleStrip().setTypeface(CoCoinUtil.GetTypeface(), Typeface.NORMAL);
+        mViewPager.getPagerTitleStrip().setVisibility(View.INVISIBLE);
 
         setTitle("");
 
-//        toolbar = mViewPager.getToolbar();
-//
-//        if (toolbar != null) {
-//            setSupportActionBar(toolbar);
-//
-//            final ActionBar actionBar = getSupportActionBar();
-//            if (actionBar != null) {
-//                actionBar.setDisplayHomeAsUpEnabled(true);
-//                actionBar.setDisplayShowHomeEnabled(true);
-//                actionBar.setDisplayShowTitleEnabled(true);
-//                actionBar.setDisplayUseLogoEnabled(false);
-//                actionBar.setHomeButtonEnabled(true);
-//            }
-//        }
+        toolbar = mViewPager.getToolbar();
 
-//        View logo = findViewById(R.id.logo_white);
-//        if (logo != null) {
-//            logo.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    mViewPager.notifyHeaderChanged();
-//                }
-//            });
-//        }
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+
+            final ActionBar actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setDisplayShowHomeEnabled(true);
+                actionBar.setDisplayShowTitleEnabled(true);
+                actionBar.setDisplayUseLogoEnabled(false);
+                actionBar.setHomeButtonEnabled(true);
+            }
+        }
+
+        //View logo = findViewById(R.id.logo_white);
+        if (title != null) {
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mViewPager.notifyHeaderChanged();
+                }
+            });
+        }
 
         customViewFragmentAdapter = new CustomViewFragmentAdapter(getSupportFragmentManager());
-//        mViewPager.getViewPager().setOffscreenPageLimit(1);
-//        mViewPager.getViewPager().setAdapter(customViewFragmentAdapter);
-//        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
-//
-//        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
-//            @Override
-//            public HeaderDesign getHeaderDesign(int page) {
-//                return HeaderDesign.fromColorAndDrawable(
-//                        CoCoinUtil.GetTagColor(-3),
-//                        CoCoinUtil.GetTagDrawable(-3)
-//                );
-//            }
-//        });
+        mViewPager.getViewPager().setOffscreenPageLimit(1);
+        mViewPager.getViewPager().setAdapter(customViewFragmentAdapter);
+        mViewPager.getPagerTitleStrip().setViewPager(mViewPager.getViewPager());
+
+        mViewPager.setMaterialViewPagerListener(new MaterialViewPager.Listener() {
+            @Override
+            public HeaderDesign getHeaderDesign(int page) {
+                return HeaderDesign.fromColorAndDrawable(
+                        CoCoinUtil.GetTagColor(-3),
+                        CoCoinUtil.GetTagDrawable(-3)
+                );
+            }
+        });
 
     }
 
