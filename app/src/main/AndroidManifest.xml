@@ -73,6 +73,7 @@
         <activity android:name=".activity.FeedbackActivity" />
         <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.ShowActivity" />
+        <activity android:name=".activity.TestActivity" />
     </application>
 
 </manifest>
