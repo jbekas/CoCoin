@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
+    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,6 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <include layout="@layout/material_view_pager_placeholder"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view"
@@ -1439,6 +1441,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
 </FrameLayout>

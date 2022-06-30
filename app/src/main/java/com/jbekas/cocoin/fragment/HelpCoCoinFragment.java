@@ -12,7 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.melnykov.fab.ObservableScrollView;
+import com.florent37.materialviewpager.MaterialViewPagerHelper;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.util.CoCoinUtil;
 import com.squareup.picasso.Picasso;
@@ -79,7 +80,7 @@ public class HelpCoCoinFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mScrollView = (ObservableScrollView) view.findViewById(R.id.scrollView);
-//        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
+        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
         int width = CoCoinUtil.getInstance().GetScreenWidth(mContext) - CoCoinUtil.getInstance().dpToPx(20);
         int height = width * 653 / 1280;

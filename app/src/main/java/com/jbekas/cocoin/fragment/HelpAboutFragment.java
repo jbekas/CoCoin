@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.melnykov.fab.ObservableScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.util.CoCoinUtil;
 
