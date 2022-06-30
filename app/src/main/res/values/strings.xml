@@ -228,7 +228,7 @@
     <string name="register_password">I can keep secret!</string>
     <string name="go_register">Register!</string>
 
-    <string name="welcome_back">Welcome back!</string>
+    <string name="welcome_back">Welcome back!\n%1$s</string>
 
     <string name="hi">Hi!&#160;</string>
     <string name="log_out">Log out</string>

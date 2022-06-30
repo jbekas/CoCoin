@@ -6,6 +6,7 @@ import androidx.annotation.StringRes
 import android.widget.Toast
 import com.github.johnpersano.supertoasts.SuperToast
 import com.jbekas.cocoin.util.CoCoinUtil
+import com.jbekas.cocoin.util.ToastUtil
 import javax.inject.Inject
 
 class ToastService @Inject constructor(private val context: Context) {
@@ -18,13 +19,13 @@ class ToastService @Inject constructor(private val context: Context) {
         } else {
             SuperToast.cancelAllSuperToasts()
             val superToast = SuperToast(context)
-            superToast.animations = CoCoinUtil.TOAST_ANIMATION
+            superToast.animations = ToastUtil.TOAST_ANIMATION
             superToast.duration = SuperToast.Duration.SHORT
             superToast.textColor = Color.parseColor("#ffffff")
             superToast.setTextSize(SuperToast.TextSize.SMALL)
             superToast.text = context.resources.getString(stringResId)
             superToast.background = color
-            superToast.textView.setTypeface(CoCoinUtil.typefaceLatoLight)
+            superToast.textView.typeface = CoCoinUtil.GetTypeface()
             superToast.show()
         }
     }
@@ -35,13 +36,13 @@ class ToastService @Inject constructor(private val context: Context) {
         } else {
             SuperToast.cancelAllSuperToasts()
             val superToast = SuperToast(context)
-            superToast.animations = CoCoinUtil.TOAST_ANIMATION
+            superToast.animations = ToastUtil.TOAST_ANIMATION
             superToast.duration = SuperToast.Duration.SHORT
             superToast.textColor = Color.parseColor("#ffffff")
             superToast.setTextSize(SuperToast.TextSize.SMALL)
             superToast.text = text
             superToast.background = color
-            superToast.textView.typeface = CoCoinUtil.typefaceLatoLight
+            superToast.textView.typeface = CoCoinUtil.GetTypeface()
             superToast.show()
         }
     }

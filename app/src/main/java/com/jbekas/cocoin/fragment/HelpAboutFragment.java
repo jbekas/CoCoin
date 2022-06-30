@@ -17,6 +17,7 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.util.CoCoinUtil;
+import com.jbekas.cocoin.util.ToastUtil;
 
 /**
  * Created by Weiping on 2016/2/2.
@@ -111,9 +112,8 @@ public class HelpAboutFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 CoCoinUtil.getInstance().copyToClipboard("Nightonke@outlook.com", mContext);
-                CoCoinUtil.getInstance().showToast(mContext, mContext.getResources().getString(R.string.copy_to_clipboard));
+                ToastUtil.showToast(mContext, mContext.getResources().getString(R.string.copy_to_clipboard), null, null);
             }
         });
     }
-
 }

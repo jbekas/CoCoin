@@ -45,6 +45,7 @@ import com.jbekas.cocoin.service.ToastService
 import com.jbekas.cocoin.ui.CoCoinScrollableViewPager
 import com.jbekas.cocoin.ui.MyGridView
 import com.jbekas.cocoin.util.CoCoinUtil
+import com.jbekas.cocoin.util.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.*
@@ -327,25 +328,44 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
         Timber.d("showToast: %d", toastType)
         when (toastType) {
             NO_TAG_TOAST -> {
-                coCoinToast!!.showToast(R.string.toast_no_tag, SuperToast.Background.RED)
+                ToastUtil.showToast(
+                    context = this,
+                    textId = R.string.toast_no_tag,
+                    textColor = null,
+                    color = SuperToast.Background.RED)
                 tagAnimation()
             }
-            NO_MONEY_TOAST -> coCoinToast!!.showToast(R.string.toast_no_money,
-                SuperToast.Background.RED)
-            PASSWORD_WRONG_TOAST -> coCoinToast!!.showToast(R.string.toast_password_wrong,
-                SuperToast.Background.RED)
+            NO_MONEY_TOAST -> ToastUtil.showToast(
+                context = this,
+                textId = R.string.toast_no_money,
+                textColor = null,
+                color = SuperToast.Background.RED)
+            PASSWORD_WRONG_TOAST -> ToastUtil.showToast(
+                context = this,
+                textId = R.string.toast_password_wrong,
+                textColor = null,
+                color = SuperToast.Background.RED)
             PASSWORD_CORRECT_TOAST -> {
                 Timber.d("PASSWORD_CORRECT_TOAST start")
-                coCoinToast!!.showToast(R.string.toast_password_correct, SuperToast.Background.BLUE)
+                ToastUtil.showToast(
+                    context = this,
+                    textId = R.string.toast_password_correct,
+                    textColor = null,
+                    color = SuperToast.Background.BLUE)
                 Timber.d("PASSWORD_CORRECT_TOAST finish")
             }
             SAVE_SUCCESSFULLY_TOAST -> {}
             SAVE_FAILED_TOAST -> {}
-            PRESS_AGAIN_TO_EXIT -> coCoinToast!!.showToast(R.string.toast_press_again_to_exit,
-                SuperToast.Background.BLUE)
-            WELCOME_BACK -> coCoinToast!!.showToast(CoCoinApplication.getAppContext()
-                .resources.getString(R.string.welcome_back)
-                    + "\n" + SettingManager.getInstance().userName, SuperToast.Background.BLUE)
+            PRESS_AGAIN_TO_EXIT -> ToastUtil.showToast(
+                context = this,
+                textId = R.string.toast_press_again_to_exit,
+                textColor = null,
+                color = SuperToast.Background.BLUE)
+            WELCOME_BACK -> ToastUtil.showToast(
+                context = this,
+                text = this.resources.getString(R.string.welcome_back, SettingManager.getInstance().userName),
+                textColor = null,
+                color = SuperToast.Background.BLUE)
             else -> {}
         }
     }

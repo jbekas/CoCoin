@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppThemeMain" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light">
+    <style name="AppBaseTheme" parent="@style/Theme.MaterialComponents.Light">
     </style>
 
-    <style name="EditRecordActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="EditRecordActivityStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/white</item>
     </style>
 
@@ -170,7 +170,7 @@
     <style name="commonListItemStyle">
     </style>
 
-    <style name="draggerActivityStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="draggerActivityStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
@@ -194,7 +194,7 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
-    <style name="MVP_AppBaseTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="MVP_AppBaseTheme" parent="@style/Theme.MaterialComponents.Light.NoActionBar">
     </style>
 
     <!-- copied from MaterialViewPager start -->

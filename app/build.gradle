@@ -84,9 +84,6 @@ dependencies {
 //        transitive = true
 //    }
 
-    // progress-button
-    implementation 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
-
     // date range picker
     implementation 'com.wdullaer:materialdatetimepicker:2.1.1'
 

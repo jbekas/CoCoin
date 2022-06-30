@@ -33,6 +33,7 @@ import com.jbekas.cocoin.model.User;
 import com.jbekas.cocoin.ui.FixedSpeedScroller;
 import com.jbekas.cocoin.ui.MyGridView;
 import com.jbekas.cocoin.util.CoCoinUtil;
+import com.jbekas.cocoin.util.ToastUtil;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
@@ -305,7 +306,7 @@ public class EditPasswordActivity extends AppCompatActivity {
     private void showToast(int toastType) {
         SuperToast.cancelAllSuperToasts();
 
-        superToast.setAnimations(CoCoinUtil.TOAST_ANIMATION);
+        superToast.setAnimations(ToastUtil.TOAST_ANIMATION);
         superToast.setDuration(SuperToast.Duration.SHORT);
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);

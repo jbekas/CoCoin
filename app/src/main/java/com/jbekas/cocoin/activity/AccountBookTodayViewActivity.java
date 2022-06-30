@@ -35,6 +35,7 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.florent37.materialviewpager.MaterialViewPager;
 import com.florent37.materialviewpager.header.HeaderDesign;
 import com.github.johnpersano.supertoasts.SuperToast;
+import com.jbekas.cocoin.util.ToastUtil;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.jbekas.cocoin.BuildConfig;
@@ -89,7 +90,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 
     private TodayViewFragmentAdapter todayModeAdapter = null;
 
-    private Context mContext;
+//    private Context mContext;
 
     private MaterialRippleLayout custom;
     private MaterialRippleLayout tags;
@@ -121,7 +122,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_book_today_view);
         SuperToast.cancelAllSuperToasts();
 
-        mContext = this;
+//        mContext = this;
 
         mViewPager = (MaterialViewPager) findViewById(R.id.materialViewPager);
         userName = (TextView)findViewById(R.id.user_name);
@@ -237,9 +238,9 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (SettingManager.getInstance().getLoggenOn()) {
-                    CoCoinUtil.showToast(mContext, R.string.change_logo_tip);
+                    ToastUtil.showToast(AccountBookTodayViewActivity.this, R.string.change_logo_tip, null, null);
                 } else {
-                    CoCoinUtil.showToast(mContext, R.string.login_tip);
+                    ToastUtil.showToast(AccountBookTodayViewActivity.this, R.string.login_tip, null, null);
                 }
             }
         });
@@ -293,7 +294,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 
         Log.d("Saver", "RANGE_MODE");
 
-        Intent intent = new Intent(mContext, AccountBookCustomViewActivity.class);
+        Intent intent = new Intent(this, AccountBookCustomViewActivity.class);
         startActivity(intent);
 
     }
@@ -302,7 +303,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 
         Log.d("Saver", "TAG_MODE");
 
-        Intent intent = new Intent(mContext, AccountBookTagViewActivity.class);
+        Intent intent = new Intent(this, AccountBookTagViewActivity.class);
         startActivity(intent);
 
     }
@@ -311,7 +312,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 
         Log.d("Saver", "MONTH_MODE");
 
-        Intent intent = new Intent(mContext, AccountBookMonthViewActivity.class);
+        Intent intent = new Intent(this, AccountBookMonthViewActivity.class);
         startActivity(intent);
 
     }
@@ -320,7 +321,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 
         Log.d("Saver", "LIST_MODE");
 
-        Intent intent = new Intent(mContext, AccountBookListViewActivity.class);
+        Intent intent = new Intent(this, AccountBookListViewActivity.class);
         startActivity(intent);
 
     }
@@ -336,7 +337,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
     MaterialDialog syncProgressDialog;
     private void sync() {
         if (!SettingManager.getInstance().getLoggenOn()) {
-            CoCoinUtil.showToast(mContext, R.string.login_tip);
+            ToastUtil.showToast(this, R.string.login_tip, null, null);
         } else {
             syncSuccessNumber = 0;
             syncFailedNumber = 0;
@@ -395,7 +396,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                 + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_record_1)
                                 + (SettingManager.getInstance().getRecentlySyncTime() == null ? CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_time_2) : CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_time_0) + CoCoinUtil.GetCalendarString(CoCoinApplication.getAppContext(), SettingManager.getInstance().getRecentlySyncTime()) + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_info_mobile_time_1))
                                 + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sync_choose_content);
-                        syncChooseDialog = new MaterialDialog.Builder(mContext)
+                        syncChooseDialog = new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                 .title(R.string.sync_choose_title)
                                 .content(content)
                                 .positiveText(R.string.sync_to_cloud)
@@ -410,7 +411,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                             String subContent = "";
                                             if (RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() == 0) {
                                                 subContent = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.mobile_record_empty);
-                                                new MaterialDialog.Builder(mContext)
+                                                new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                                         .title(R.string.sync)
                                                         .content(subContent)
                                                         .positiveText(R.string.ok_1)
@@ -422,7 +423,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                                         + RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size()
                                                         + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_cloud_1);
                                             }
-                                            new MaterialDialog.Builder(mContext)
+                                            new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                                     .title(R.string.sync)
                                                     .content(subContent)
                                                     .positiveText(R.string.ok_1)
@@ -431,9 +432,9 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                             if (which == DialogAction.POSITIVE) {
-                                                                syncProgressDialog = new MaterialDialog.Builder(mContext)
+                                                                syncProgressDialog = new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                                                         .title(R.string.syncing)
-                                                                        .content(CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_0) + "1" + CoCoinUtil.GetString(mContext, R.string.uploading_1))
+                                                                        .content(CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_0) + "1" + CoCoinUtil.GetString(AccountBookTodayViewActivity.this, R.string.uploading_1))
                                                                         .progress(false, RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size(), true)
                                                                         .cancelable(false)
                                                                         .show();
@@ -543,7 +544,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                                                                 public void onSuccess() {
                                                                                     // upload successfully
                                                                                     syncProgressDialog.dismiss();
-                                                                                    new MaterialDialog.Builder(mContext)
+                                                                                    new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                                                                             .title(R.string.sync_completely_title)
                                                                                             .content(RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_fail_1))
                                                                                             .positiveText(R.string.ok_1)
@@ -562,7 +563,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                                                                 public void onSuccess() {
                                                                                     // upload successfully
                                                                                     syncProgressDialog.dismiss();
-                                                                                    new MaterialDialog.Builder(mContext)
+                                                                                    new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                                                                             .title(R.string.sync_completely_title)
                                                                                             .content(RecordManager.getInstance(CoCoinApplication.getAppContext()).RECORDS.size() + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.uploading_fail_1))
                                                                                             .positiveText(R.string.ok_1)
@@ -596,7 +597,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                             String subContent = "";
                                             if (cloudRecordNumber == 0) {
                                                 subContent = CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.cloud_record_empty);
-                                                new MaterialDialog.Builder(mContext)
+                                                new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                                         .title(R.string.sync)
                                                         .content(subContent)
                                                         .positiveText(R.string.ok_1)
@@ -608,7 +609,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                                         + cloudRecordNumber
                                                         + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.sure_to_mobile_1);
                                             }
-                                            new MaterialDialog.Builder(mContext)
+                                            new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                                     .title(R.string.sync)
                                                     .content(subContent)
                                                     .positiveText(R.string.ok_1)
@@ -617,7 +618,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                                             if (which == DialogAction.POSITIVE) {
-                                                                syncProgressDialog = new MaterialDialog.Builder(mContext)
+                                                                syncProgressDialog = new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                                                         .title(R.string.syncing)
                                                                         .content(CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.downloading_0) + "1" + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.downloading_1))
                                                                         .progress(false, cloudRecordNumber, true)
@@ -655,7 +656,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                                                                             todayModeAdapter.notifyDataSetChanged();
                                                                             Log.d("CoCoin", "Download successfully refresh completely");
                                                                             syncProgressDialog.dismiss();
-                                                                            new MaterialDialog.Builder(mContext)
+                                                                            new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                                                                                     .title(R.string.sync_completely_title)
                                                                                     .content(cloudRecordNumber + CoCoinUtil.GetString(CoCoinApplication.getAppContext(), R.string.downloading_fail_1))
                                                                                     .positiveText(R.string.ok_1)
@@ -692,7 +693,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
                     syncQueryDialog.dismiss();
                     if (BuildConfig.DEBUG) Log.d("CoCoin", "Query: " + msg);
                     if (syncQueryDialog != null) syncQueryDialog.dismiss();
-                    new MaterialDialog.Builder(mContext)
+                    new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                             .title(R.string.sync_querying_fail_title)
                             .content(R.string.sync_querying_fail_content)
                             .positiveText(R.string.ok_1)
@@ -719,7 +720,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         // upload failed
         if (BuildConfig.DEBUG) Log.d("CoCoin", "Upload database failed " + code + " " + msg);
         syncProgressDialog.dismiss();
-        new MaterialDialog.Builder(mContext)
+        new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                 .title(R.string.sync_failed)
                 .content(R.string.uploading_fail_0)
                 .positiveText(R.string.ok_1)
@@ -731,7 +732,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         // upload failed
         if (BuildConfig.DEBUG) Log.d("CoCoin", "Download database failed " + code + " " + msg);
         syncProgressDialog.dismiss();
-        new MaterialDialog.Builder(mContext)
+        new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                 .title(R.string.sync_failed)
                 .content(R.string.downloading_fail_0)
                 .positiveText(R.string.ok_1)
@@ -744,16 +745,16 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         public void onSuccess() {
             syncSuccessNumber++;
             syncProgressDialog.incrementProgress(1);
-            if (syncSuccessNumber == RecordManager.getInstance(mContext).RECORDS.size()) {
+            if (syncSuccessNumber == RecordManager.getInstance(AccountBookTodayViewActivity.this).RECORDS.size()) {
                 syncProgressDialog.setContent(R.string.sync_completely_content);
             } else {
-                syncProgressDialog.setContent(CoCoinUtil.GetString(mContext, R.string.uploading_0) + (syncSuccessNumber + 1) + CoCoinUtil.GetString(mContext, R.string.uploading_1));
+                syncProgressDialog.setContent(CoCoinUtil.GetString(AccountBookTodayViewActivity.this, R.string.uploading_0) + (syncSuccessNumber + 1) + CoCoinUtil.GetString(AccountBookTodayViewActivity.this, R.string.uploading_1));
             }
-            if (syncSuccessNumber + syncFailedNumber == RecordManager.getInstance(mContext).RECORDS.size()) {
+            if (syncSuccessNumber + syncFailedNumber == RecordManager.getInstance(AccountBookTodayViewActivity.this).RECORDS.size()) {
                 syncProgressDialog.dismiss();
-                new MaterialDialog.Builder(mContext)
+                new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                         .title(R.string.sync_completely_title)
-                        .content(syncSuccessNumber + CoCoinUtil.GetString(mContext, R.string.uploading_fail_1))
+                        .content(syncSuccessNumber + CoCoinUtil.GetString(AccountBookTodayViewActivity.this, R.string.uploading_fail_1))
                         .positiveText(R.string.ok_1)
                         .show();
             }
@@ -762,11 +763,11 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         public void onFailure(int code, String arg0) {
             syncFailedNumber++;
             syncProgressDialog.incrementProgress(1);
-            if (syncSuccessNumber + syncFailedNumber == RecordManager.getInstance(mContext).RECORDS.size()) {
+            if (syncSuccessNumber + syncFailedNumber == RecordManager.getInstance(AccountBookTodayViewActivity.this).RECORDS.size()) {
                 syncProgressDialog.dismiss();
-                new MaterialDialog.Builder(mContext)
+                new MaterialDialog.Builder(AccountBookTodayViewActivity.this)
                         .title(R.string.sync_completely_title)
-                        .content(syncSuccessNumber + CoCoinUtil.GetString(mContext, R.string.uploading_fail_1))
+                        .content(syncSuccessNumber + CoCoinUtil.GetString(AccountBookTodayViewActivity.this, R.string.uploading_fail_1))
                         .positiveText(R.string.ok_1)
                         .show();
             }
@@ -777,7 +778,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
 
         Log.d("Saver", "SETTINGS");
 
-        Intent intent = new Intent(mContext, AccountBookSettingActivity.class);
+        Intent intent = new Intent(this, AccountBookSettingActivity.class);
         startActivity(intent);
 
     }
@@ -906,7 +907,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, AccountBookReportViewActivity.class));
+                startActivity(new Intent(AccountBookTodayViewActivity.this, AccountBookReportViewActivity.class));
             }
         });
         sync.setOnClickListener(new View.OnClickListener() {
@@ -918,19 +919,19 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
         help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, HelpActivity.class));
+                startActivity(new Intent(AccountBookTodayViewActivity.this, HelpActivity.class));
             }
         });
         feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, FeedbackActivity.class));
+                startActivity(new Intent(AccountBookTodayViewActivity.this, FeedbackActivity.class));
             }
         });
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, AboutActivity.class));
+                startActivity(new Intent(AccountBookTodayViewActivity.this, AboutActivity.class));
             }
         });
     }
@@ -986,7 +987,7 @@ public class AccountBookTodayViewActivity extends AppCompatActivity {
     }
 
     private void setIconEnable(MaterialIconView icon, boolean enable) {
-        if (enable) icon.setColor(mContext.getResources().getColor(R.color.my_blue));
-        else icon.setColor(mContext.getResources().getColor(R.color.my_gray));
+        if (enable) icon.setColor(AccountBookTodayViewActivity.this.getResources().getColor(R.color.my_blue));
+        else icon.setColor(AccountBookTodayViewActivity.this.getResources().getColor(R.color.my_gray));
     }
 }

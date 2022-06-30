@@ -22,6 +22,7 @@ import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.activity.CoCoinApplication;
 import com.jbekas.cocoin.model.Feedback;
 import com.jbekas.cocoin.util.CoCoinUtil;
+import com.jbekas.cocoin.util.ToastUtil;
 
 import cn.bmob.v3.listener.SaveListener;
 
@@ -55,8 +56,8 @@ public class HelpFeedbackFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof Activity){
-            activity = (Activity)context;
+        if (context instanceof Activity) {
+            activity = (Activity) context;
         }
     }
 
@@ -78,15 +79,15 @@ public class HelpFeedbackFragment extends Fragment {
         mScrollView = (ObservableScrollView) view.findViewById(R.id.scrollView);
         MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
-        title = (TextView)view.findViewById(R.id.title);
+        title = (TextView) view.findViewById(R.id.title);
         title.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        input = (EditText)view.findViewById(R.id.edittext);
+        input = (EditText) view.findViewById(R.id.edittext);
         input.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        help = (TextView)view.findViewById(R.id.helper);
+        help = (TextView) view.findViewById(R.id.helper);
         help.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        number = (TextView)view.findViewById(R.id.number);
+        number = (TextView) view.findViewById(R.id.number);
         number.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        send = (TextView)view.findViewById(R.id.send);
+        send = (TextView) view.findViewById(R.id.send);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,18 +98,33 @@ public class HelpFeedbackFragment extends Fragment {
                             .positiveText(R.string.ok_1)
                             .show();
                 } else {
-                    CoCoinUtil.getInstance().showToast(CoCoinApplication.getAppContext(), CoCoinApplication.getAppContext().getResources().getString(R.string.help_feedback_sent));
+                    ToastUtil.showToast(
+                            mContext,
+                            R.string.help_feedback_sent,
+                            null,
+                            null
+                    );
                     Feedback feedback = new Feedback();
                     feedback.setContent(input.getText().toString());
                     feedback.save(CoCoinApplication.getAppContext(), new SaveListener() {
                         @Override
                         public void onSuccess() {
-                            CoCoinUtil.getInstance().showToast(CoCoinApplication.getAppContext(), CoCoinApplication.getAppContext().getResources().getString(R.string.help_feedback_sent_successfully));
+                            ToastUtil.showToast(
+                                    mContext,
+                                    CoCoinApplication.getAppContext().getResources().getString(R.string.help_feedback_sent_successfully),
+                                    null,
+                                    null
+                            );
                         }
 
                         @Override
                         public void onFailure(int code, String arg0) {
-                            CoCoinUtil.getInstance().showToast(CoCoinApplication.getAppContext(), CoCoinApplication.getAppContext().getResources().getString(R.string.help_feedback_sent_fail));
+                            ToastUtil.showToast(
+                                    mContext,
+                                    CoCoinApplication.getAppContext().getResources().getString(R.string.help_feedback_sent_fail),
+                                    null,
+                                    null
+                            );
                         }
                     });
                 }
@@ -125,9 +141,9 @@ public class HelpFeedbackFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 setNumberText();
                 try {
-                    ((OnTextChangeListener)activity)
+                    ((OnTextChangeListener) activity)
                             .onTextChange(input.getText().toString(), exceed);
-                } catch (ClassCastException cce){
+                } catch (ClassCastException cce) {
                     cce.printStackTrace();
                 }
             }
@@ -148,7 +164,7 @@ public class HelpFeedbackFragment extends Fragment {
         if (chineseIsDoubleCount) {
             count = CoCoinUtil.getInstance().textCounter(input.getText().toString());
         } else {
-            count =input.getText().toString().length();
+            count = input.getText().toString().length();
         }
         number.setText(count + "/" + min + "-" + max);
         if (min <= count && count <= max) {

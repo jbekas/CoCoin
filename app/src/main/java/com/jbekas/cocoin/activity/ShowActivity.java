@@ -37,6 +37,7 @@ import com.jbekas.cocoin.model.SettingManager;
 import com.jbekas.cocoin.model.User;
 import com.jbekas.cocoin.ui.MyGridView;
 import com.jbekas.cocoin.util.CoCoinUtil;
+import com.jbekas.cocoin.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -491,7 +492,7 @@ public class ShowActivity extends AppCompatActivity {
     private void showToast(int toastType) {
         SuperToast.cancelAllSuperToasts();
 
-        superToast.setAnimations(CoCoinUtil.TOAST_ANIMATION);
+        superToast.setAnimations(ToastUtil.TOAST_ANIMATION);
         superToast.setDuration(SuperToast.Duration.SHORT);
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);

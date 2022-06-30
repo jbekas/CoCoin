@@ -31,6 +31,7 @@ import com.jbekas.cocoin.model.RecordManager;
 import com.jbekas.cocoin.ui.CoCoinScrollableViewPager;
 import com.jbekas.cocoin.ui.MyGridView;
 import com.jbekas.cocoin.util.CoCoinUtil;
+import com.jbekas.cocoin.util.ToastUtil;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
@@ -277,7 +278,7 @@ public class EditRecordActivity extends AppCompatActivity
         SuperToast.cancelAllSuperToasts();
         SuperActivityToast.cancelAllSuperActivityToasts();
 
-        superToast.setAnimations(CoCoinUtil.TOAST_ANIMATION);
+        superToast.setAnimations(ToastUtil.TOAST_ANIMATION);
         superToast.setDuration(SuperToast.Duration.SHORT);
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);

@@ -13,7 +13,7 @@
         android:textColor="@color/drawer_text"
         android:textSize="12sp" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/login_user_name"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
         android:textSize="20sp"
         android:hint=""
         android:singleLine="true"
+        app:met_baseColor="@color/my_blue"
         />
 
     <TextView
@@ -31,7 +32,7 @@
         android:textColor="@color/drawer_text"
         android:textSize="12sp" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/login_password"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -40,22 +41,18 @@
         android:password="true"
         android:hint=""
         android:singleLine="true"
+        app:met_baseColor="@color/my_blue"
         />
 
-    <com.dd.CircularProgressButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:textColor="@color/white"
+        android:text="@string/login_idle"
+        android:backgroundTint="@color/colorAccent"
         android:textSize="14sp"
-        app:cpb_cornerRadius="48dp"
-        app:cpb_textComplete="@string/login_complete"
-        app:cpb_selectorComplete="@drawable/button_login_successfully_dialog"
-        app:cpb_textError="@string/login_error"
-        app:cpb_selectorError="@drawable/button_login_error_dialog"
-        app:cpb_textIdle="@string/login_idle"
-        app:cpb_selectorIdle="@drawable/button_login_idle_dialog"
         />
 
 </LinearLayout>

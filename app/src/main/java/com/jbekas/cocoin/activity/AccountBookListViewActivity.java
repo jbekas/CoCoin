@@ -49,6 +49,7 @@ import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDec
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
+import com.jbekas.cocoin.util.ToastUtil;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -350,9 +351,9 @@ public class AccountBookListViewActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (SettingManager.getInstance().getLoggenOn()) {
-                    CoCoinUtil.showToast(mContext, R.string.change_logo_tip);
+                    ToastUtil.showToast(AccountBookListViewActivity.this, R.string.change_logo_tip, null, null);
                 } else {
-                    CoCoinUtil.showToast(mContext, R.string.login_tip);
+                    ToastUtil.showToast(AccountBookListViewActivity.this, R.string.login_tip, null, null);
                 }
             }
         });
@@ -1082,7 +1083,7 @@ public class AccountBookListViewActivity extends AppCompatActivity
             to.add(Calendar.SECOND, 0);
 
             if (to.before(from)) {
-                CoCoinUtil.showToast(mContext, mContext.getResources().getString(R.string.from_invalid), SuperToast.Background.RED);
+                ToastUtil.showToast(mContext, mContext.getResources().getString(R.string.from_invalid), null, SuperToast.Background.RED);
             } else {
                 LEFT_CALENDAR = (Calendar)from.clone();
                 RIGHT_CALENDAR = (Calendar)to.clone();

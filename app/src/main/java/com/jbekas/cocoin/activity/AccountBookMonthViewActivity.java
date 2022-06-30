@@ -29,6 +29,7 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.florent37.materialviewpager.MaterialViewPager;
 import com.florent37.materialviewpager.MaterialViewPagerHelper;
 import com.florent37.materialviewpager.header.HeaderDesign;
+import com.jbekas.cocoin.util.ToastUtil;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.jbekas.cocoin.BuildConfig;
@@ -176,9 +177,9 @@ public class AccountBookMonthViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (SettingManager.getInstance().getLoggenOn()) {
-                    CoCoinUtil.showToast(mContext, R.string.change_logo_tip);
+                    ToastUtil.showToast(AccountBookMonthViewActivity.this, R.string.change_logo_tip, null, null);
                 } else {
-                    CoCoinUtil.showToast(mContext, R.string.login_tip);
+                    ToastUtil.showToast(AccountBookMonthViewActivity.this, R.string.login_tip, null, null);
                 }
             }
         });
