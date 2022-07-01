@@ -93,8 +93,6 @@ public class HelpAboutFragment extends Fragment {
         ((TextView)view.findViewById(R.id.content_29)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         ((TextView)view.findViewById(R.id.content_30)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         ((TextView)view.findViewById(R.id.content_31)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        ((TextView)view.findViewById(R.id.content_32)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        ((TextView)view.findViewById(R.id.content_33)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         ((MaterialRippleLayout)view.findViewById(R.id.layout_2)).setOnClickListener(new View.OnClickListener() {
             @Override

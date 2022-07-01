@@ -100,9 +100,6 @@ dependencies {
     // expandable layout
     implementation files('../libs/expandable-layout-v1.6.0.aar')
 
-    // guillotine menu
-    implementation 'com.balysv.materialmenu:material-menu:1.5.4'
-
     // charts
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
 

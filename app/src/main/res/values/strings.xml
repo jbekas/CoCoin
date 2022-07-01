@@ -6,7 +6,6 @@
         Copyright © Nightonke
     </string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
     <string name="profile">PROFILE</string>
@@ -547,23 +546,21 @@
     <string name="help_about_content_14">sacot41:scviewpager</string>
     <string name="help_about_content_15">daimajia.slider</string>
     <string name="help_about_content_16">aakira:expandable-layout</string>
-    <string name="help_about_content_17">Yalantis:GuillotineMenu-Android</string>
-    <string name="help_about_content_18">lecho:hellocharts</string>
-    <string name="help_about_content_19">nispok:snackbar</string>
-    <string name="help_about_content_20">steamcrafted:materialiconlib</string>
-    <string name="help_about_content_21">johnpersano:supertoasts</string>
-    <string name="help_about_content_22">squareup.leakcanary</string>
-    <string name="help_about_content_23">h6ah4i.android.widget.advrecyclerview:advrecyclerview</string>
-    <string name="help_about_content_24">hdodenhof:circleimageview</string>
-    <string name="help_about_content_25">miguelcatalan:materialsearchview</string>
-    <string name="help_about_content_26">wnafee:vector-compat</string>
-    <string name="help_about_content_27">danoz:recyclerviewfastscroller</string>
-    <string name="help_about_content_28">afollestad.material-dialogs</string>
-    <string name="help_about_content_29">rey5137:material</string>
-    <string name="help_about_content_30">bmob.android</string>
-    <string name="help_about_content_31">koushikdutta.ion</string>
-    <string name="help_about_content_32">tencent.bugly</string>
-    <string name="help_about_content_33">ozodrukh:CircularReveal</string>
+    <string name="help_about_content_17">lecho:hellocharts</string>
+    <string name="help_about_content_18">nispok:snackbar</string>
+    <string name="help_about_content_19">steamcrafted:materialiconlib</string>
+    <string name="help_about_content_20">johnpersano:supertoasts</string>
+    <string name="help_about_content_21">squareup.leakcanary</string>
+    <string name="help_about_content_22">h6ah4i.android.widget.advrecyclerview:advrecyclerview</string>
+    <string name="help_about_content_23">hdodenhof:circleimageview</string>
+    <string name="help_about_content_24">miguelcatalan:materialsearchview</string>
+    <string name="help_about_content_25">wnafee:vector-compat</string>
+    <string name="help_about_content_26">danoz:recyclerviewfastscroller</string>
+    <string name="help_about_content_27">afollestad.material-dialogs</string>
+    <string name="help_about_content_28">rey5137:material</string>
+    <string name="help_about_content_29">bmob.android</string>
+    <string name="help_about_content_30">koushikdutta.ion</string>
+    <string name="help_about_content_31">tencent.bugly</string>
 
     <string name="copy_to_clipboard">Copied e-mail to clipboard</string>
 

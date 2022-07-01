@@ -24,7 +24,6 @@ import butterknife.ButterKnife
 import cn.bmob.v3.Bmob
 import cn.bmob.v3.BmobUser
 import com.afollestad.materialdialogs.MaterialDialog
-import com.balysv.materialmenu.MaterialMenuView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.github.johnpersano.supertoasts.SuperActivityToast
@@ -87,7 +86,6 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
     private val WELCOME_BACK = 7
     var doubleBackToExitPressedOnce = false
 
-    //    private var guillotineToolBar: Toolbar? = null
     private var appUpdateManager: AppUpdateManager? = null
 
     @BindView(R.id.toolbar)
@@ -190,7 +188,6 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
         toolbar!!.hideOverflowMenu()
 
         toolbar!!.setOnClickListener { v: View? ->
-            Timber.d("onClick clicked. Trying not to start guillotine.")
             val intent = Intent(this, PinActivity::class.java)
             startActivityForResult(intent, PIN_TAG)
         }

@@ -43,14 +43,14 @@ public class TodayViewFragment extends Fragment {
 
     private RecyclerView.LayoutManager layoutManager;
 
-    static final int TODAY = 0;
-    static final int YESTERDAY = 1;
-    static final int THIS_WEEK = 2;
-    static final int LAST_WEEK = 3;
-    static final int THIS_MONTH = 4;
-    static final int LAST_MONTH = 5;
-    static final int THIS_YEAR = 6;
-    static final int LAST_YEAR = 7;
+    public static final int TODAY = 0;
+    public static final int YESTERDAY = 1;
+    public static final int THIS_WEEK = 2;
+    public static final int LAST_WEEK = 3;
+    public static final int THIS_MONTH = 4;
+    public static final int LAST_MONTH = 5;
+    public static final int THIS_YEAR = 6;
+    public static final int LAST_YEAR = 7;
 
     public static TodayViewFragment newInstance(int position) {
         TodayViewFragment fragment = new TodayViewFragment();

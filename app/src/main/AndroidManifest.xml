@@ -28,7 +28,9 @@
             android:name=".activity.AccountBookTodayViewActivity"
             android:label="@string/title_activity_account_book"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".activity.AccountBookCustomViewActivity"
             android:launchMode="singleTop" />

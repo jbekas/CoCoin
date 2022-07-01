@@ -3,8 +3,6 @@
     
     <color name="transparent">#00ffffff</color>
 
-    <color name="guillotine_background">#444153</color>
-    <color name="guillotine_background_dark">#383547</color>
     <color name="selected_item_color">#30d1d5</color>
 
     <color name="white">#ffffff</color>
@@ -110,11 +108,11 @@
 
     <color name="report_card">#FAFAFA</color>
 
-    <color name="colorPrimary">@color/blue_1</color>
-    <color name="colorPrimaryDark">@color/blue_1</color>
-    <color name="colorAccent">@color/blue_5</color>
+    <color name="colorPrimary">#5D1049</color>
+    <color name="colorPrimaryDark">#3D0A2C</color>
+    <color name="colorAccent">#E30425</color>
     <color name="navigationBarColor">@color/blue_5</color>
-    <color name="drawerArrowColor">@color/blue_5</color>
+    <color name="drawerArrowColor">@color/white</color>
     <color name="statusBarColor">@color/blue_5</color>
 
     <color name="blue_1">#00101f</color>
