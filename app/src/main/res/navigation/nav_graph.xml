@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.jbekas.cocoin.FirstFragment"
+        android:name="com.jbekas.cocoin.AddEditRecordFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_add_edit_record">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"

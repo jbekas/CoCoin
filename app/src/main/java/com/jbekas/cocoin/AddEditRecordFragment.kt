@@ -17,7 +17,7 @@ import com.jbekas.cocoin.NewMainActivity.Companion.NO_MONEY_TOAST
 import com.jbekas.cocoin.NewMainActivity.Companion.NO_TAG_TOAST
 import com.jbekas.cocoin.adapter.ButtonGridViewAdapter
 import com.jbekas.cocoin.adapter.TagChooseFragmentAdapter
-import com.jbekas.cocoin.databinding.FragmentFirstBinding
+import com.jbekas.cocoin.databinding.FragmentAddEditRecordBinding
 import com.jbekas.cocoin.fragment.CoCoinFragmentManager
 import com.jbekas.cocoin.fragment.TagChooseFragment
 import com.jbekas.cocoin.model.CoCoinRecord
@@ -32,15 +32,11 @@ import kotlin.Int
 import kotlin.let
 import kotlin.toString
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
-class FirstFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
+class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentAddEditRecordBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     private var editAdapter: FragmentPagerAdapter? = null
@@ -51,11 +47,10 @@ class FirstFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentAddEditRecordBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -121,9 +116,6 @@ class FirstFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
     override fun onResume() {
         super.onResume()
 
-
-        Timber.d("is tag adapter empty? %s", (tagAdapter == null))
-
         if (SettingManager.getInstance().mainActivityTagShouldChange) {
             // change the tag fragment
             var i = 0
@@ -156,12 +148,7 @@ class FirstFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
         }
 
     private fun buttonClickOperation(longClick: Boolean, position: Int) {
-//        if (editViewPager!!.currentItem == 1) return
-        Timber.d("binding.editMoney.money.text: %s", binding.editMoney.money.text)
         if (binding.editMoney.money.text.toString() == "0" && !CoCoinUtil.ClickButtonCommit(position)) {
-//        if (CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString() == "0" && !CoCoinUtil.ClickButtonCommit(
-//                position)
-//        ) {
             if (CoCoinUtil.ClickButtonDelete(position) || CoCoinUtil.ClickButtonIsZero(position)) {
             } else {
                 Timber.d("%s", CoCoinUtil.BUTTONS[position])
@@ -176,9 +163,9 @@ class FirstFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
                     )
                 } else {
                     binding.editMoney.money.setText(
-                        binding.editMoney.money.toString()
-                            .substring(0, binding.editMoney.money.toString().length - 1))
-                    if (binding.editMoney.money.toString().isEmpty()) {
+                        binding.editMoney.money.text.toString()
+                            .substring(0, binding.editMoney.money.text.toString().length - 1))
+                    if (binding.editMoney.money.text?.isEmpty() == true) {
                         binding.editMoney.money.setText("0")
                         binding.editMoney.money.setHelperText("")
                     }
@@ -201,19 +188,16 @@ class FirstFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
             activity?.let {
                 (activity as NewMainActivity).showToast(NO_TAG_TOAST)
             }
-//            showToast(NO_TAG_TOAST)
         } else if (binding.editMoney.money.text.toString() == "0") {
             activity?.let {
                 (activity as NewMainActivity).showToast(NO_MONEY_TOAST)
             }
-            //showToast(NO_MONEY_TOAST)
         } else {
             val calendar = Calendar.getInstance()
             val coCoinRecord = CoCoinRecord(
                 -1,
                 Float.valueOf(binding.editMoney.money.text.toString()),
                 "RMB",
-//                CoCoinFragmentManager.mainActivityEditMoneyFragment.tagId,
                 tagId,
                 calendar)
 //            coCoinRecord.remark = CoCoinFragmentManager.mainActivityEditRemarkFragment.remark
@@ -229,8 +213,6 @@ class FirstFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
             }
             binding.editMoney.money.setText("0")
             binding.editMoney.money.setHelperText("")
-//            CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText = "0"
-//            CoCoinFragmentManager.mainActivityEditMoneyFragment.helpText = " "
         }
     }
 
@@ -240,16 +222,12 @@ class FirstFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
 
 
     override fun onTagItemPicked(position: Int) {
-//        if (CoCoinFragmentManager.mainActivityEditMoneyFragment != null) CoCoinFragmentManager.mainActivityEditMoneyFragment.setTag(
-//            tagViewPager!!.currentItem * 8 + position + 2)
         tagId = RecordManager.TAGS[position].id
-        binding.editMoney.tagName.setText(CoCoinUtil.GetTagName(RecordManager.TAGS[position].id))
+        binding.editMoney.tagName.text = CoCoinUtil.GetTagName(RecordManager.TAGS[position].id)
         binding.editMoney.tagImage.setImageResource(CoCoinUtil.GetTagIcon(RecordManager.TAGS[position].id))
-
     }
 
     override fun onAnimationStart(id: Int) {
         Timber.w("onAnimationStart: Not yet implemented")
     }
-
 }
