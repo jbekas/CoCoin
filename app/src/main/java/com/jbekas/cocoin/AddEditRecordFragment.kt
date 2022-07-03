@@ -165,10 +165,11 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
 //                if (!superToast!!.isShowing) {
 //                    changeColor()
 //                }
+                tagId = -1
                 binding.editMoney.tagImage.setImageResource(R.color.transparent)
-                binding.editMoney.tagName.setText("")
+                binding.editMoney.tagName.text = ""
             }
-            binding.editMoney.money.setText("0")
+            binding.editMoney.money.setText("0") // TODO move to strings
             binding.editMoney.money.setHelperText("")
         }
     }
