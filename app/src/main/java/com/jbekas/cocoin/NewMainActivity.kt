@@ -31,14 +31,14 @@ class NewMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewMainBinding
 
     companion object {
-        private val NO_TAG_TOAST = 0
-        private val NO_MONEY_TOAST = 1
-        private val PASSWORD_WRONG_TOAST = 2
-        private val PASSWORD_CORRECT_TOAST = 3
-        private val SAVE_SUCCESSFULLY_TOAST = 4
-        private val SAVE_FAILED_TOAST = 5
-        private val PRESS_AGAIN_TO_EXIT = 6
-        private val WELCOME_BACK = 7
+        public val NO_TAG_TOAST = 0
+        public val NO_MONEY_TOAST = 1
+        public val PASSWORD_WRONG_TOAST = 2
+        public val PASSWORD_CORRECT_TOAST = 3
+        public val SAVE_SUCCESSFULLY_TOAST = 4
+        public val SAVE_FAILED_TOAST = 5
+        public val PRESS_AGAIN_TO_EXIT = 6
+        public val WELCOME_BACK = 7
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,7 +107,7 @@ class NewMainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    private fun showToast(toastType: Int) {
+    public fun showToast(toastType: Int) {
         Timber.d("showToast: %d", toastType)
         when (toastType) {
             NO_TAG_TOAST -> {

@@ -126,7 +126,7 @@ public class EditRecordActivity extends AppCompatActivity
         tagViewPager = (ViewPager)findViewById(R.id.viewpager);
         tagViewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-        tagAdapter = new TagChooseFragmentAdapter(this, RecordManager.getNumberOfTagPages(8));
+        tagAdapter = new TagChooseFragmentAdapter(this, this, RecordManager.getNumberOfTagPages(8));
 //        if (RecordManager.TAGS.size() % 8 == 0)
 //            tagAdapter = new TagChooseFragmentAdapter(getSupportFragmentManager(), RecordManager.TAGS.size() / 8);
 //        else

@@ -1,35 +1,41 @@
 package com.jbekas.cocoin
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemLongClickListener
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.navigation.fragment.findNavController
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.jbekas.cocoin.NewMainActivity.Companion.NO_MONEY_TOAST
+import com.jbekas.cocoin.NewMainActivity.Companion.NO_TAG_TOAST
 import com.jbekas.cocoin.adapter.ButtonGridViewAdapter
-import com.jbekas.cocoin.adapter.EditMoneyRemarkFragmentAdapter
 import com.jbekas.cocoin.adapter.TagChooseFragmentAdapter
 import com.jbekas.cocoin.databinding.FragmentFirstBinding
 import com.jbekas.cocoin.fragment.CoCoinFragmentManager
+import com.jbekas.cocoin.fragment.TagChooseFragment
+import com.jbekas.cocoin.model.CoCoinRecord
 import com.jbekas.cocoin.model.RecordManager
 import com.jbekas.cocoin.model.SettingManager
-import com.jbekas.cocoin.ui.CoCoinScrollableViewPager
-import com.jbekas.cocoin.ui.MyGridView
 import com.jbekas.cocoin.util.CoCoinUtil
 import timber.log.Timber
+import java.lang.Float
+import java.util.*
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.let
+import kotlin.toString
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class FirstFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
 
     private var _binding: FragmentFirstBinding? = null
 
@@ -86,7 +92,7 @@ class FirstFragment : Fragment() {
 //        tagAdapter = if (RecordManager.TAGS.size % 8 == 0) TagChooseFragmentAdapter(
 //            fragmentManager, RecordManager.TAGS.size / 8) else TagChooseFragmentAdapter(
 //            fragmentManager, RecordManager.TAGS.size / 8 + 1)
-        tagAdapter = TagChooseFragmentAdapter(activity, RecordManager.getNumberOfTagPages(8))
+        tagAdapter = TagChooseFragmentAdapter(activity!!, this, RecordManager.getNumberOfTagPages(8))
         binding.viewpager.adapter = tagAdapter
         tagAdapter?.notifyDataSetChanged()
 
@@ -151,44 +157,99 @@ class FirstFragment : Fragment() {
 
     private fun buttonClickOperation(longClick: Boolean, position: Int) {
 //        if (editViewPager!!.currentItem == 1) return
-        if (CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString() == "0" && !CoCoinUtil.ClickButtonCommit(
-                position)
-        ) {
-            if (CoCoinUtil.ClickButtonDelete(position)
-                || CoCoinUtil.ClickButtonIsZero(position)
-            ) {
+        Timber.d("binding.editMoney.money.text: %s", binding.editMoney.money.text)
+        if (binding.editMoney.money.text.toString() == "0" && !CoCoinUtil.ClickButtonCommit(position)) {
+//        if (CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString() == "0" && !CoCoinUtil.ClickButtonCommit(
+//                position)
+//        ) {
+            if (CoCoinUtil.ClickButtonDelete(position) || CoCoinUtil.ClickButtonIsZero(position)) {
             } else {
-                CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText =
-                    CoCoinUtil.BUTTONS[position]
+                Timber.d("%s", CoCoinUtil.BUTTONS[position])
+                binding.editMoney.money.setText(CoCoinUtil.BUTTONS[position])
             }
         } else {
             if (CoCoinUtil.ClickButtonDelete(position)) {
                 if (longClick) {
-                    CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText = "0"
-                    CoCoinFragmentManager.mainActivityEditMoneyFragment.helpText =
-                        CoCoinUtil.FLOATINGLABELS[CoCoinFragmentManager.mainActivityEditMoneyFragment
-                            .numberText.toString().length]
+                    binding.editMoney.money.setText("0")
+                    binding.editMoney.money.setHelperText(
+                        CoCoinUtil.FLOATINGLABELS[binding.editMoney.money.toString().length]
+                    )
                 } else {
-                    CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText =
-                        CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString()
-                            .substring(0, CoCoinFragmentManager.mainActivityEditMoneyFragment
-                                .numberText.toString().length - 1)
-                    if (CoCoinFragmentManager.mainActivityEditMoneyFragment
-                            .numberText.toString().length == 0
-                    ) {
-                        CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText = "0"
-                        CoCoinFragmentManager.mainActivityEditMoneyFragment.helpText = " "
+                    binding.editMoney.money.setText(
+                        binding.editMoney.money.toString()
+                            .substring(0, binding.editMoney.money.toString().length - 1))
+                    if (binding.editMoney.money.toString().isEmpty()) {
+                        binding.editMoney.money.setText("0")
+                        binding.editMoney.money.setHelperText("")
                     }
                 }
             } else if (CoCoinUtil.ClickButtonCommit(position)) {
-                //commit()
+                commit()
             } else {
-                CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText = (
-                        CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString()
-                                + CoCoinUtil.BUTTONS[position])
+                binding.editMoney.money.setText(
+                        binding.editMoney.money.text.toString() + CoCoinUtil.BUTTONS[position]
+                )
             }
         }
-        CoCoinFragmentManager.mainActivityEditMoneyFragment.helpText =
-            CoCoinUtil.FLOATINGLABELS[CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString().length]
+        binding.editMoney.money.setHelperText(
+            CoCoinUtil.FLOATINGLABELS[(binding.editMoney.money.text ?: "").length]
+        )
     }
+
+    private fun commit() {
+        if (tagId  == -1) {
+            activity?.let {
+                (activity as NewMainActivity).showToast(NO_TAG_TOAST)
+            }
+//            showToast(NO_TAG_TOAST)
+        } else if (binding.editMoney.money.text.toString() == "0") {
+            activity?.let {
+                (activity as NewMainActivity).showToast(NO_MONEY_TOAST)
+            }
+            //showToast(NO_MONEY_TOAST)
+        } else {
+            val calendar = Calendar.getInstance()
+            val coCoinRecord = CoCoinRecord(
+                -1,
+                Float.valueOf(binding.editMoney.money.text.toString()),
+                "RMB",
+//                CoCoinFragmentManager.mainActivityEditMoneyFragment.tagId,
+                tagId,
+                calendar)
+//            coCoinRecord.remark = CoCoinFragmentManager.mainActivityEditRemarkFragment.remark
+            coCoinRecord.remark = "remark"
+            val saveId = RecordManager.saveRecord(coCoinRecord)
+            if (saveId == -1L) {
+            } else {
+//                if (!superToast!!.isShowing) {
+//                    changeColor()
+//                }
+                binding.editMoney.tagImage.setImageResource(R.color.transparent)
+                binding.editMoney.tagName.setText("")
+            }
+            binding.editMoney.money.setText("0")
+            binding.editMoney.money.setHelperText("")
+//            CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText = "0"
+//            CoCoinFragmentManager.mainActivityEditMoneyFragment.helpText = " "
+        }
+    }
+
+    private var tagId = -1
+    var tagImage: ImageView? = null
+    var tagName: TextView? = null
+
+
+    override fun onTagItemPicked(position: Int) {
+//        if (CoCoinFragmentManager.mainActivityEditMoneyFragment != null) CoCoinFragmentManager.mainActivityEditMoneyFragment.setTag(
+//            tagViewPager!!.currentItem * 8 + position + 2)
+        tagId = RecordManager.TAGS[position].id
+        binding.editMoney.tagName.setText(CoCoinUtil.GetTagName(RecordManager.TAGS[position].id))
+        binding.editMoney.tagImage.setImageResource(CoCoinUtil.GetTagIcon(RecordManager.TAGS[position].id))
+
+    }
+
+    override fun onAnimationStart(id: Int) {
+        Timber.w("onAnimationStart: Not yet implemented")
+    }
+
 }

@@ -31,7 +31,7 @@
                     android:orientation="vertical"
                     >
 
-                    <include layout="@layout/edit_money_fragment" />
+                    <include android:id="@+id/edit_money" layout="@layout/edit_money_fragment" />
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewpager"
