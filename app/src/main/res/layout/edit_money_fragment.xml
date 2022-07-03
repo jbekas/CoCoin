@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
     android:orientation="vertical">
 
     <FrameLayout
@@ -49,13 +52,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top|center_horizontal"
-            android:clickable="false"
             android:contextClickable="false"
-            android:editable="false"
             android:gravity="right"
             android:inputType="none"
             android:maxLength="5"
             android:text="0"
+            app:met_textColor="@color/my_blue"
             android:textIsSelectable="false"
             android:textSize="60sp" />
 
