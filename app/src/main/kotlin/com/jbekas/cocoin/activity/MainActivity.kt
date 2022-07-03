@@ -160,10 +160,10 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
 
 // tag viewpager////////////////////////////////////////////////////////////////////////////////////
         tagViewPager = findViewById<View>(R.id.viewpager) as ViewPager
-        tagAdapter = if (RecordManager.TAGS.size % 8 == 0) TagChooseFragmentAdapter(
-            supportFragmentManager, RecordManager.TAGS.size / 8) else TagChooseFragmentAdapter(
-            supportFragmentManager, RecordManager.TAGS.size / 8 + 1)
-        tagViewPager!!.adapter = tagAdapter
+//        tagAdapter = if (RecordManager.TAGS.size % 8 == 0) TagChooseFragmentAdapter(
+//            supportFragmentManager, RecordManager.TAGS.size / 8) else TagChooseFragmentAdapter(
+//            supportFragmentManager, RecordManager.TAGS.size / 8 + 1)
+//        tagViewPager!!.adapter = tagAdapter
 
 // button grid view/////////////////////////////////////////////////////////////////////////////////
         myGridView = findViewById<View>(R.id.gridview) as MyGridView

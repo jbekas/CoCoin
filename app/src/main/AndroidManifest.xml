@@ -9,6 +9,17 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".NewMainActivity"
+            android:exported="true"
+            android:label="@string/title_activity_new_main"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activity.PinActivity"
             android:exported="false" />
         <activity
@@ -26,11 +37,10 @@
             android:theme="@style/AppThemeMain" />
         <activity
             android:name=".activity.AccountBookTodayViewActivity"
+            android:exported="false"
             android:label="@string/title_activity_account_book"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme"
-            android:exported="false">
-        </activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".activity.AccountBookCustomViewActivity"
             android:launchMode="singleTop" />

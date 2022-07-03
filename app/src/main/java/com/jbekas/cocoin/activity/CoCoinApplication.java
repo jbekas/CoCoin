@@ -6,6 +6,7 @@ import android.provider.Settings;
 import androidx.multidex.MultiDexApplication;
 
 import com.jbekas.cocoin.BuildConfig;
+import com.jbekas.cocoin.model.RecordManager;
 //import com.squareup.leakcanary.LeakCanary;
 //import com.squareup.leakcanary.RefWatcher;
 
@@ -38,6 +39,8 @@ public class CoCoinApplication extends MultiDexApplication {
         CoCoinApplication.mContext = getApplicationContext();
 
         setupTimber();
+
+        RecordManager.getInstance(this);
     }
 
     public static Context getAppContext() {

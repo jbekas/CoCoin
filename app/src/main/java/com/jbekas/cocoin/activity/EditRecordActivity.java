@@ -126,12 +126,13 @@ public class EditRecordActivity extends AppCompatActivity
         tagViewPager = (ViewPager)findViewById(R.id.viewpager);
         tagViewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-        if (RecordManager.TAGS.size() % 8 == 0)
-            tagAdapter = new TagChooseFragmentAdapter(getSupportFragmentManager(), RecordManager.TAGS.size() / 8);
-        else
-            tagAdapter = new TagChooseFragmentAdapter(getSupportFragmentManager(), RecordManager.TAGS.size() / 8 + 1);
-
-        tagViewPager.setAdapter(tagAdapter);
+        tagAdapter = new TagChooseFragmentAdapter(this, RecordManager.getNumberOfTagPages(8));
+//        if (RecordManager.TAGS.size() % 8 == 0)
+//            tagAdapter = new TagChooseFragmentAdapter(getSupportFragmentManager(), RecordManager.TAGS.size() / 8);
+//        else
+//            tagAdapter = new TagChooseFragmentAdapter(getSupportFragmentManager(), RecordManager.TAGS.size() / 8 + 1);
+//
+//        tagViewPager.setAdapter(tagAdapter);
         
         myGridView = (MyGridView)findViewById(R.id.gridview);
         myGridViewAdapter = new ButtonGridViewAdapter(this);

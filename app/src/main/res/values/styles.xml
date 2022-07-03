@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppThemeMain" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppThemeMain" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="AppBaseTheme" parent="@style/Theme.MaterialComponents.Light"></style>
+    <style name="AppBaseTheme" parent="@style/Theme.Material3.Light"></style>
 
-    <style name="EditRecordActivityStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="EditRecordActivityStyle" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/white</item>
     </style>
 
@@ -163,7 +163,7 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
-    <style name="MVP_AppBaseTheme" parent="@style/Theme.MaterialComponents.Light.NoActionBar"></style>
+    <style name="MVP_AppBaseTheme" parent="@style/Theme.Material3.Light.NoActionBar"></style>
 
     <!-- copied from MaterialViewPager start -->
     <!-- Base application theme. -->
