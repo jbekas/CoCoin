@@ -7,30 +7,20 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.jbekas.cocoin.NewMainActivity.Companion.NO_MONEY_TOAST
 import com.jbekas.cocoin.NewMainActivity.Companion.NO_TAG_TOAST
 import com.jbekas.cocoin.adapter.ButtonGridViewAdapter
 import com.jbekas.cocoin.adapter.TagChooseFragmentAdapter
 import com.jbekas.cocoin.databinding.FragmentAddEditRecordBinding
-import com.jbekas.cocoin.fragment.CoCoinFragmentManager
 import com.jbekas.cocoin.fragment.TagChooseFragment
 import com.jbekas.cocoin.model.CoCoinRecord
 import com.jbekas.cocoin.model.RecordManager
-import com.jbekas.cocoin.model.SettingManager
 import com.jbekas.cocoin.util.CoCoinUtil
 import timber.log.Timber
-import java.lang.Float
 import java.util.*
-import kotlin.Boolean
-import kotlin.Int
-import kotlin.let
-import kotlin.toString
 
 class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
 
@@ -39,10 +29,12 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
-    private var editAdapter: FragmentPagerAdapter? = null
     private var tagAdapter: FragmentStateAdapter? = null
     private var myGridViewAdapter: ButtonGridViewAdapter? = null
     private var isLoading = false
+
+    // TODO Pull out selected tag into a State object
+    private var tagId = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,47 +48,12 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.buttonFirst.setOnClickListener {
-//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-//        }
-
-        // edit viewpager///////////////////////////////////////////////////////////////////////////////////
-//        editViewPager = findViewById<View>(R.id.edit_pager) as CoCoinScrollableViewPager
-//        editAdapter = EditMoneyRemarkFragmentAdapter(fragmentManager,
-//            CoCoinFragmentManager.MAIN_ACTIVITY_FRAGMENT)
-//        binding.editPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-//            override fun onPageScrolled(
-//                position: Int,
-//                positionOffset: Float,
-//                positionOffsetPixels: Int,
-//            ) {
-//                if (position == 1) {
-//                    if (CoCoinFragmentManager.mainActivityEditRemarkFragment != null) CoCoinFragmentManager.mainActivityEditRemarkFragment.editRequestFocus()
-//                } else {
-//                    if (CoCoinFragmentManager.mainActivityEditMoneyFragment != null) CoCoinFragmentManager.mainActivityEditMoneyFragment.editRequestFocus()
-//                }
-//            }
-//
-//            override fun onPageSelected(position: Int) {}
-//            override fun onPageScrollStateChanged(state: Int) {}
-//        })
-//        binding.editPager.adapter = editAdapter
-
-        // tag viewpager////////////////////////////////////////////////////////////////////////////////////
-//        tagViewPager = findViewById<View>(R.id.viewpager) as ViewPager
-//        tagAdapter = if (RecordManager.TAGS.size % 8 == 0) TagChooseFragmentAdapter(
-//            fragmentManager, RecordManager.TAGS.size / 8) else TagChooseFragmentAdapter(
-//            fragmentManager, RecordManager.TAGS.size / 8 + 1)
+        // Tag selection
         tagAdapter = TagChooseFragmentAdapter(activity!!, this, RecordManager.getNumberOfTagPages(8))
         binding.viewpager.adapter = tagAdapter
         tagAdapter?.notifyDataSetChanged()
 
-        for (tag in RecordManager.TAGS) {
-            Timber.d(tag.toString())
-        }
-
-        // button grid view/////////////////////////////////////////////////////////////////////////////////
-        //myGridView = findViewById<View>(R.id.gridview) as MyGridView
+        // Custom Numeric keypad
         myGridViewAdapter = ButtonGridViewAdapter(activity)
         binding.gridview.adapter = myGridViewAdapter
         binding.gridview.onItemClickListener = gridViewClickListener
@@ -116,16 +73,16 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
     override fun onResume() {
         super.onResume()
 
-        if (SettingManager.getInstance().mainActivityTagShouldChange) {
-            // change the tag fragment
-            var i = 0
-            while (i < tagAdapter!!.itemCount && i < CoCoinFragmentManager.tagChooseFragments.size) {
-                if (CoCoinFragmentManager.tagChooseFragments[i] != null) CoCoinFragmentManager.tagChooseFragments[i].updateTags()
-                i++
-            }
-            // and tell others that main activity has changed
-            SettingManager.getInstance().mainActivityTagShouldChange = false
-        }
+//        if (SettingManager.getInstance().mainActivityTagShouldChange) {
+//            // change the tag fragment
+//            var i = 0
+//            while (i < tagAdapter!!.itemCount && i < CoCoinFragmentManager.tagChooseFragments.size) {
+//                if (CoCoinFragmentManager.tagChooseFragments[i] != null) CoCoinFragmentManager.tagChooseFragments[i].updateTags()
+//                i++
+//            }
+//            // and tell others that main activity has changed
+//            SettingManager.getInstance().mainActivityTagShouldChange = false
+//        }
     }
 
     override fun onDestroyView() {
@@ -196,7 +153,7 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
             val calendar = Calendar.getInstance()
             val coCoinRecord = CoCoinRecord(
                 -1,
-                Float.valueOf(binding.editMoney.money.text.toString()),
+                binding.editMoney.money.text.toString().toFloat(),
                 "RMB",
                 tagId,
                 calendar)
@@ -216,15 +173,18 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
         }
     }
 
-    private var tagId = -1
-    var tagImage: ImageView? = null
-    var tagName: TextView? = null
-
-
     override fun onTagItemPicked(position: Int) {
-        tagId = RecordManager.TAGS[position].id
-        binding.editMoney.tagName.text = CoCoinUtil.GetTagName(RecordManager.TAGS[position].id)
-        binding.editMoney.tagImage.setImageResource(CoCoinUtil.GetTagIcon(RecordManager.TAGS[position].id))
+        val newTagId = RecordManager.TAGS[position].id
+
+        if (tagId == newTagId) {
+            tagId = -1
+            binding.editMoney.tagName.text = ""
+            binding.editMoney.tagImage.setImageResource(R.color.transparent)
+        } else {
+            tagId = RecordManager.TAGS[position].id
+            binding.editMoney.tagName.text = CoCoinUtil.GetTagName(RecordManager.TAGS[position].id)
+            binding.editMoney.tagImage.setImageResource(CoCoinUtil.GetTagIcon(RecordManager.TAGS[position].id))
+        }
     }
 
     override fun onAnimationStart(id: Int) {
