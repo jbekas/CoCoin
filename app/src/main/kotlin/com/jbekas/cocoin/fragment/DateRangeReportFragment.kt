@@ -105,10 +105,16 @@ class DateRangeReportFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
+        (activity!! as AppCompatActivity).supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+            it.setHomeButtonEnabled(true)
+        }
+
         _binding = FragmentDateRangeReportBinding.inflate(inflater, container, false)
 
-//        setContentView(R.layout.activity_account_book_today_view)
         SuperToast.cancelAllSuperToasts()
 
         val view = binding.root
@@ -166,13 +172,6 @@ class DateRangeReportFragment : Fragment() {
             }
         }
 */
-        (activity!! as AppCompatActivity).supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setDisplayShowHomeEnabled(false)
-//            it.setDisplayShowTitleEnabled(true)
-//            it.setDisplayUseLogoEnabled(false)
-            it.setHomeButtonEnabled(true)
-        }
 
         mDrawerToggle = object : ActionBarDrawerToggle(activity!!, mDrawer, 0, 0) {
             override fun onDrawerClosed(view: View) {
