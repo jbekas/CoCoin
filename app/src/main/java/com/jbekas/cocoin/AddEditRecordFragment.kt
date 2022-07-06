@@ -158,7 +158,7 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
                 tagId,
                 calendar)
 //            coCoinRecord.remark = CoCoinFragmentManager.mainActivityEditRemarkFragment.remark
-            coCoinRecord.remark = "remark"
+            coCoinRecord.remark = ""
             val saveId = RecordManager.saveRecord(coCoinRecord)
             if (saveId == -1L) {
             } else {

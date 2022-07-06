@@ -23,8 +23,10 @@ import com.jbekas.cocoin.model.RecordManager
 import com.jbekas.cocoin.model.SettingManager
 import com.jbekas.cocoin.model.User
 import com.jbekas.cocoin.util.ToastUtil
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class NewMainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -57,14 +59,14 @@ class NewMainActivity : AppCompatActivity() {
             Timber.d("OnItemSelected, itemId: %d", item.itemId)
 
             when (item.itemId) {
-                R.id.action_FirstFragment_to_SecondFragment -> {
+                R.id.action_FirstFragment_to_ReportsFragment -> {
                     Timber.d(" NavigationBarView.OnItemSelectedListener")
-                    findNavController(R.id.bottom_navigation).navigate(R.id.action_FirstFragment_to_SecondFragment)
+                    findNavController(R.id.bottom_navigation).navigate(R.id.action_FirstFragment_to_ReportsFragment)
                     true
                 }
                 R.string.settings_fragment_label -> {
                     Timber.d(" NavigationBarView.OnItemSelectedListener")
-                    findNavController(R.id.bottom_navigation).navigate(R.id.action_FirstFragment_to_SecondFragment)
+                    findNavController(R.id.bottom_navigation).navigate(R.id.action_FirstFragment_to_ReportsFragment)
                     true
                 }
                 else -> {
@@ -105,11 +107,11 @@ class NewMainActivity : AppCompatActivity() {
                         navController.popBackStack(R.id.FirstFragment, false)
                         true
                     }
-                    R.id.page_2 -> {
-                        navController.navigate(R.id.action_FirstFragment_to_SecondFragment)
+                    R.id.reports_view -> {
+                        navController.navigate(R.id.ReportsFragment)
                         true
                     }
-                    R.id.page_3 -> {
+                    R.id.settings_view -> {
                         navController.navigate(R.id.SettingsFragment)
                         true
                     }

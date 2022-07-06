@@ -122,6 +122,11 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
 //        super.onBackPressed()
 //    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.profile_image -> changeLogo()

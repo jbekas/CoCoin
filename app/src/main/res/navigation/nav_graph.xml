@@ -12,14 +12,13 @@
         tools:layout="@layout/fragment_add_edit_record">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_FirstFragment_to_ReportsFragment"
+            app:destination="@id/ReportsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.jbekas.cocoin.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/ReportsFragment"
+        android:name="com.jbekas.cocoin.ReportsFragment"
+        android:label="@string/reports_label">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
@@ -30,5 +29,11 @@
         android:name="com.jbekas.cocoin.fragment.SettingsFragment"
         android:label="@string/settings_fragment_label"
         tools:layout="@layout/fragment_settings">
+    </fragment>
+    <fragment
+        android:id="@+id/DateRangeReportFragment"
+        android:name="com.jbekas.cocoin.fragment.DateRangeReportFragment"
+        android:label="@string/date_range_report_label"
+        tools:layout="@layout/fragment_date_range_report">
     </fragment>
 </navigation>
