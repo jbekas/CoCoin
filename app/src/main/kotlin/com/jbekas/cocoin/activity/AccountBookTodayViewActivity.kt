@@ -7,6 +7,7 @@ import android.os.Environment
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -792,9 +793,10 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
     }
 
     private fun loadSettings() {
-        Timber.d("SETTINGS")
-        val intent = Intent(this, AccountBookSettingActivity::class.java)
-        startActivity(intent)
+        Timber.e("TODO: When TodayView is converted to Fragment, hook up with nav controller.")
+        Toast.makeText(this, "Disabled", Toast.LENGTH_SHORT).show()
+        //val intent = Intent(this, AccountBookSettingActivity::class.java)
+        //startActivity(intent)
     }
 
     public override fun onResume() {

@@ -3,16 +3,16 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@android:drawable/btn_plus"
+        android:icon="@drawable/ic_baseline_add_24"
         android:title="@string/add_entry"/>
     <item
         android:id="@+id/page_2"
         android:enabled="true"
-        android:icon="@android:drawable/ic_btn_speak_now"
+        android:icon="@drawable/ic_baseline_description_24"
         android:title="@string/reports"/>
     <item
         android:id="@+id/page_3"
         android:enabled="true"
-        android:icon="@drawable/baby_icon"
+        android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/settings"/>
 </menu>

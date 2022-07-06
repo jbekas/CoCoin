@@ -53,10 +53,24 @@ class NewMainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        NavigationBarView.OnItemSelectedListener {
-            Timber.d(" NavigationBarView.OnItemSelectedListener")
-            findNavController(R.id.bottom_navigation).navigate(R.id.action_FirstFragment_to_SecondFragment)
-            true
+        NavigationBarView.OnItemSelectedListener { item ->
+            Timber.d("OnItemSelected, itemId: %d", item.itemId)
+
+            when (item.itemId) {
+                R.id.action_FirstFragment_to_SecondFragment -> {
+                    Timber.d(" NavigationBarView.OnItemSelectedListener")
+                    findNavController(R.id.bottom_navigation).navigate(R.id.action_FirstFragment_to_SecondFragment)
+                    true
+                }
+                R.string.settings_fragment_label -> {
+                    Timber.d(" NavigationBarView.OnItemSelectedListener")
+                    findNavController(R.id.bottom_navigation).navigate(R.id.action_FirstFragment_to_SecondFragment)
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
         }
         binding.bottomNavigation.setOnClickListener(View.OnClickListener {
             Timber.d("binding.bottomNavigation.setOnClickListener")
@@ -93,6 +107,10 @@ class NewMainActivity : AppCompatActivity() {
                     }
                     R.id.page_2 -> {
                         navController.navigate(R.id.action_FirstFragment_to_SecondFragment)
+                        true
+                    }
+                    R.id.page_3 -> {
+                        navController.navigate(R.id.SettingsFragment)
                         true
                     }
                     else -> false
