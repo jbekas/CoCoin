@@ -90,7 +90,7 @@ class ReportsFragment : Fragment() {
                 Spacer(modifier = Modifier.height(MarginDouble))
 
                 Button(
-                    onClick = { onTodayReportClicked() },
+                    onClick = { onCustomReportClicked() },
                     enabled = true,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -177,5 +177,10 @@ class ReportsFragment : Fragment() {
     fun onTodayReportClicked() {
         val navController = findNavController(this)
         navController.navigate(R.id.DateRangeReportFragment)
+    }
+
+    fun onCustomReportClicked() {
+        val navController = findNavController(this)
+        navController.navigate(R.id.CustomReportFragment)
     }
 }

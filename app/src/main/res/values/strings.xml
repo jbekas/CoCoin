@@ -578,6 +578,7 @@
     <string name="reports_label">Reports</string>
     <string name="settings_fragment_label">Settings</string>
     <string name="date_range_report_label">Date Range Reports</string>
+    <string name="custom_report_label">Custom Reports</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>

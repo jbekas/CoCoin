@@ -221,9 +221,10 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
 
         when (requestCode) {
             PIN_TAG -> if (resultCode == RESULT_OK) {
+                Timber.e("PIN_TAG is not enabled")
                 if (data?.getBooleanExtra(LOGIN_SUCCESSFUL, false) == true) {
-                    val intent = Intent(this, AccountBookTodayViewActivity::class.java)
-                    startActivityForResult(intent, SETTING_TAG)
+//                    val intent = Intent(this, AccountBookTodayViewActivity::class.java)
+//                    startActivityForResult(intent, SETTING_TAG)
                 }
             }
             SETTING_TAG -> if (resultCode == RESULT_OK) {

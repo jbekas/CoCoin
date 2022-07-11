@@ -1,6 +1,5 @@
 package com.jbekas.cocoin.fragment
 
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
@@ -36,10 +35,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jbekas.cocoin.BuildConfig
 import com.jbekas.cocoin.R
-import com.jbekas.cocoin.activity.AccountBookCustomViewActivity
-import com.jbekas.cocoin.activity.AccountBookListViewActivity
-import com.jbekas.cocoin.activity.AccountBookMonthViewActivity
-import com.jbekas.cocoin.activity.AccountBookTagViewActivity
 import com.jbekas.cocoin.activity.CoCoinApplication
 import com.jbekas.cocoin.adapter.TodayViewFragmentAdapter
 import com.jbekas.cocoin.databinding.FragmentDateRangeReportBinding
@@ -204,6 +199,7 @@ class DateRangeReportFragment : Fragment() {
         _binding = null
     }
 
+/*
     private fun loadRangeMode() {
         Timber.d("RANGE_MODE")
         val intent = Intent(activity!!, AccountBookCustomViewActivity::class.java)
@@ -227,6 +223,7 @@ class DateRangeReportFragment : Fragment() {
         val intent = Intent(activity!!, AccountBookListViewActivity::class.java)
         startActivity(intent)
     }
+*/
 
     private var syncSuccessNumber = 0
     private var syncFailedNumber = 0

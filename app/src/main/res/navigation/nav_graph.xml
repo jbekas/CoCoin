@@ -36,4 +36,10 @@
         android:label="@string/date_range_report_label"
         tools:layout="@layout/fragment_date_range_report">
     </fragment>
+    <fragment
+        android:id="@+id/CustomReportFragment"
+        android:name="com.jbekas.cocoin.fragment.CustomReportFragment"
+        android:label="@string/custom_report_label"
+        tools:layout="@layout/fragment_custom_report">
+    </fragment>
 </navigation>
