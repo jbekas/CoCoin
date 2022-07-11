@@ -102,16 +102,16 @@ public class DrawerMonthViewRecyclerViewAdapter
     @Override
     public void onBindViewHolder(final DMVviewHolder holder, final int position) {
         holder.month.setText(CoCoinUtil.GetMonthShort(months.get(position) + 1));
-        holder.month.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        holder.month.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         holder.year.setText(years.get(position) + "");
-        holder.year.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        holder.year.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         holder.sum.setText(CoCoinUtil.getInstance().GetInRecords(records.get(position)));
-        holder.sum.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        holder.sum.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         holder.money.setText(CoCoinUtil.getInstance().GetInMoney((int) (double) (expenses.get(position))));
-        holder.money.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        holder.money.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
     }
 
     public class DMVviewHolder extends RecyclerView.ViewHolder

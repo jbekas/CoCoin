@@ -104,7 +104,7 @@ class NewMainActivity : AppCompatActivity() {
 
                 when (item.itemId) {
                     R.id.page_1 -> {
-                        navController.popBackStack(R.id.FirstFragment, false)
+                        navController.popBackStack(R.id.AddEditRecordFragment, false)
                         true
                     }
                     R.id.reports_view -> {

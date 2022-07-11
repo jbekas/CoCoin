@@ -72,7 +72,7 @@ class TagChooseGridViewAdapter(
 
         holder.tagName!!.text =
             CoCoinUtil.GetTagName(RecordManager.TAGS[fragmentPosition * 8 + position + 2].id)
-        holder.tagName!!.setTypeface(CoCoinUtil.typefaceLatoLight)
+        //holder.tagName!!.setTypeface(CoCoinUtil.typefaceLatoLight)
         holder.tagImage!!.setImageResource(
             CoCoinUtil.GetTagIcon(RecordManager.TAGS[fragmentPosition * 8 + position + 2].id))
 

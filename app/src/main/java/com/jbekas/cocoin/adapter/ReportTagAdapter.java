@@ -49,9 +49,9 @@ public class ReportTagAdapter extends BaseAdapter {
         TextView expense = (TextView)convertView.findViewById(R.id.tag_expense);
         TextView records = (TextView)convertView.findViewById(R.id.tag_sum);
 
-        name.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        expense.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        records.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        name.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        expense.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        records.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         icon.setImageDrawable(CoCoinUtil.getInstance().GetTagIconDrawable((int)tagExpense.get(position + 1)[2]));
         name.setText(CoCoinUtil.getInstance().GetTagName((int)tagExpense.get(position + 1)[2]) + CoCoinUtil.getInstance().GetPurePercentString(tagExpense.get(position + 1)[1] * 100));

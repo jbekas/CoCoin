@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.daimajia.androidanimations.library.BaseViewAnimator;
 import com.jbekas.cocoin.BuildConfig;
@@ -406,18 +407,18 @@ public class CoCoinUtil {
             R.drawable.material_design_4
     };
 
-    public static Typeface typefaceLatoRegular = null;
-    public static Typeface typefaceLatoHairline = null;
-    public static Typeface typefaceLatoLight = null;
+//    public static Typeface typefaceLatoRegular = null;
+//    public static Typeface typefaceLatoHairline = null;
+//    public static Typeface typefaceLatoLight = null;
 
     public static void init(Context context) {
 
-        typefaceLatoRegular = Typeface.createFromAsset(
-                context.getAssets(), "fonts/Lato-Regular.ttf");
-        typefaceLatoHairline = Typeface.createFromAsset(
-                context.getAssets(), "fonts/Lato-Hairline.ttf");
-        typefaceLatoLight = Typeface.createFromAsset(
-                context.getAssets(), "fonts/LatoLatin-Light.ttf");
+//        typefaceLatoRegular = Typeface.createFromAsset(
+//                context.getAssets(), "fonts/Lato-Regular.ttf");
+//        typefaceLatoHairline = Typeface.createFromAsset(
+//                context.getAssets(), "fonts/Lato-Hairline.ttf");
+//        typefaceLatoLight = Typeface.createFromAsset(
+//                context.getAssets(), "fonts/LatoLatin-Light.ttf");
         relativeSizeSpan = new RelativeSizeSpan(2f);
         redForegroundSpan = new ForegroundColorSpan(Color.parseColor("#ff5252"));
         greenForegroundSpan = new ForegroundColorSpan(Color.parseColor("#4ca550"));
@@ -433,12 +434,7 @@ public class CoCoinUtil {
     }
 
     public static Typeface GetTypeface() {
-        if (typefaceLatoLight == null) init(CoCoinApplication.getAppContext());
-        if ("en".equals(Locale.getDefault().getLanguage()))
-            return typefaceLatoLight;
-        if ("zh".equals(Locale.getDefault().getLanguage()))
-            return Typeface.DEFAULT;
-        return typefaceLatoLight;
+        return ResourcesCompat.getFont(CoCoinApplication.getAppContext(), R.font.lato);
     }
 
     public static String GetLanguage() {
@@ -1188,7 +1184,8 @@ public class CoCoinUtil {
     private static CoCoinUtil ourInstance = new CoCoinUtil();
 
     public static CoCoinUtil getInstance() {
-        if (ourInstance == null || typefaceLatoLight == null || typefaceLatoHairline == null) {
+//        if (ourInstance == null || typefaceLatoLight == null || typefaceLatoHairline == null) {
+        if (ourInstance == null) {
             ourInstance = new CoCoinUtil();
             init(CoCoinApplication.getAppContext());
         }

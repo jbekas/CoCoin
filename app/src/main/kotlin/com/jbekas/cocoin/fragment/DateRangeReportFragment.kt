@@ -120,44 +120,6 @@ class DateRangeReportFragment : Fragment() {
         val view = binding.root
 
         mViewPager = view.findViewById<View>(R.id.today_view_pager) as ViewPager2
-//        userName = view.findViewById<View>(R.id.user_name) as TextView
-//        userEmail = view.findViewById<View>(R.id.user_email) as TextView
-//        userName!!.typeface = CoCoinUtil.typefaceLatoRegular
-//        userEmail!!.typeface = CoCoinUtil.typefaceLatoLight
-//        val user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User::class.java)
-//        if (user != null) {
-//            userName!!.text = user.username
-//            userEmail!!.text = user.email
-//        }
-
-//        setFonts()
-
-//        toolbar = view.findViewById<View>(R.id.toolbar) as Toolbar
-//        mDrawer = view.findViewById<View>(R.id.drawer_layout) as DrawerLayout
-//        custom = mDrawer!!.findViewById<View>(R.id.custom_layout) as MaterialRippleLayout
-//        tags = mDrawer!!.findViewById<View>(R.id.tag_layout) as MaterialRippleLayout
-//        months = mDrawer!!.findViewById<View>(R.id.month_layout) as MaterialRippleLayout
-//        list = mDrawer!!.findViewById<View>(R.id.list_layout) as MaterialRippleLayout
-//        report = mDrawer!!.findViewById<View>(R.id.report_layout) as MaterialRippleLayout
-//        sync = mDrawer!!.findViewById<View>(R.id.sync_layout) as MaterialRippleLayout
-//        settings = mDrawer!!.findViewById<View>(R.id.settings_layout) as MaterialRippleLayout
-//        help = mDrawer!!.findViewById<View>(R.id.help_layout) as MaterialRippleLayout
-//        feedback = mDrawer!!.findViewById<View>(R.id.feedback_layout) as MaterialRippleLayout
-//        about = mDrawer!!.findViewById<View>(R.id.about_layout) as MaterialRippleLayout
-//        syncIcon = mDrawer!!.findViewById<View>(R.id.sync_icon) as MaterialIconView
-//        setIconEnable(syncIcon, SettingManager.getInstance().loggenOn)
-//        monthExpenseTip = mDrawer!!.findViewById<View>(R.id.month_expense_tip) as TextView
-//        monthExpenseTip!!.typeface = CoCoinUtil.GetTypeface()
-//        monthExpense = mDrawer!!.findViewById<View>(R.id.month_expense) as RiseNumberTextView
-//        monthExpense!!.typeface = CoCoinUtil.typefaceLatoLight
-//        if (SettingManager.getInstance().isMonthLimit) {
-//            monthExpenseTip!!.visibility = View.VISIBLE
-//            monthExpense!!.text = "0"
-//        } else {
-//            monthExpenseTip!!.visibility = View.INVISIBLE
-//            monthExpense!!.visibility = View.INVISIBLE
-//        }
-
 /*
         toolbar?.let { toolbar ->
 //            toolbar.title = SettingManager.getInstance().accountBookName
@@ -236,15 +198,8 @@ class DateRangeReportFragment : Fragment() {
         return binding.root
     }
 
-    override fun onStop() {
-//        mDemoSlider!!.stopAutoCycle()
-        super.onStop()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-
-//        toolbar?.title = ""
 
         _binding = null
     }
@@ -847,13 +802,15 @@ class DateRangeReportFragment : Fragment() {
             SettingManager.getInstance().recordIsUpdated = false
         }
         if (SettingManager.getInstance().todayViewMonthExpenseShouldChange) {
+            Timber.w("todayViewMonthExpenseShouldChange is set to true")
+            Timber.w("isMonthLimit: ${SettingManager.getInstance().isMonthLimit}")
             if (SettingManager.getInstance().isMonthLimit) {
-                monthExpenseTip!!.visibility = View.VISIBLE
-                monthExpense!!.withNumber(
-                    RecordManager.getCurrentMonthExpense()).setDuration(500).start()
+                monthExpenseTip?.visibility = View.VISIBLE
+                monthExpense?.withNumber(
+                    RecordManager.getCurrentMonthExpense())?.setDuration(500)?.start()
             } else {
-                monthExpenseTip!!.visibility = View.INVISIBLE
-                monthExpense!!.visibility = View.INVISIBLE
+                monthExpenseTip?.visibility = View.INVISIBLE
+                monthExpense?.visibility = View.INVISIBLE
             }
         }
         if (SettingManager.getInstance().todayViewLogoShouldChange) {
@@ -893,29 +850,6 @@ class DateRangeReportFragment : Fragment() {
 //        }
 //        super.onBackPressed()
 //    }
-
-/*
-    private fun setFonts() {
-        val view = binding.root
-
-        userName!!.typeface = CoCoinUtil.typefaceLatoRegular
-        userEmail!!.typeface = CoCoinUtil.typefaceLatoLight
-        (view.findViewById<View>(R.id.custom_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (view.findViewById<View>(R.id.tag_text) as TextView).typeface =
-            CoCoinUtil.GetTypeface()
-        (view.findViewById<View>(R.id.month_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (view.findViewById<View>(R.id.list_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (view.findViewById<View>(R.id.report_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (view.findViewById<View>(R.id.sync_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (view.findViewById<View>(R.id.settings_text) as TextView).typeface =
-            CoCoinUtil.GetTypeface()
-        (view.findViewById<View>(R.id.help_text) as TextView).typeface =
-            CoCoinUtil.GetTypeface()
-        (view.findViewById<View>(R.id.feedback_text) as TextView).typeface =
-            CoCoinUtil.GetTypeface()
-        (view.findViewById<View>(R.id.about_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-    }
-*/
 
     private fun setListeners() {
 //        custom!!.setOnClickListener { loadRangeMode() }

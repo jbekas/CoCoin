@@ -305,10 +305,10 @@ public class TagViewRecyclerViewAdapter
                     holder.to.setText(
                             mContext.getResources().getString(R.string.to) + " " +
                                     endYear + " " + CoCoinUtil.GetMonthShort(endMonth));
-                    holder.to.setTypeface(CoCoinUtil.GetTypeface());
-                    holder.from.setTypeface(CoCoinUtil.GetTypeface());
+//                    holder.to.setTypeface(CoCoinUtil.GetTypeface());
+//                    holder.from.setTypeface(CoCoinUtil.GetTypeface());
                 }
-                holder.sum.setTypeface(CoCoinUtil.typefaceLatoLight);
+//                holder.sum.setTypeface(CoCoinUtil.typefaceLatoLight);
                 break;
             case TYPE_CELL:
                 int year = contents.get(position - 1).get(0).getCalendar().get(Calendar.YEAR);
@@ -318,8 +318,8 @@ public class TagViewRecyclerViewAdapter
                 final List<Column> columns;
                 ColumnChartData columnChartData;
                 final List<SliceValue> sliceValues;
-                holder.date.setTypeface(CoCoinUtil.GetTypeface());
-                holder.expanse.setTypeface(CoCoinUtil.GetTypeface());
+//                holder.date.setTypeface(CoCoinUtil.GetTypeface());
+//                holder.expanse.setTypeface(CoCoinUtil.GetTypeface());
                 switch (chartType) {
                     case PIE:
                         sliceValues = new ArrayList<>();
@@ -698,7 +698,7 @@ public class TagViewRecyclerViewAdapter
                             .textColor(Color.WHITE)
                             .textTypeface(CoCoinUtil.GetTypeface())
                             .actionLabel(mContext.getResources().getString(R.string.check))
-                            .actionLabelTypeface(CoCoinUtil.typefaceLatoLight)
+//                            .actionLabelTypeface(CoCoinUtil.typefaceLatoLight)
                             .actionColor(Color.WHITE);
             if (fragmentPosition == SUM_HISTOGRAM) {
                 if (type.get(position).equals(SHOW_IN_MONTH)) {
@@ -941,7 +941,7 @@ public class TagViewRecyclerViewAdapter
                             .text(text)
                             .textTypeface(CoCoinUtil.GetTypeface())
                             .textColor(Color.WHITE)
-                            .actionLabelTypeface(CoCoinUtil.typefaceLatoLight)
+//                            .actionLabelTypeface(CoCoinUtil.typefaceLatoLight)
                             .actionLabel(mContext.getResources().getString(R.string.check))
                             .actionColor(Color.WHITE)
                             .actionListener(new ActionClickListener() {

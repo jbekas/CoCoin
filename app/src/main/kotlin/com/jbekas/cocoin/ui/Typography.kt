@@ -1,90 +1,106 @@
 package com.jbekas.cocoin.ui
 
 import androidx.compose.material.Typography
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
 import com.jbekas.cocoin.R
 
-private val light = Font(R.font.lato_light, FontWeight.W300)
-private val regular = Font(R.font.lato_regular, FontWeight.W400)
-private val medium = Font(R.font.lato_medium, FontWeight.W500)
-private val semibold = Font(R.font.lato_bold, FontWeight.W600)
+@OptIn(ExperimentalTextApi::class)
+val provider = GoogleFont.Provider(
+    providerAuthority = "com.google.android.gms.fonts",
+    providerPackage = "com.google.android.gms",
+    certificates = R.array.com_google_android_gms_fonts_certs
+)
 
-private val craneFontFamily = FontFamily(fonts = listOf(light, regular, medium, semibold))
+@OptIn(ExperimentalTextApi::class)
+val fontName = GoogleFont("Lato")
+
+@OptIn(ExperimentalTextApi::class)
+private val light = Font(googleFont = fontName, weight = FontWeight.Light, fontProvider = provider)
+@OptIn(ExperimentalTextApi::class)
+private val regular = Font(googleFont = fontName, weight = FontWeight.Normal, fontProvider = provider)
+@OptIn(ExperimentalTextApi::class)
+private val medium = Font(googleFont = fontName, weight = FontWeight.Medium, fontProvider = provider)
+@OptIn(ExperimentalTextApi::class)
+private val bold = Font(googleFont = fontName, weight = FontWeight.Bold, fontProvider = provider)
+
+private val appFontFamily = FontFamily(fonts = listOf(light, regular, medium, bold))
 
 val captionTextStyle = TextStyle(
-    fontFamily = craneFontFamily,
+    fontFamily = appFontFamily,
     fontWeight = FontWeight.W400,
     fontSize = 16.sp
 )
 
 val cocoinTypography = Typography(
     h1 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W300,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Light,
         fontSize = 96.sp
     ),
     h2 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W400,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 60.sp
     ),
     h3 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W600,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 48.sp
     ),
     h4 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W600,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 34.sp
     ),
     h5 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W600,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 24.sp
     ),
     h6 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W400,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 20.sp
     ),
     subtitle1 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W500,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp
     ),
     subtitle2 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W600,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 14.sp
     ),
     body1 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W600,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 16.sp
     ),
     body2 = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W400,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
     button = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W600,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Bold,
         fontSize = 14.sp
     ),
     caption = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W500,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Medium,
         fontSize = 12.sp
     ),
     overline = TextStyle(
-        fontFamily = craneFontFamily,
-        fontWeight = FontWeight.W400,
+        fontFamily = appFontFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     )
 )

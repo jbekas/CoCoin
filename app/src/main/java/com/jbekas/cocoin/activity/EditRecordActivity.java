@@ -289,7 +289,7 @@ public class EditRecordActivity extends AppCompatActivity
 
                 superToast.setText(mContext.getResources().getString(R.string.toast_no_money));
                 superToast.setBackground(SuperToast.Background.BLUE);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             case SAVE_SUCCESSFULLY_TOAST:
@@ -297,14 +297,14 @@ public class EditRecordActivity extends AppCompatActivity
                 superToast.setText(
                         mContext.getResources().getString(R.string.toast_save_successfully));
                 superToast.setBackground(SuperToast.Background.GREEN);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             case SAVE_FAILED_TOAST:
 
                 superToast.setText(mContext.getResources().getString(R.string.toast_save_failed));
                 superToast.setBackground(SuperToast.Background.RED);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             default:

@@ -59,10 +59,10 @@ public class EditRecordFragment extends Fragment {
         editView = (MaterialEditText) mView.findViewById(R.id.money);
         tagImage = (ImageView) mView.findViewById(R.id.tag_image);
         tagName = (TextView) mView.findViewById(R.id.tag_name);
-        tagName.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        tagName.setTypeface(CoCoinUtil.typefaceLatoLight);
 
         if (fragmentPosition == 0) {
-            editView.setTypeface(CoCoinUtil.typefaceLatoHairline);
+//            editView.setTypeface(CoCoinUtil.typefaceLatoHairline);
             editView.setText("" + (int) RecordManager.RECORDS.get(CoCoinUtil.editRecordPosition).getMoney());
             editView.requestFocus();
             editView.setHelperText(CoCoinUtil.FLOATINGLABELS[editView.getText().toString().length()]);
@@ -73,7 +73,7 @@ public class EditRecordFragment extends Fragment {
 
             remarkEditView.setVisibility(View.GONE);
         } else {
-            remarkEditView.setTypeface(CoCoinUtil.GetTypeface());
+//            remarkEditView.setTypeface(CoCoinUtil.GetTypeface());
 
             remarkEditView.setText(RecordManager.RECORDS.get(CoCoinUtil.editRecordPosition).getRemark());
             int pos = remarkEditView.getText().length();

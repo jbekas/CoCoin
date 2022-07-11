@@ -126,7 +126,7 @@ public class CustomViewFragment extends Fragment {
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);
         superToast.setBackground(SuperToast.Background.RED);
-        superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//        superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class CustomViewFragment extends Fragment {
         fromDate.setTypeface(CoCoinUtil.GetTypeface());
 
         expense = (TextView)view.findViewById(R.id.expense);
-        expense.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        expense.setTypeface(CoCoinUtil.typefaceLatoLight);
         expense.setText(CoCoinUtil.GetInMoney(0));
 
         pie = (PieChartView)view.findViewById(R.id.chart_pie);

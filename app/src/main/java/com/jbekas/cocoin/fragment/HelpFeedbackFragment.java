@@ -80,13 +80,13 @@ public class HelpFeedbackFragment extends Fragment {
         MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
         title = (TextView) view.findViewById(R.id.title);
-        title.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        title.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         input = (EditText) view.findViewById(R.id.edittext);
-        input.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        input.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         help = (TextView) view.findViewById(R.id.helper);
-        help.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        help.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         number = (TextView) view.findViewById(R.id.number);
-        number.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        number.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         send = (TextView) view.findViewById(R.id.send);
         send.setOnClickListener(new View.OnClickListener() {
             @Override

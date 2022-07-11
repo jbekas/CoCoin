@@ -282,9 +282,9 @@ public class MonthViewRecyclerViewAdapter
 
         if (IS_EMPTY) {
             holder.expanseSum.setText("¥0");
-            holder.expanseSum.setTypeface(CoCoinUtil.typefaceLatoLight);
+//            holder.expanseSum.setTypeface(CoCoinUtil.typefaceLatoLight);
             holder.emptyTip.setText(mContext.getResources().getString(R.string.tag_empty));
-            holder.emptyTip.setTypeface(CoCoinUtil.GetTypeface());
+//            holder.emptyTip.setTypeface(CoCoinUtil.GetTypeface());
             holder.tags.setVisibility(View.GONE);
             holder.date.setVisibility(View.INVISIBLE);
             holder.pie.setVisibility(View.INVISIBLE);
@@ -295,10 +295,10 @@ public class MonthViewRecyclerViewAdapter
             holder.date.setText(dateStringList.get(position));
             holder.expanseSum.setText(CoCoinUtil.GetInMoney((int) (double) SumList.get(position)));
 
-            holder.date.setTypeface(CoCoinUtil.GetTypeface());
-            holder.expanseSum.setTypeface(CoCoinUtil.typefaceLatoLight);
+//            holder.date.setTypeface(CoCoinUtil.GetTypeface());
+//            holder.expanseSum.setTypeface(CoCoinUtil.typefaceLatoLight);
 
-            holder.tags.setTypeface(CoCoinUtil.typefaceLatoLight);
+//            holder.tags.setTypeface(CoCoinUtil.typefaceLatoLight);
             if ("zh".equals(CoCoinUtil.GetLanguage())) {
                 holder.tags.setText(" ● " + records + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_records) + tags + CoCoinApplication.getAppContext().getResources().getString(R.string.report_view_tags));
             } else {
@@ -307,7 +307,7 @@ public class MonthViewRecyclerViewAdapter
 
             if (SumList.get(position).equals(Double.valueOf(0))) {
                 holder.emptyTip.setVisibility(View.VISIBLE);
-                holder.emptyTip.setTypeface(CoCoinUtil.typefaceLatoLight);
+//                holder.emptyTip.setTypeface(CoCoinUtil.typefaceLatoLight);
             } else {
                 holder.emptyTip.setVisibility(View.GONE);
             }

@@ -235,14 +235,14 @@ public class TodayViewRecyclerViewAdapter
                 holder.dateBottom.setText(dateString);
                 holder.expanseSum.setText(CoCoinUtil.GetInMoney((int) Sum));
 
-                holder.date.setTypeface(CoCoinUtil.GetTypeface());
-                holder.dateBottom.setTypeface(CoCoinUtil.GetTypeface());
-                holder.expanseSum.setTypeface(CoCoinUtil.typefaceLatoLight);
+//                holder.date.setTypeface(CoCoinUtil.GetTypeface());
+//                holder.dateBottom.setTypeface(CoCoinUtil.GetTypeface());
+//                holder.expanseSum.setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 if (IS_EMPTY) {
                     holder.emptyTip.setVisibility(View.VISIBLE);
                     holder.emptyTip.setText(CoCoinUtil.GetTodayViewEmptyTip(fragmentPosition));
-                    holder.emptyTip.setTypeface(CoCoinUtil.GetTypeface());
+//                    holder.emptyTip.setTypeface(CoCoinUtil.GetTypeface());
 
                     holder.reset.setVisibility(View.GONE);
 
@@ -604,13 +604,13 @@ public class TodayViewRecyclerViewAdapter
                 holder.tagImage.setImageResource(
                         CoCoinUtil.GetTagIcon(allData.get(position - 1).getTag()));
                 holder.money.setText((int) allData.get(position - 1).getMoney() + "");
-                holder.money.setTypeface(CoCoinUtil.typefaceLatoLight);
+//                holder.money.setTypeface(CoCoinUtil.typefaceLatoLight);
                 holder.cell_date.setText(allData.get(position - 1).getCalendarString());
-                holder.cell_date.setTypeface(CoCoinUtil.typefaceLatoLight);
+//                holder.cell_date.setTypeface(CoCoinUtil.typefaceLatoLight);
                 holder.remark.setText(allData.get(position - 1).getRemark());
-                holder.remark.setTypeface(CoCoinUtil.typefaceLatoLight);
+//                holder.remark.setTypeface(CoCoinUtil.typefaceLatoLight);
                 holder.index.setText(position + "");
-                holder.index.setTypeface(CoCoinUtil.typefaceLatoLight);
+//                holder.index.setTypeface(CoCoinUtil.typefaceLatoLight);
                 holder.layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -100,8 +100,8 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
         mViewPager = findViewById<View>(R.id.today_view_pager) as ViewPager2
         userName = findViewById<View>(R.id.user_name) as TextView
         userEmail = findViewById<View>(R.id.user_email) as TextView
-        userName!!.typeface = CoCoinUtil.typefaceLatoRegular
-        userEmail!!.typeface = CoCoinUtil.typefaceLatoLight
+//        userName!!.typeface = CoCoinUtil.typefaceLatoRegular
+//        userEmail!!.typeface = CoCoinUtil.typefaceLatoLight
         val user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User::class.java)
         if (user != null) {
             userName!!.text = user.username
@@ -127,7 +127,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
         monthExpenseTip = mDrawer!!.findViewById<View>(R.id.month_expense_tip) as TextView
         monthExpenseTip!!.typeface = CoCoinUtil.GetTypeface()
         monthExpense = mDrawer!!.findViewById<View>(R.id.month_expense) as RiseNumberTextView
-        monthExpense!!.typeface = CoCoinUtil.typefaceLatoLight
+//        monthExpense!!.typeface = CoCoinUtil.typefaceLatoLight
         if (SettingManager.getInstance().isMonthLimit) {
             monthExpenseTip!!.visibility = View.VISIBLE
             monthExpense!!.text = "0"
@@ -863,8 +863,8 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
     }
 
     private fun setFonts() {
-        userName!!.typeface = CoCoinUtil.typefaceLatoRegular
-        userEmail!!.typeface = CoCoinUtil.typefaceLatoLight
+//        userName!!.typeface = CoCoinUtil.typefaceLatoRegular
+//        userEmail!!.typeface = CoCoinUtil.typefaceLatoLight
         (findViewById<View>(R.id.custom_text) as TextView).typeface = CoCoinUtil.GetTypeface()
         (findViewById<View>(R.id.tag_text) as TextView).typeface =
             CoCoinUtil.GetTypeface()

@@ -50,10 +50,10 @@ public class ReportMonthAdapter extends BaseAdapter {
         TextView expense = (TextView)convertView.findViewById(R.id.month_expense);
         TextView records = (TextView)convertView.findViewById(R.id.month_sum);
 
-        icon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        name.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        expense.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        records.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        icon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        name.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        expense.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        records.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         icon.setBackgroundResource(getBackgroundResource());
         icon.setText("" + ((int)highestMonthExpense.get(position + 1)[1] + 1));

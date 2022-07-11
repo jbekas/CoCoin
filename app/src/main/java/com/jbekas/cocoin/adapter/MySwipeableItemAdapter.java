@@ -152,13 +152,13 @@ public class MySwipeableItemAdapter
                 CoCoinUtil.GetTagIcon(record.getTag()));
         holder.date.setText(record.getCalendarString());
         holder.money.setText(String.valueOf((int) record.getMoney()));
-        holder.date.setTypeface(CoCoinUtil.typefaceLatoLight);
-        holder.money.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        holder.date.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        holder.money.setTypeface(CoCoinUtil.typefaceLatoLight);
         holder.money.setTextColor(ContextCompat.getColor(CoCoinApplication.getAppContext(), R.color.my_blue));
         holder.index.setText((position + 1) + "");
-        holder.index.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        holder.index.setTypeface(CoCoinUtil.typefaceLatoLight);
         holder.remark.setText(record.getRemark());
-        holder.remark.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        holder.remark.setTypeface(CoCoinUtil.typefaceLatoLight);
 
         // set background resource (target view ID: container)
         final int swipeState = holder.getSwipeStateFlags();

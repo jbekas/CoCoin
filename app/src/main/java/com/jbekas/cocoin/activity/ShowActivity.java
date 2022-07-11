@@ -113,7 +113,7 @@ public class ShowActivity extends AppCompatActivity {
 
         title = (TextView)findViewById(R.id.title);
         CoCoinUtil.init(mContext);
-        title.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        title.setTypeface(CoCoinUtil.typefaceLatoLight);
         title.setText(mContext.getResources().getString(R.string.app_name));
 
 //        mViewPager = (SCViewPager) findViewById(R.id.viewpager_main_activity);
@@ -167,7 +167,7 @@ public class ShowActivity extends AppCompatActivity {
         sc3.addPageAnimation(new SCPositionAnimation(this, 0, 0, -size.y));
         mViewPager.addAnimation(sc3);
 
-        ((TextView)findViewById(R.id.text_0)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        ((TextView)findViewById(R.id.text_0)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         SCViewAnimation sc4 = new SCViewAnimation(findViewById(R.id.text_0));
         sc4.addPageAnimation(new SCPositionAnimation(this, 0, -size.x, 0));
         mViewPager.addAnimation(sc4);
@@ -249,7 +249,7 @@ public class ShowActivity extends AppCompatActivity {
         sc7.addPageAnimation(new SCPositionAnimation(this, 1, 0, size.y));
         mViewPager.addAnimation(sc7);
 
-        ((TextView)findViewById(R.id.text_1)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        ((TextView)findViewById(R.id.text_1)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         SCViewAnimation sc8 = new SCViewAnimation(findViewById(R.id.text_1));
         sc8.startToPosition(size.x, null);
         sc8.addPageAnimation(new SCPositionAnimation(this, 0, -size.x, 0));
@@ -268,7 +268,7 @@ public class ShowActivity extends AppCompatActivity {
         sc10.addPageAnimation(new SCPositionAnimation(this, 2, 0, -size.y));
         mViewPager.addAnimation(sc10);
 
-        ((TextView)findViewById(R.id.text_2)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        ((TextView)findViewById(R.id.text_2)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         SCViewAnimation sc11 = new SCViewAnimation(findViewById(R.id.text_2));
         sc11.startToPosition(size.x, null);
         sc11.addPageAnimation(new SCPositionAnimation(this, 1, -size.x, 0));
@@ -293,7 +293,7 @@ public class ShowActivity extends AppCompatActivity {
         sc13.addPageAnimation(new SCPositionAnimation(this, 3, -size.x, 0));
         mViewPager.addAnimation(sc13);
 
-        ((TextView)findViewById(R.id.text_3)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        ((TextView)findViewById(R.id.text_3)).setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         SCViewAnimation sc14 = new SCViewAnimation(findViewById(R.id.text_3));
         sc14.startToPosition(size.x, null);
         sc14.addPageAnimation(new SCPositionAnimation(this, 2, -size.x, 0));
@@ -504,7 +504,7 @@ public class ShowActivity extends AppCompatActivity {
                 superToast.setText(
                         mContext.getResources().getString(R.string.toast_password_wrong));
                 superToast.setBackground(SuperToast.Background.RED);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             // password is different
@@ -513,7 +513,7 @@ public class ShowActivity extends AppCompatActivity {
                 superToast.setText(
                         mContext.getResources().getString(R.string.different_password));
                 superToast.setBackground(SuperToast.Background.RED);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             // success
@@ -522,7 +522,7 @@ public class ShowActivity extends AppCompatActivity {
                 superToast.setText(
                         mContext.getResources().getString(R.string.set_password_successfully));
                 superToast.setBackground(SuperToast.Background.GREEN);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             default:

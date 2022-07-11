@@ -23,6 +23,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.BmobUser
@@ -246,7 +247,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         if (user == null) {
             MaterialDialog.Builder(activity!!)
                 .iconRes(R.drawable.cocoin_logo)
-                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
                 .limitIconToDefaultSize() // limits the displayed icon size to 48dp
                 .title(R.string.login_first_title)
                 .content(R.string.login_first_content)
@@ -262,7 +263,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         }
         MaterialDialog.Builder(activity!!)
             .iconRes(R.drawable.cocoin_logo)
-            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
             .limitIconToDefaultSize() // limits the displayed icon size to 48dp
             .title(R.string.change_logo_title)
             .content(R.string.change_logo_content)
@@ -503,7 +504,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             // register or log on
             MaterialDialog.Builder(activity!!)
                 .iconRes(R.drawable.cocoin_logo)
-                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
                 .limitIconToDefaultSize() // limits the displayed icon size to 48dp
                 .title(R.string.welcome)
                 .content(R.string.login_or_register)
@@ -524,7 +525,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             // log out or user operate
             MaterialDialog.Builder(activity!!)
                 .iconRes(R.drawable.cocoin_logo)
-                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
                 .limitIconToDefaultSize() // limits the displayed icon size to 48dp
                 .title(activity!!.resources.getString(R.string.hi)
                         + SettingManager.getInstance().userName)
@@ -561,7 +562,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     private fun userLogin() {
         loginDialog = MaterialDialog.Builder(activity!!)
             .title(R.string.go_login)
-            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
             .customView(R.layout.dialog_user_login, true)
             .build()
         val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -570,7 +571,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         loginDialogButton = loginDialogView!!.findViewById<View>(R.id.button) as MaterialButton
         //        loginDialogButton.isIndeterminateProgressMode();
 //        loginDialogButton.setProgress(0);
-        loginDialogButton!!.setTypeface(CoCoinUtil.GetTypeface())
         loginDialogButton!!.setOnClickListener {
             loginDialog!!.setCancelable(false)
             //                loginDialogButton.setProgress(1);
@@ -690,9 +690,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             loginDialog!!.getCustomView()!!.findViewById<View>(R.id.login_user_name_text) as TextView
         val userPasswordTV =
             loginDialog!!.getCustomView()!!.findViewById<View>(R.id.login_password_text) as TextView
-        userNameTV.setTypeface(CoCoinUtil.GetTypeface())
-        userPasswordTV.setTypeface(CoCoinUtil.GetTypeface())
-        loginUserName.setTypeface(CoCoinUtil.GetTypeface())
         loginUserName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -703,7 +700,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
 
             override fun afterTextChanged(s: Editable) {}
         })
-        loginPassword.setTypeface(CoCoinUtil.GetTypeface())
         loginPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -724,7 +720,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     private fun userRegister() {
         registerDialog = MaterialDialog.Builder(activity!!)
             .title(R.string.go_register)
-            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
             .customView(R.layout.dialog_user_register, true)
             .build()
         val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -732,7 +728,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         registerDialogView = registerDialog!!.getCustomView()
         registerDialogButton =
             registerDialogView!!.findViewById<View>(R.id.button) as MaterialButton
-        registerDialogButton!!.setTypeface(CoCoinUtil.GetTypeface())
         registerDialogButton!!.setOnClickListener {
             showToast(activity!!, "Register is currently disabled.", null, null)
             if (registerDialog != null) registerDialog!!.dismiss()
@@ -836,16 +831,12 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             .findViewById<View>(R.id.register_user_email_text) as TextView
         val userPasswordTV = registerDialog!!.getCustomView()!!
             .findViewById<View>(R.id.register_password_text) as TextView
-        userNameTV.setTypeface(CoCoinUtil.GetTypeface())
-        userEmailTV.setTypeface(CoCoinUtil.GetTypeface())
-        userPasswordTV.setTypeface(CoCoinUtil.GetTypeface())
         registerUserName = registerDialog!!.getCustomView()!!
             .findViewById<View>(R.id.register_user_name) as MaterialEditText
         registerUserEmail = registerDialog!!.getCustomView()!!
             .findViewById<View>(R.id.register_user_email) as MaterialEditText
         registerPassword = registerDialog!!.getCustomView()!!
             .findViewById<View>(R.id.register_password) as MaterialEditText
-        registerUserName.setTypeface(CoCoinUtil.GetTypeface())
         registerUserName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -861,7 +852,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
 
             override fun afterTextChanged(s: Editable) {}
         })
-        registerUserEmail.setTypeface(CoCoinUtil.GetTypeface())
         registerUserEmail.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -877,7 +867,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
 
             override fun afterTextChanged(s: Editable) {}
         })
-        registerPassword.setTypeface(CoCoinUtil.GetTypeface())
         registerPassword.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -900,7 +889,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     private fun changeAccountBookName() {
         MaterialDialog.Builder(activity!!)
             .theme(Theme.LIGHT)
-            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
             .title(R.string.set_account_book_dialog_title)
             .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS)
             .inputRange(1, 16)
@@ -960,14 +949,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
 //        back!!.setOnClickListener { finish() }
 //        logo = findViewById<View>(R.id.profile_image) as CircleImageView
 //        logo!!.setOnClickListener(this)
-          binding.userName.typeface = CoCoinUtil.typefaceLatoLight
-          binding.userEmail.typeface = CoCoinUtil.typefaceLatoLight
-          binding.loginButton.typeface = CoCoinUtil.typefaceLatoLight
           binding.loginButton.setOnClickListener { userOperator() }
-          binding.expense.typeface = CoCoinUtil.typefaceLatoLight
-          binding.records.typeface = CoCoinUtil.typefaceLatoLight
-          binding.expenseText.typeface = CoCoinUtil.GetTypeface()
-          binding.recordsText.typeface = CoCoinUtil.GetTypeface()
           binding.expense.withNumber(RecordManager.SUM).setDuration(1500).start()
           binding.records.withNumber(RecordManager.RECORDS.size).setDuration(1500).start()
           binding.monthColorType.setColorFilter(SettingManager.getInstance().remindColor, android.graphics.PorterDuff.Mode.SRC_IN)
@@ -981,7 +963,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             if (SettingManager.getInstance().isMonthLimit) {
                 MaterialDialog.Builder(activity!!)
                     .theme(Theme.LIGHT)
-                    .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                    .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
                     .title(R.string.set_month_expense_dialog_title)
                     .inputType(InputType.TYPE_CLASS_NUMBER)
                     .positiveText(R.string.submit)
@@ -1025,7 +1007,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             ) {
                 MaterialDialog.Builder(activity!!)
                     .theme(Theme.LIGHT)
-                    .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                    .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
                     .title(R.string.set_month_expense_dialog_title)
                     .inputType(InputType.TYPE_CLASS_NUMBER)
                     .positiveText(R.string.submit)
@@ -1067,26 +1049,12 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             SettingManager.getInstance().mainViewRemindColorShouldChange = true
             getRemindColorSelectDialog().show(childFragmentManager)
         }
-        binding.monthExpense.typeface = CoCoinUtil.typefaceLatoLight
-        binding.warningExpense.typeface = CoCoinUtil.typefaceLatoLight
-        binding.monthLimitText.typeface = CoCoinUtil.GetTypeface()
-        binding.warningExpenseText.typeface = CoCoinUtil.GetTypeface()
-        binding.monthExpenseText.typeface = CoCoinUtil.GetTypeface()
-        binding.monthColorRemindText.typeface = CoCoinUtil.GetTypeface()
-        binding.monthColorTypeText.typeface = CoCoinUtil.GetTypeface()
-        binding.monthForbiddenText.typeface = CoCoinUtil.GetTypeface()
         binding.accountBookNameLayout.setOnClickListener { changeAccountBookName() }
-        binding.accountBookName.typeface = CoCoinUtil.GetTypeface()
         binding.accountBookName.text = SettingManager.getInstance().accountBookName
-        binding.accountBookNameText.typeface = CoCoinUtil.GetTypeface()
         binding.changePasswordLayout.setOnClickListener { changePassword() }
-        binding.changePasswordText.typeface = CoCoinUtil.GetTypeface()
         binding.sortTagsLayout.setOnClickListener { sortTags() }
-        binding.sortTagsText.typeface = CoCoinUtil.GetTypeface()
         binding.whetherShowPictureButton.setOnCheckedChangeListener(this)
-        binding.whetherShowPictureText.typeface = CoCoinUtil.GetTypeface()
         binding.whetherShowCircleButton.setOnCheckedChangeListener(this)
-        binding.whetherShowCircleText.typeface = CoCoinUtil.GetTypeface()
         binding.updateLayout.setOnClickListener {
             showToast(activity!!,
                 activity!!.resources.getString(R.string.checking_update),
@@ -1095,10 +1063,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             val appUpdateManager = AppUpdateManager(activity)
             appUpdateManager.checkUpdateInfo(true)
         }
-        binding.updateText.typeface = CoCoinUtil.GetTypeface()
         binding.updateText.text =
             activity!!.resources.getString(R.string.current_version) + CoCoinUtil.GetCurrentVersion()
-        binding.updateTag.typeface = CoCoinUtil.GetTypeface()
         if (SettingManager.getInstance().canBeUpdated) {
             binding.updateTag.visibility = View.VISIBLE
         } else {
@@ -1216,7 +1182,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     private fun whetherSyncSettingsFromServer() {
         MaterialDialog.Builder(activity!!)
             .iconRes(R.drawable.cocoin_logo)
-            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
             .limitIconToDefaultSize() // limits the displayed icon size to 48dp
             .title(R.string.sync_dialog_title)
             .stackingBehavior(StackingBehavior.ALWAYS) //                .forceStacking(true)
@@ -1270,7 +1236,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
      ${getString(R.string.your_current_account_book_password_is)}${SettingManager.getInstance().password}
      """.trimIndent()
                     MaterialDialog.Builder(activity!!)
-                        .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                        .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
                         .limitIconToDefaultSize() // limits the displayed icon size to 48dp
                         .title(R.string.sync_to_local_successfully_dialog_title)
                         .content(getString(R.string.sync_to_local_successfully_dialog_content) + tip)
@@ -1461,7 +1427,6 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
                 superToast.background = SuperToast.Background.RED
             }
         }
-        superToast.textView.typeface = CoCoinUtil.GetTypeface()
         superToast.show()
     }
 }
