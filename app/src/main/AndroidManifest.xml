@@ -30,9 +30,6 @@
             android:name=".activity.AccountBookReportViewActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".activity.AccountBookTagViewActivity"
-            android:launchMode="singleTop" />
-        <activity
             android:name=".activity.AccountBookMonthViewActivity"
             android:launchMode="singleTop" />
         <activity

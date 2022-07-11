@@ -70,7 +70,9 @@ class ReportsFragment : Fragment() {
             contentAlignment = Alignment.TopCenter
         ) {
             Column(
-                modifier = Modifier.width(MaxTabletWidth).padding(top = 48.dp)
+                modifier = Modifier
+                    .width(MaxTabletWidth)
+                    .padding(top = 48.dp)
             ) {
                 Spacer(modifier = Modifier.height(MarginDouble))
 
@@ -105,7 +107,7 @@ class ReportsFragment : Fragment() {
                 Spacer(modifier = Modifier.height(MarginDouble))
 
                 Button(
-                    onClick = { onTodayReportClicked() },
+                    onClick = { onTagReportClicked() },
                     enabled = true,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -175,12 +177,14 @@ class ReportsFragment : Fragment() {
     }
 
     fun onTodayReportClicked() {
-        val navController = findNavController(this)
-        navController.navigate(R.id.DateRangeReportFragment)
+        findNavController(this).navigate(R.id.DateRangeReportFragment)
     }
 
     fun onCustomReportClicked() {
-        val navController = findNavController(this)
-        navController.navigate(R.id.CustomReportFragment)
+        findNavController(this).navigate(R.id.CustomReportFragment)
+    }
+
+    fun onTagReportClicked() {
+        findNavController(this).navigate(R.id.TagReportFragment)
     }
 }

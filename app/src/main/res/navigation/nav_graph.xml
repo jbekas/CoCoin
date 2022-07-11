@@ -42,4 +42,10 @@
         android:label="@string/custom_report_label"
         tools:layout="@layout/fragment_custom_report">
     </fragment>
+    <fragment
+        android:id="@+id/TagReportFragment"
+        android:name="com.jbekas.cocoin.fragment.TagReportFragment"
+        android:label="@string/tag_report_label"
+        tools:layout="@layout/fragment_tag_report">
+    </fragment>
 </navigation>
