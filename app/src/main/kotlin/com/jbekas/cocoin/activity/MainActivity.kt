@@ -11,15 +11,12 @@ import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import butterknife.BindView
 import butterknife.ButterKnife
 import cn.bmob.v3.Bmob
 import cn.bmob.v3.BmobUser
@@ -31,7 +28,7 @@ import com.github.johnpersano.supertoasts.SuperToast
 import com.jbekas.cocoin.R
 import com.jbekas.cocoin.adapter.ButtonGridViewAdapter
 import com.jbekas.cocoin.adapter.EditMoneyRemarkFragmentAdapter
-import com.jbekas.cocoin.adapter.TagChooseFragmentAdapter
+import com.jbekas.cocoin.databinding.ActivityMainBinding
 import com.jbekas.cocoin.fragment.CoCoinFragmentManager
 import com.jbekas.cocoin.fragment.TagChooseFragment
 import com.jbekas.cocoin.model.AppUpdateManager
@@ -88,22 +85,15 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
 
     private var appUpdateManager: AppUpdateManager? = null
 
-    @BindView(R.id.toolbar)
-    @JvmField
-    var toolbar: Toolbar? = null
-
-    @BindView(R.id.root)
-    @JvmField
-    var root: FrameLayout? = null
-
-    @BindView(R.id.content_hamburger)
-    @JvmField
-    var contentHamburger: View? = null
     private var sensorManager: SensorManager? = null
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        //setContentView(R.layout.activity_main)
         Bmob.initialize(CoCoinApplication.getAppContext(), CoCoin.APPLICATION_ID)
         //        CrashReport.initCrashReport(CoCoinApplication.getAppContext(), "900016815", false);
         RecordManager.getInstance(CoCoinApplication.getAppContext())
@@ -180,14 +170,14 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
                         ViewGroup.LayoutParams.FILL_PARENT, lastChild.bottom)
                 }
             })
-        ButterKnife.bind(this)
-        if (toolbar != null) {
-            setSupportActionBar(toolbar)
-            supportActionBar?.setTitle("")
-        }
-        toolbar!!.hideOverflowMenu()
+//        ButterKnife.bind(this)
+//        if (binding.toolbar != null) {
+//            setSupportActionBar(binding.toolbar)
+//            supportActionBar?.setTitle("")
+//        }
+//        binding.toolbar.hideOverflowMenu()
 
-        toolbar!!.setOnClickListener { v: View? ->
+        binding.toolbar.setOnClickListener { v: View? ->
             val intent = Intent(this, PinActivity::class.java)
             startActivityForResult(intent, PIN_TAG)
         }
@@ -361,7 +351,8 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
                 color = SuperToast.Background.BLUE)
             WELCOME_BACK -> ToastUtil.showToast(
                 context = this,
-                text = this.resources.getString(R.string.welcome_back, SettingManager.getInstance().userName),
+                text = this.resources.getString(R.string.welcome_back,
+                    SettingManager.getInstance().userName),
                 textColor = null,
                 color = SuperToast.Background.BLUE)
             else -> {}
@@ -389,11 +380,11 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
             // do something for phones running an SDK before lollipop
         }
         if (shouldChange) {
-            root!!.setBackgroundColor(SettingManager.getInstance().remindColor)
-            toolbar!!.setBackgroundColor(SettingManager.getInstance().remindColor)
+            binding.root.setBackgroundColor(SettingManager.getInstance().remindColor)
+            binding.toolbar.setBackgroundColor(SettingManager.getInstance().remindColor)
         } else {
-            root!!.setBackgroundColor(CoCoinUtil.MY_BLUE)
-            toolbar!!.setBackgroundColor(CoCoinUtil.MY_BLUE)
+            binding.root.setBackgroundColor(CoCoinUtil.MY_BLUE)
+            binding.toolbar.setBackgroundColor(CoCoinUtil.MY_BLUE)
         }
         if (CoCoinFragmentManager.mainActivityEditMoneyFragment != null) CoCoinFragmentManager.mainActivityEditMoneyFragment.setEditColor(
             shouldChange)
