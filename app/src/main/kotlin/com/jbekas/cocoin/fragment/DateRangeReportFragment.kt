@@ -1,16 +1,19 @@
-package com.jbekas.cocoin.activity
+package com.jbekas.cocoin.fragment
 
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
+import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.BmobUser
@@ -26,25 +29,21 @@ import com.bmob.BmobProFile
 import com.bmob.btp.callback.DeleteFileListener
 import com.bmob.btp.callback.DownloadListener
 import com.bmob.btp.callback.UploadListener
-import com.daimajia.slider.library.Animations.DescriptionAnimation
-import com.daimajia.slider.library.Indicators.PagerIndicator
 import com.daimajia.slider.library.SliderLayout
-import com.daimajia.slider.library.SliderTypes.BaseSliderView
 import com.github.johnpersano.supertoasts.SuperToast
-import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jbekas.cocoin.BuildConfig
 import com.jbekas.cocoin.R
+import com.jbekas.cocoin.activity.CoCoinApplication
 import com.jbekas.cocoin.adapter.TodayViewFragmentAdapter
-import com.jbekas.cocoin.fragment.TodayViewFragment
+import com.jbekas.cocoin.databinding.FragmentDateRangeReportBinding
 import com.jbekas.cocoin.model.Logo
 import com.jbekas.cocoin.model.RecordManager
 import com.jbekas.cocoin.model.SettingManager
 import com.jbekas.cocoin.model.TaskManager
 import com.jbekas.cocoin.model.UploadInfo
 import com.jbekas.cocoin.model.User
-import com.jbekas.cocoin.ui.CustomSliderView
 import com.jbekas.cocoin.ui.MyQuery
 import com.jbekas.cocoin.ui.RiseNumberTextView
 import com.jbekas.cocoin.util.CoCoinUtil
@@ -65,11 +64,17 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
-class AccountBookTodayViewActivity : AppCompatActivity() {
+class DateRangeReportFragment : Fragment() {
+
+    private var _binding: FragmentDateRangeReportBinding? = null
+
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
     private var mViewPager: ViewPager2? = null
     private var mDrawer: DrawerLayout? = null
     private var mDrawerToggle: ActionBarDrawerToggle? = null
-    private var toolbar: MaterialToolbar? = null
+    private var toolbar: Toolbar? = null
     private var todayModeAdapter: TodayViewFragmentAdapter? = null
 
     private var custom: MaterialRippleLayout? = null
@@ -91,55 +96,31 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
     private var profileImage: CircleImageView? = null
     private var mDemoSlider: SliderLayout? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account_book_today_view)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        (activity!! as AppCompatActivity).supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+            it.setHomeButtonEnabled(true)
+        }
+
+        _binding = FragmentDateRangeReportBinding.inflate(inflater, container, false)
+
         SuperToast.cancelAllSuperToasts()
 
-        mViewPager = findViewById<View>(R.id.today_view_pager) as ViewPager2
-        userName = findViewById<View>(R.id.user_name) as TextView
-        userEmail = findViewById<View>(R.id.user_email) as TextView
-        userName!!.typeface = CoCoinUtil.typefaceLatoRegular
-        userEmail!!.typeface = CoCoinUtil.typefaceLatoLight
-        val user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User::class.java)
-        if (user != null) {
-            userName!!.text = user.username
-            userEmail!!.text = user.email
-        }
+        val view = binding.root
 
-        setFonts()
-
-        toolbar = findViewById<View>(R.id.toolbar) as MaterialToolbar
-        mDrawer = findViewById<View>(R.id.drawer_layout) as DrawerLayout
-        custom = mDrawer!!.findViewById<View>(R.id.custom_layout) as MaterialRippleLayout
-        tags = mDrawer!!.findViewById<View>(R.id.tag_layout) as MaterialRippleLayout
-        months = mDrawer!!.findViewById<View>(R.id.month_layout) as MaterialRippleLayout
-        list = mDrawer!!.findViewById<View>(R.id.list_layout) as MaterialRippleLayout
-        report = mDrawer!!.findViewById<View>(R.id.report_layout) as MaterialRippleLayout
-        sync = mDrawer!!.findViewById<View>(R.id.sync_layout) as MaterialRippleLayout
-        settings = mDrawer!!.findViewById<View>(R.id.settings_layout) as MaterialRippleLayout
-        help = mDrawer!!.findViewById<View>(R.id.help_layout) as MaterialRippleLayout
-        feedback = mDrawer!!.findViewById<View>(R.id.feedback_layout) as MaterialRippleLayout
-        about = mDrawer!!.findViewById<View>(R.id.about_layout) as MaterialRippleLayout
-        syncIcon = mDrawer!!.findViewById<View>(R.id.sync_icon) as MaterialIconView
-        setIconEnable(syncIcon, SettingManager.getInstance().loggenOn)
-        monthExpenseTip = mDrawer!!.findViewById<View>(R.id.month_expense_tip) as TextView
-        monthExpenseTip!!.typeface = CoCoinUtil.GetTypeface()
-        monthExpense = mDrawer!!.findViewById<View>(R.id.month_expense) as RiseNumberTextView
-        monthExpense!!.typeface = CoCoinUtil.typefaceLatoLight
-        if (SettingManager.getInstance().isMonthLimit) {
-            monthExpenseTip!!.visibility = View.VISIBLE
-            monthExpense!!.text = "0"
-        } else {
-            monthExpenseTip!!.visibility = View.INVISIBLE
-            monthExpense!!.visibility = View.INVISIBLE
-        }
-
+        mViewPager = view.findViewById<View>(R.id.today_view_pager) as ViewPager2
+/*
         toolbar?.let { toolbar ->
-            toolbar.title = SettingManager.getInstance().accountBookName
+//            toolbar.title = SettingManager.getInstance().accountBookName
 
-            setSupportActionBar(toolbar)
-            supportActionBar?.let {
+            (activity!! as AppCompatActivity).setSupportActionBar(toolbar)
+            (activity!! as AppCompatActivity).supportActionBar?.let {
                 it.setDisplayHomeAsUpEnabled(true)
                 it.setDisplayShowHomeEnabled(true)
                 it.setDisplayShowTitleEnabled(true)
@@ -147,8 +128,9 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                 it.setHomeButtonEnabled(true)
             }
         }
+*/
 
-        mDrawerToggle = object : ActionBarDrawerToggle(this, mDrawer, 0, 0) {
+        mDrawerToggle = object : ActionBarDrawerToggle(activity!!, mDrawer, 0, 0) {
             override fun onDrawerClosed(view: View) {
                 super.onDrawerClosed(view)
                 monthExpense!!.text = "0"
@@ -160,15 +142,15 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                     RecordManager.getCurrentMonthExpense()).setDuration(500).start()
             }
         }
-        mDrawer!!.setDrawerListener(mDrawerToggle)
-        val logo = findViewById<View>(R.id.logo_white)
-        logo?.setOnClickListener {
-            Timber.e("onClick not implemented.")
-        }
-        todayModeAdapter = TodayViewFragmentAdapter(this)
+//        mDrawer!!.setDrawerListener(mDrawerToggle)
+//        val logo = view.findViewById<View>(R.id.logo_white)
+//        logo?.setOnClickListener {
+//            Timber.e("onClick not implemented.")
+//        }
+        todayModeAdapter = TodayViewFragmentAdapter(activity!!)
         mViewPager?.adapter = todayModeAdapter
 
-        val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
+        val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
         TabLayoutMediator(tabLayout, mViewPager!!) { tab, position ->
             tab.text = when (position) {
                 TodayViewFragment.TODAY -> getString(R.string.today_view_today)
@@ -185,60 +167,63 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
         }.attach()
 
         setListeners()
-        profileImage = mDrawer!!.findViewById<View>(R.id.profile_image) as CircleImageView
-        profileImage!!.setOnClickListener {
-            if (SettingManager.getInstance().loggenOn) {
-                showToast(this@AccountBookTodayViewActivity, R.string.change_logo_tip, null, null)
-            } else {
-                showToast(this@AccountBookTodayViewActivity, R.string.login_tip, null, null)
-            }
-        }
-        mDemoSlider = findViewById<View>(R.id.slider) as SliderLayout
-        val urls = CoCoinUtil.GetDrawerTopUrl()
-        for (name in urls.keys) {
-            val customSliderView = CustomSliderView(this)
-            // initialize a SliderLayout
-            customSliderView
-                .image(urls[name]!!).scaleType = BaseSliderView.ScaleType.Fit
-            mDemoSlider!!.addSlider(customSliderView)
-        }
-        mDemoSlider!!.setPresetTransformer(SliderLayout.Transformer.ZoomOut)
-        mDemoSlider!!.setCustomAnimation(DescriptionAnimation())
-        mDemoSlider!!.setDuration(4000)
-        mDemoSlider!!.setCustomIndicator(findViewById<View>(R.id.custom_indicator) as PagerIndicator)
-        loadLogo()
+//        profileImage = mDrawer!!.findViewById<View>(R.id.profile_image) as CircleImageView
+//        profileImage!!.setOnClickListener {
+//            if (SettingManager.getInstance().loggenOn) {
+//                showToast(activity!!, R.string.change_logo_tip, null, null)
+//            } else {
+//                showToast(activity!!, R.string.login_tip, null, null)
+//            }
+//        }
+//        mDemoSlider = view.findViewById<View>(R.id.slider) as SliderLayout
+//        val urls = CoCoinUtil.GetDrawerTopUrl()
+//        for (name in urls.keys) {
+//            val customSliderView = CustomSliderView(activity!!)
+//            // initialize a SliderLayout
+//            customSliderView
+//                .image(urls[name]!!).scaleType = BaseSliderView.ScaleType.Fit
+//            mDemoSlider!!.addSlider(customSliderView)
+//        }
+//        mDemoSlider!!.setPresetTransformer(SliderLayout.Transformer.ZoomOut)
+//        mDemoSlider!!.setCustomAnimation(DescriptionAnimation())
+//        mDemoSlider!!.setDuration(4000)
+//        mDemoSlider!!.setCustomIndicator(view.findViewById<View>(R.id.custom_indicator) as PagerIndicator)
+//        loadLogo()
 
-        Timber.d("onCreate has finished.")
+        return binding.root
     }
 
-    override fun onStop() {
-        mDemoSlider!!.stopAutoCycle()
-        super.onStop()
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
+/*
     private fun loadRangeMode() {
         Timber.d("RANGE_MODE")
-        val intent = Intent(this, AccountBookCustomViewActivity::class.java)
+        val intent = Intent(activity!!, AccountBookCustomViewActivity::class.java)
         startActivity(intent)
     }
 
     private fun loadTagMode() {
         Timber.d("TAG_MODE")
-        val intent = Intent(this, AccountBookTagViewActivity::class.java)
+        val intent = Intent(activity!!, AccountBookTagViewActivity::class.java)
         startActivity(intent)
     }
 
     private fun loadMonthMode() {
         Timber.d("MONTH_MODE")
-        val intent = Intent(this, AccountBookMonthViewActivity::class.java)
+        val intent = Intent(activity!!, AccountBookMonthViewActivity::class.java)
         startActivity(intent)
     }
 
     private fun loadListMode() {
         Timber.d("LIST_MODE")
-        val intent = Intent(this, AccountBookListViewActivity::class.java)
+        val intent = Intent(activity!!, AccountBookListViewActivity::class.java)
         startActivity(intent)
     }
+*/
 
     private var syncSuccessNumber = 0
     private var syncFailedNumber = 0
@@ -251,11 +236,11 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
     var syncProgressDialog: MaterialDialog? = null
     private fun sync() {
         if (!SettingManager.getInstance().loggenOn) {
-            showToast(this, R.string.login_tip, null, null)
+            showToast(activity!!, R.string.login_tip, null, null)
         } else {
             syncSuccessNumber = 0
             syncFailedNumber = 0
-            syncQueryDialog = MaterialDialog.Builder(this)
+            syncQueryDialog = MaterialDialog.Builder(activity!!)
                 .title(R.string.sync_querying_title)
                 .content(R.string.sync_querying_content)
                 .negativeText(R.string.cancel)
@@ -323,7 +308,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                     + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
                                 R.string.sync_choose_content))
                             syncChooseDialog =
-                                MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                                MaterialDialog.Builder(activity!!)
                                     .title(R.string.sync_choose_title)
                                     .content(content)
                                     .positiveText(R.string.sync_to_cloud)
@@ -338,7 +323,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                                 subContent =
                                                     CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
                                                         R.string.mobile_record_empty)
-                                                MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                                                MaterialDialog.Builder(activity!!)
                                                     .title(R.string.sync)
                                                     .content(subContent)
                                                     .positiveText(R.string.ok_1)
@@ -352,7 +337,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                                             + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
                                                         R.string.sure_to_cloud_1))
                                             }
-                                            MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                                            MaterialDialog.Builder(activity!!)
                                                 .title(R.string.sync)
                                                 .content(subContent)
                                                 .positiveText(R.string.ok_1)
@@ -360,12 +345,12 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                                 .onAny { dialog, which ->
                                                     if (which == DialogAction.POSITIVE) {
                                                         syncProgressDialog =
-                                                            MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                                                            MaterialDialog.Builder(activity!!)
                                                                 .title(R.string.syncing)
                                                                 .content(CoCoinUtil.GetString(
                                                                     CoCoinApplication.getAppContext(),
                                                                     R.string.uploading_0) + "1" + CoCoinUtil.GetString(
-                                                                    this@AccountBookTodayViewActivity,
+                                                                    activity!!,
                                                                     R.string.uploading_1))
                                                                 .progress(false,
                                                                     RecordManager.RECORDS.size,
@@ -496,7 +481,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                                                                         // upload successfully
                                                                                         syncProgressDialog?.dismiss()
                                                                                         MaterialDialog.Builder(
-                                                                                            this@AccountBookTodayViewActivity)
+                                                                                            activity!!)
                                                                                             .title(R.string.sync_completely_title)
                                                                                             .content(
                                                                                                 RecordManager.RECORDS.size.toString() + CoCoinUtil.GetString(
@@ -529,7 +514,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                                                                         // upload successfully
                                                                                         syncProgressDialog?.dismiss()
                                                                                         MaterialDialog.Builder(
-                                                                                            this@AccountBookTodayViewActivity)
+                                                                                            activity!!)
                                                                                             .title(R.string.sync_completely_title)
                                                                                             .content(
                                                                                                 RecordManager.RECORDS.size.toString() + CoCoinUtil.GetString(
@@ -578,7 +563,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                                 subContent =
                                                     CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
                                                         R.string.cloud_record_empty)
-                                                MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                                                MaterialDialog.Builder(activity!!)
                                                     .title(R.string.sync)
                                                     .content(subContent)
                                                     .positiveText(R.string.ok_1)
@@ -592,7 +577,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                                             + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
                                                         R.string.sure_to_mobile_1))
                                             }
-                                            MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                                            MaterialDialog.Builder(activity!!)
                                                 .title(R.string.sync)
                                                 .content(subContent)
                                                 .positiveText(R.string.ok_1)
@@ -600,7 +585,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                                 .onAny { dialog, which ->
                                                     if (which == DialogAction.POSITIVE) {
                                                         syncProgressDialog =
-                                                            MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                                                            MaterialDialog.Builder(activity!!)
                                                                 .title(R.string.syncing)
                                                                 .content(CoCoinUtil.GetString(
                                                                     CoCoinApplication.getAppContext(),
@@ -663,7 +648,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                                                                             Timber.d("Download successfully refresh completely")
                                                                             syncProgressDialog?.dismiss()
                                                                             MaterialDialog.Builder(
-                                                                                this@AccountBookTodayViewActivity)
+                                                                                activity!!)
                                                                                 .title(R.string.sync_completely_title)
                                                                                 .content(
                                                                                     cloudRecordNumber.toString() + CoCoinUtil.GetString(
@@ -707,7 +692,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
                         syncQueryDialog?.dismiss()
                         if (BuildConfig.DEBUG) Timber.d("Query: $msg")
                         if (syncQueryDialog != null) syncQueryDialog!!.dismiss()
-                        MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                        MaterialDialog.Builder(activity!!)
                             .title(R.string.sync_querying_fail_title)
                             .content(R.string.sync_querying_fail_content)
                             .positiveText(R.string.ok_1)
@@ -734,7 +719,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
         // upload failed
         if (BuildConfig.DEBUG) Timber.d("Upload database failed $code $msg")
         syncProgressDialog!!.dismiss()
-        MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+        MaterialDialog.Builder(activity!!)
             .title(R.string.sync_failed)
             .content(R.string.uploading_fail_0)
             .positiveText(R.string.ok_1)
@@ -746,7 +731,7 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
         // upload failed
         if (BuildConfig.DEBUG) Timber.d("Download database failed $code $msg")
         syncProgressDialog!!.dismiss()
-        MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+        MaterialDialog.Builder(activity!!)
             .title(R.string.sync_failed)
             .content(R.string.downloading_fail_0)
             .positiveText(R.string.ok_1)
@@ -761,15 +746,15 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
             if (syncSuccessNumber == RecordManager.RECORDS.size) {
                 syncProgressDialog!!.setContent(R.string.sync_completely_content)
             } else {
-                syncProgressDialog!!.setContent(CoCoinUtil.GetString(this@AccountBookTodayViewActivity,
-                    R.string.uploading_0) + (syncSuccessNumber + 1) + CoCoinUtil.GetString(this@AccountBookTodayViewActivity,
+                syncProgressDialog!!.setContent(CoCoinUtil.GetString(activity!!,
+                    R.string.uploading_0) + (syncSuccessNumber + 1) + CoCoinUtil.GetString(activity!!,
                     R.string.uploading_1))
             }
             if (syncSuccessNumber + syncFailedNumber == RecordManager.RECORDS.size) {
                 syncProgressDialog!!.dismiss()
-                MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                MaterialDialog.Builder(activity!!)
                     .title(R.string.sync_completely_title)
-                    .content(syncSuccessNumber.toString() + CoCoinUtil.GetString(this@AccountBookTodayViewActivity,
+                    .content(syncSuccessNumber.toString() + CoCoinUtil.GetString(activity!!,
                         R.string.uploading_fail_1))
                     .positiveText(R.string.ok_1)
                     .show()
@@ -781,9 +766,9 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
             syncProgressDialog!!.incrementProgress(1)
             if (syncSuccessNumber + syncFailedNumber == RecordManager.RECORDS.size) {
                 syncProgressDialog!!.dismiss()
-                MaterialDialog.Builder(this@AccountBookTodayViewActivity)
+                MaterialDialog.Builder(activity!!)
                     .title(R.string.sync_completely_title)
-                    .content(syncSuccessNumber.toString() + CoCoinUtil.GetString(this@AccountBookTodayViewActivity,
+                    .content(syncSuccessNumber.toString() + CoCoinUtil.GetString(activity!!,
                         R.string.uploading_fail_1))
                     .positiveText(R.string.ok_1)
                     .show()
@@ -792,9 +777,10 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
     }
 
     private fun loadSettings() {
-        Timber.d("SETTINGS")
-        val intent = Intent(this, AccountBookSettingActivity::class.java)
-        startActivity(intent)
+        Timber.e("TODO: When TodayView is converted to Fragment, hook up with nav controller.")
+        Toast.makeText(activity!!, "Disabled", Toast.LENGTH_SHORT).show()
+        //val intent = Intent(this, AccountBookSettingActivity::class.java)
+        //startActivity(intent)
     }
 
     public override fun onResume() {
@@ -813,95 +799,78 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
             SettingManager.getInstance().recordIsUpdated = false
         }
         if (SettingManager.getInstance().todayViewMonthExpenseShouldChange) {
+            Timber.w("todayViewMonthExpenseShouldChange is set to true")
+            Timber.w("isMonthLimit: ${SettingManager.getInstance().isMonthLimit}")
             if (SettingManager.getInstance().isMonthLimit) {
-                monthExpenseTip!!.visibility = View.VISIBLE
-                monthExpense!!.withNumber(
-                    RecordManager.getCurrentMonthExpense()).setDuration(500).start()
+                monthExpenseTip?.visibility = View.VISIBLE
+                monthExpense?.withNumber(
+                    RecordManager.getCurrentMonthExpense())?.setDuration(500)?.start()
             } else {
-                monthExpenseTip!!.visibility = View.INVISIBLE
-                monthExpense!!.visibility = View.INVISIBLE
+                monthExpenseTip?.visibility = View.INVISIBLE
+                monthExpense?.visibility = View.INVISIBLE
             }
         }
         if (SettingManager.getInstance().todayViewLogoShouldChange) {
             loadLogo()
             SettingManager.getInstance().todayViewLogoShouldChange = false
         }
-        if (SettingManager.getInstance().todayViewInfoShouldChange) {
-            setIconEnable(syncIcon, SettingManager.getInstance().loggenOn)
-            val user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User::class.java)
-            if (user != null) {
-                userName!!.text = user.username
-                userEmail!!.text = user.email
-                loadLogo()
-            } else {
-                userName!!.text = ""
-                userEmail!!.text = ""
-                loadLogo()
-            }
-            SettingManager.getInstance().todayViewInfoShouldChange = false
-        }
+//        if (SettingManager.getInstance().todayViewInfoShouldChange) {
+//            setIconEnable(syncIcon, SettingManager.getInstance().loggenOn)
+//            val user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User::class.java)
+//            if (user != null) {
+//                userName!!.text = user.username
+//                userEmail!!.text = user.email
+//                loadLogo()
+//            } else {
+//                userName!!.text = ""
+//                userEmail!!.text = ""
+//                loadLogo()
+//            }
+//            SettingManager.getInstance().todayViewInfoShouldChange = false
+//        }
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        mDrawerToggle!!.syncState()
-    }
+//    override fun onPostCreate(savedInstanceState: Bundle?) {
+//        super.onPostCreate(savedInstanceState)
+//        mDrawerToggle!!.syncState()
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return mDrawerToggle!!.onOptionsItemSelected(item) ||
                 super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        if (mDrawer!!.isDrawerOpen(GravityCompat.START)) {
-            mDrawer!!.closeDrawers()
-            return
-        }
-        super.onBackPressed()
-    }
-
-    private fun setFonts() {
-        userName!!.typeface = CoCoinUtil.typefaceLatoRegular
-        userEmail!!.typeface = CoCoinUtil.typefaceLatoLight
-        (findViewById<View>(R.id.custom_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (findViewById<View>(R.id.tag_text) as TextView).typeface =
-            CoCoinUtil.GetTypeface()
-        (findViewById<View>(R.id.month_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (findViewById<View>(R.id.list_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (findViewById<View>(R.id.report_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (findViewById<View>(R.id.sync_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-        (findViewById<View>(R.id.settings_text) as TextView).typeface =
-            CoCoinUtil.GetTypeface()
-        (findViewById<View>(R.id.help_text) as TextView).typeface =
-            CoCoinUtil.GetTypeface()
-        (findViewById<View>(R.id.feedback_text) as TextView).typeface =
-            CoCoinUtil.GetTypeface()
-        (findViewById<View>(R.id.about_text) as TextView).typeface = CoCoinUtil.GetTypeface()
-    }
+//    override fun onBackPressed() {
+//        if (mDrawer!!.isDrawerOpen(GravityCompat.START)) {
+//            mDrawer!!.closeDrawers()
+//            return
+//        }
+//        super.onBackPressed()
+//    }
 
     private fun setListeners() {
-        custom!!.setOnClickListener { loadRangeMode() }
-        tags!!.setOnClickListener { loadTagMode() }
-        months!!.setOnClickListener { loadMonthMode() }
-        settings!!.setOnClickListener { loadSettings() }
-        list!!.setOnClickListener { loadListMode() }
-        report!!.setOnClickListener {
-            startActivity(Intent(this@AccountBookTodayViewActivity,
-                AccountBookReportViewActivity::class.java))
-        }
-        sync!!.setOnClickListener { sync() }
-        help!!.setOnClickListener {
-            startActivity(Intent(this@AccountBookTodayViewActivity,
-                HelpActivity::class.java))
-        }
-        feedback!!.setOnClickListener {
-            startActivity(Intent(this@AccountBookTodayViewActivity,
-                FeedbackActivity::class.java))
-        }
-        about!!.setOnClickListener {
-            startActivity(Intent(this@AccountBookTodayViewActivity,
-                AboutActivity::class.java))
-        }
+//        custom!!.setOnClickListener { loadRangeMode() }
+//        tags!!.setOnClickListener { loadTagMode() }
+//        months!!.setOnClickListener { loadMonthMode() }
+//        settings!!.setOnClickListener { loadSettings() }
+//        list!!.setOnClickListener { loadListMode() }
+//        report!!.setOnClickListener {
+//            startActivity(Intent(activity!!,
+//                AccountBookReportViewActivity::class.java))
+//        }
+//        sync!!.setOnClickListener { sync() }
+//        help!!.setOnClickListener {
+//            startActivity(Intent(activity!!,
+//                HelpActivity::class.java))
+//        }
+//        feedback!!.setOnClickListener {
+//            startActivity(Intent(activity!!,
+//                FeedbackActivity::class.java))
+//        }
+//        about!!.setOnClickListener {
+//            startActivity(Intent(activity!!,
+//                AboutActivity::class.java))
+//        }
     }
 
     private fun loadLogo() {
@@ -953,8 +922,8 @@ class AccountBookTodayViewActivity : AppCompatActivity() {
     }
 
     private fun setIconEnable(icon: MaterialIconView?, enable: Boolean) {
-        if (enable) icon!!.setColor(this@AccountBookTodayViewActivity.resources.getColor(R.color.my_blue)) else icon!!.setColor(
-            this@AccountBookTodayViewActivity.resources.getColor(R.color.my_gray))
+        if (enable) icon!!.setColor(this@DateRangeReportFragment.resources.getColor(R.color.my_blue)) else icon!!.setColor(
+            this@DateRangeReportFragment.resources.getColor(R.color.my_gray))
     }
 
     companion object {

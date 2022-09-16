@@ -86,9 +86,9 @@ public class SplashActivity extends Activity {
 
         image = (ImageView)findViewById(R.id.image);
         appName = (TextView)findViewById(R.id.app_name);
-        appName.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        appName.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         loadingText = (TextView)findViewById(R.id.loading_text);
-        loadingText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        loadingText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         reveal = (RevealFrameLayout)findViewById(R.id.reveal);
         ly = (LinearLayout)findViewById(R.id.ly);

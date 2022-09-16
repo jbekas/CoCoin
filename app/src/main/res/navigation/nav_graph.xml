@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/AddEditRecordFragment">
+
+    <fragment
+        android:id="@+id/AddEditRecordFragment"
+        android:name="com.jbekas.cocoin.AddEditRecordFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_add_edit_record">
+
+        <action
+            android:id="@+id/action_FirstFragment_to_ReportsFragment"
+            app:destination="@id/ReportsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ReportsFragment"
+        android:name="com.jbekas.cocoin.ReportsFragment"
+        android:label="@string/reports_label">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_AddEditRecordFragment"
+            app:destination="@id/AddEditRecordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.jbekas.cocoin.fragment.SettingsFragment"
+        android:label="@string/settings_fragment_label"
+        tools:layout="@layout/fragment_settings">
+    </fragment>
+    <fragment
+        android:id="@+id/DateRangeReportFragment"
+        android:name="com.jbekas.cocoin.fragment.DateRangeReportFragment"
+        android:label="@string/date_range_report_label"
+        tools:layout="@layout/fragment_date_range_report">
+    </fragment>
+    <fragment
+        android:id="@+id/CustomReportFragment"
+        android:name="com.jbekas.cocoin.fragment.CustomReportFragment"
+        android:label="@string/custom_report_label"
+        tools:layout="@layout/fragment_custom_report">
+    </fragment>
+    <fragment
+        android:id="@+id/TagReportFragment"
+        android:name="com.jbekas.cocoin.fragment.TagReportFragment"
+        android:label="@string/tag_report_label"
+        tools:layout="@layout/fragment_tag_report">
+    </fragment>
+</navigation>

@@ -42,7 +42,7 @@ public class CustomTitleSliderView extends BaseSliderView {
 
         title = (TextView)v.findViewById(R.id.title);
         title.setText(content);
-        title.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        title.setTypeface(CoCoinUtil.typefaceLatoLight);
 
         ImageView target = (ImageView)v.findViewById(R.id.daimajia_slider_image);
         bindEventAndShow(v, target);

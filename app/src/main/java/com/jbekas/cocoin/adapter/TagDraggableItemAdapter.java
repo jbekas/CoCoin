@@ -106,7 +106,7 @@ public class TagDraggableItemAdapter
 
         holder.tagImage.setImageResource(CoCoinUtil.GetTagIcon(tags.get(position).getId()));
         holder.tagName.setText(CoCoinUtil.GetTagName(tags.get(position).getId()));
-        holder.tagName.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        holder.tagName.setTypeface(CoCoinUtil.typefaceLatoLight);
 
         if (((dragState & Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
             int bgResId;

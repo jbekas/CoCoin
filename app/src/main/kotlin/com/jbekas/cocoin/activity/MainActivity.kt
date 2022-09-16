@@ -5,35 +5,27 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import butterknife.BindView
-import butterknife.ButterKnife
 import cn.bmob.v3.Bmob
 import cn.bmob.v3.BmobUser
 import com.afollestad.materialdialogs.MaterialDialog
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.github.johnpersano.supertoasts.SuperActivityToast
 import com.github.johnpersano.supertoasts.SuperToast
 import com.jbekas.cocoin.R
 import com.jbekas.cocoin.adapter.ButtonGridViewAdapter
 import com.jbekas.cocoin.adapter.EditMoneyRemarkFragmentAdapter
-import com.jbekas.cocoin.adapter.TagChooseFragmentAdapter
+import com.jbekas.cocoin.databinding.ActivityMainBinding
 import com.jbekas.cocoin.fragment.CoCoinFragmentManager
-import com.jbekas.cocoin.fragment.TagChooseFragment
 import com.jbekas.cocoin.model.AppUpdateManager
 import com.jbekas.cocoin.model.CoCoin
 import com.jbekas.cocoin.model.CoCoinRecord
@@ -41,8 +33,6 @@ import com.jbekas.cocoin.model.RecordManager
 import com.jbekas.cocoin.model.SettingManager
 import com.jbekas.cocoin.model.User
 import com.jbekas.cocoin.service.ToastService
-import com.jbekas.cocoin.ui.CoCoinScrollableViewPager
-import com.jbekas.cocoin.ui.MyGridView
 import com.jbekas.cocoin.util.CoCoinUtil
 import com.jbekas.cocoin.util.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +41,7 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedListener {
+class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var coCoinToast: ToastService
 
@@ -68,11 +58,10 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
     private var passwordTip: TextView? = null
     private var superToast: SuperToast? = null
     private var superActivityToast: SuperActivityToast? = null
-    private var myGridView: MyGridView? = null
     private var myGridViewAdapter: ButtonGridViewAdapter? = null
     private var inputPassword = ""
-    private var tagViewPager: ViewPager? = null
-    private var editViewPager: CoCoinScrollableViewPager? = null
+//    private var tagViewPager: ViewPager? = null
+//    private var editViewPager: CoCoinScrollableViewPager? = null
     private var tagAdapter: FragmentPagerAdapter? = null
     private var editAdapter: FragmentPagerAdapter? = null
     private var isLoading = false
@@ -88,24 +77,19 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
 
     private var appUpdateManager: AppUpdateManager? = null
 
-    @BindView(R.id.toolbar)
-    @JvmField
-    var toolbar: Toolbar? = null
-
-    @BindView(R.id.root)
-    @JvmField
-    var root: FrameLayout? = null
-
-    @BindView(R.id.content_hamburger)
-    @JvmField
-    var contentHamburger: View? = null
     private var sensorManager: SensorManager? = null
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
         Bmob.initialize(CoCoinApplication.getAppContext(), CoCoin.APPLICATION_ID)
+
         //        CrashReport.initCrashReport(CoCoinApplication.getAppContext(), "900016815", false);
+
         RecordManager.getInstance(CoCoinApplication.getAppContext())
         CoCoinUtil.init(CoCoinApplication.getAppContext())
         appUpdateManager = AppUpdateManager(this)
@@ -114,7 +98,6 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
         superToast = SuperToast(this)
         superActivityToast = SuperActivityToast(this, SuperToast.Type.PROGRESS_HORIZONTAL)
         val currentapiVersion = Build.VERSION.SDK_INT
-        Timber.d("Version number: %s", currentapiVersion)
         if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
             // Do something for lollipop and above versions
             val window = this.window
@@ -130,17 +113,13 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
             SettingManager.getInstance().userName = user.username
             SettingManager.getInstance().userEmail = user.email
             showToast(WELCOME_BACK)
-            // 允许用户使用应用
         } else {
             SettingManager.getInstance().loggenOn = false
-            //缓存用户对象为空时， 可打开用户注册界面…
         }
 
-// edit viewpager///////////////////////////////////////////////////////////////////////////////////
-        editViewPager = findViewById<View>(R.id.edit_pager) as CoCoinScrollableViewPager
         editAdapter = EditMoneyRemarkFragmentAdapter(supportFragmentManager,
             CoCoinFragmentManager.MAIN_ACTIVITY_FRAGMENT)
-        editViewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        binding.editPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -156,45 +135,29 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
             override fun onPageSelected(position: Int) {}
             override fun onPageScrollStateChanged(state: Int) {}
         })
-        editViewPager!!.adapter = editAdapter
+        binding.editPager.adapter = editAdapter
 
-// tag viewpager////////////////////////////////////////////////////////////////////////////////////
-        tagViewPager = findViewById<View>(R.id.viewpager) as ViewPager
-        tagAdapter = if (RecordManager.TAGS.size % 8 == 0) TagChooseFragmentAdapter(
-            supportFragmentManager, RecordManager.TAGS.size / 8) else TagChooseFragmentAdapter(
-            supportFragmentManager, RecordManager.TAGS.size / 8 + 1)
-        tagViewPager!!.adapter = tagAdapter
-
-// button grid view/////////////////////////////////////////////////////////////////////////////////
-        myGridView = findViewById<View>(R.id.gridview) as MyGridView
+        // Button grid view
+        val myGridView = binding.gridview
         myGridViewAdapter = ButtonGridViewAdapter(this)
-        myGridView!!.adapter = myGridViewAdapter
-        myGridView!!.onItemClickListener = gridViewClickListener
-        myGridView!!.onItemLongClickListener = gridViewLongClickListener
-        myGridView!!.viewTreeObserver.addOnGlobalLayoutListener(
+        myGridView.adapter = myGridViewAdapter
+        myGridView.onItemClickListener = gridViewClickListener
+        myGridView.onItemLongClickListener = gridViewLongClickListener
+        myGridView.viewTreeObserver.addOnGlobalLayoutListener(
             object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    myGridView!!.viewTreeObserver.removeGlobalOnLayoutListener(this)
-                    val lastChild = myGridView!!.getChildAt(myGridView!!.childCount - 1)
-                    myGridView!!.layoutParams = LinearLayout.LayoutParams(
+                    myGridView.viewTreeObserver.removeGlobalOnLayoutListener(this)
+                    val lastChild = myGridView.getChildAt(myGridView.childCount - 1)
+                    myGridView.layoutParams = LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.FILL_PARENT, lastChild.bottom)
                 }
             })
-        ButterKnife.bind(this)
-        if (toolbar != null) {
-            setSupportActionBar(toolbar)
-            supportActionBar?.setTitle("")
-        }
-        toolbar!!.hideOverflowMenu()
 
-        toolbar!!.setOnClickListener { v: View? ->
-            val intent = Intent(this, PinActivity::class.java)
-            startActivityForResult(intent, PIN_TAG)
-        }
         if (SettingManager.getInstance().firstTime) {
             val intent = Intent(this, ShowActivity::class.java)
             startActivity(intent)
         }
+
         if (SettingManager.getInstance().showMainActivityGuide) {
             val wrapInScrollView = true
             MaterialDialog.Builder(this)
@@ -214,30 +177,31 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
         true
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        Timber.d("requestCode: $requestCode, resultCode: $resultCode, data: $data")
-
-        when (requestCode) {
-            PIN_TAG -> if (resultCode == RESULT_OK) {
-                if (data?.getBooleanExtra(LOGIN_SUCCESSFUL, false) == true) {
-                    val intent = Intent(this, AccountBookTodayViewActivity::class.java)
-                    startActivityForResult(intent, SETTING_TAG)
-                }
-            }
-            SETTING_TAG -> if (resultCode == RESULT_OK) {
-                if (data!!.getBooleanExtra("IS_CHANGED", false)) {
-                    var i = 0
-                    while (i < tagAdapter!!.count && i < CoCoinFragmentManager.tagChooseFragments.size) {
-                        if (CoCoinFragmentManager.tagChooseFragments[i] != null) CoCoinFragmentManager.tagChooseFragments[i].updateTags()
-                        i++
-                    }
-                }
-            }
-            else -> {}
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        Timber.d("requestCode: $requestCode, resultCode: $resultCode, data: $data")
+//
+//        when (requestCode) {
+//            PIN_TAG -> if (resultCode == RESULT_OK) {
+//                Timber.e("PIN_TAG is not enabled")
+//                if (data?.getBooleanExtra(LOGIN_SUCCESSFUL, false) == true) {
+////                    val intent = Intent(this, AccountBookTodayViewActivity::class.java)
+////                    startActivityForResult(intent, SETTING_TAG)
+//                }
+//            }
+//            SETTING_TAG -> if (resultCode == RESULT_OK) {
+//                if (data!!.getBooleanExtra("IS_CHANGED", false)) {
+//                    var i = 0
+//                    while (i < tagAdapter!!.count && i < CoCoinFragmentManager.tagChooseFragments.size) {
+//                        if (CoCoinFragmentManager.tagChooseFragments[i] != null) CoCoinFragmentManager.tagChooseFragments[i].updateTags()
+//                        i++
+//                    }
+//                }
+//            }
+//            else -> {}
+//        }
+//    }
 
     private val gridViewClickListener =
         AdapterView.OnItemClickListener { parent, view, position, id ->
@@ -247,7 +211,7 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
         }
 
     private fun buttonClickOperation(longClick: Boolean, position: Int) {
-        if (editViewPager!!.currentItem == 1) return
+        if (binding.editPager.currentItem == 1) return
         if (CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString() == "0" && !CoCoinUtil.ClickButtonCommit(
                 position)
         ) {
@@ -317,9 +281,9 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
         }
     }
 
-    private fun tagAnimation() {
-        YoYo.with(Techniques.Shake).duration(1000).playOn(tagViewPager)
-    }
+//    private fun tagAnimation() {
+//        YoYo.with(Techniques.Shake).duration(1000).playOn(binding.editPager.tag)
+//    }
 
     private fun showToast(toastType: Int) {
         Timber.d("showToast: %d", toastType)
@@ -330,11 +294,11 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
                     textId = R.string.toast_no_tag,
                     textColor = null,
                     color = SuperToast.Background.RED)
-                tagAnimation()
+//                tagAnimation()
             }
             NO_MONEY_TOAST -> ToastUtil.showToast(
                 context = this,
-                textId = R.string.toast_no_money,
+                textId = R.string.toast_no_amount,
                 textColor = null,
                 color = SuperToast.Background.RED)
             PASSWORD_WRONG_TOAST -> ToastUtil.showToast(
@@ -360,7 +324,8 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
                 color = SuperToast.Background.BLUE)
             WELCOME_BACK -> ToastUtil.showToast(
                 context = this,
-                text = this.resources.getString(R.string.welcome_back, SettingManager.getInstance().userName),
+                text = this.resources.getString(R.string.welcome_back,
+                    SettingManager.getInstance().userName),
                 textColor = null,
                 color = SuperToast.Background.BLUE)
             else -> {}
@@ -388,11 +353,11 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
             // do something for phones running an SDK before lollipop
         }
         if (shouldChange) {
-            root!!.setBackgroundColor(SettingManager.getInstance().remindColor)
-            toolbar!!.setBackgroundColor(SettingManager.getInstance().remindColor)
+            binding.root.setBackgroundColor(SettingManager.getInstance().remindColor)
+            binding.toolbar.setBackgroundColor(SettingManager.getInstance().remindColor)
         } else {
-            root!!.setBackgroundColor(CoCoinUtil.MY_BLUE)
-            toolbar!!.setBackgroundColor(CoCoinUtil.MY_BLUE)
+            binding.root.setBackgroundColor(CoCoinUtil.MY_BLUE)
+            binding.toolbar.setBackgroundColor(CoCoinUtil.MY_BLUE)
         }
         if (CoCoinFragmentManager.mainActivityEditMoneyFragment != null) CoCoinFragmentManager.mainActivityEditMoneyFragment.setEditColor(
             shouldChange)
@@ -415,35 +380,27 @@ class MainActivity : AppCompatActivity(), TagChooseFragment.OnTagItemSelectedLis
     public override fun onResume() {
         super.onResume()
 
+
         // if the tags' order has been changed
-        if (SettingManager.getInstance().mainActivityTagShouldChange) {
-            // change the tag fragment
-            var i = 0
-            while (i < tagAdapter!!.count && i < CoCoinFragmentManager.tagChooseFragments.size) {
-                if (CoCoinFragmentManager.tagChooseFragments[i] != null) CoCoinFragmentManager.tagChooseFragments[i].updateTags()
-                i++
-            }
-            // and tell others that main activity has changed
-            SettingManager.getInstance().mainActivityTagShouldChange = false
-        }
+//        if (SettingManager.getInstance().mainActivityTagShouldChange) {
+//            // change the tag fragment
+//            var i = 0
+//            while (i < tagAdapter!!.count && i < CoCoinFragmentManager.tagChooseFragments.size) {
+//                if (CoCoinFragmentManager.tagChooseFragments[i] != null) CoCoinFragmentManager.tagChooseFragments[i].updateTags()
+//                i++
+//            }
+//            // and tell others that main activity has changed
+//            SettingManager.getInstance().mainActivityTagShouldChange = false
+//        }
 
         // if the title should be changed
-        if (SettingManager.getInstance().mainViewTitleShouldChange) {
-            menuToolBarTitle!!.text = SettingManager.getInstance().accountBookName
-            SettingManager.getInstance().mainViewTitleShouldChange = false
-        }
+//        if (SettingManager.getInstance().mainViewTitleShouldChange) {
+//            menuToolBarTitle!!.text = SettingManager.getInstance().accountBookName
+//            SettingManager.getInstance().mainViewTitleShouldChange = false
+//        }
         changeColor()
         isLoading = false
         inputPassword = ""
         System.gc()
-    }
-
-    override fun onTagItemPicked(position: Int) {
-        if (CoCoinFragmentManager.mainActivityEditMoneyFragment != null) CoCoinFragmentManager.mainActivityEditMoneyFragment.setTag(
-            tagViewPager!!.currentItem * 8 + position + 2)
-    }
-
-    override fun onAnimationStart(id: Int) {
-        // Todo add animation for changing tag
     }
 }

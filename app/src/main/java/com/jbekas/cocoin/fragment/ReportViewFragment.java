@@ -287,7 +287,7 @@ public class ReportViewFragment extends Fragment
         superToast.setTextColor(Color.parseColor("#ffffff"));
         superToast.setTextSize(SuperToast.TextSize.SMALL);
         superToast.setBackground(SuperToast.Background.RED);
-        superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//        superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
     }
 
     @Override
@@ -309,19 +309,19 @@ public class ReportViewFragment extends Fragment
 //        MaterialViewPagerHelper.registerScrollView(getActivity(), mScrollView, null);
 
         expenseTV = (TextView)view.findViewById(R.id.expense);
-        expenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        expenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         expenseTV.setText(CoCoinUtil.GetInMoney(0));
         tagsTV = (TextView)view.findViewById(R.id.tags);
-        tagsTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        tagsTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         tagsTV.setText("");
 
         title = (TextView)view.findViewById(R.id.title);
-        title.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        title.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         pieLayout = (LinearLayout)view.findViewById(R.id.pie_layout);
         pieLayout.setVisibility(View.GONE);
         pieTitle = (TextView)view.findViewById(R.id.pie_title);
-        pieTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        pieTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         pie = (PieChartView)view.findViewById(R.id.chart_pie);
         pie.setChartRotationEnabled(false);
         pie.setOnValueTouchListener(new PieChartOnValueSelectListener() {
@@ -411,49 +411,49 @@ public class ReportViewFragment extends Fragment
         highestTagLayout = (LinearLayout)view.findViewById(R.id.highest_tag_layout);
         highestTagLayout.setVisibility(View.GONE);
         highestTagTitle = (TextView)view.findViewById(R.id.highest_tag_title);
-        highestTagTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestTagTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestFirst = (LinearLayout)view.findViewById(R.id.highest_first);
         highestFirst.setOnClickListener(this);
         highestTagIcon = (ImageView)view.findViewById(R.id.highest_tag_icon);
         highestTagText = (TextView)view.findViewById(R.id.highest_tag_text);
-        highestTagText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestTagText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestTagExpenseTV = (TextView)view.findViewById(R.id.highest_tag_expense);
-        highestTagExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestTagExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestTagRecord = (TextView)view.findViewById(R.id.highest_tag_sum);
-        highestTagRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestTagRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestTags = (ExpandedListView)view.findViewById(R.id.highest_tags);
         highestTagsLayout = (RelativeLayout) view.findViewById(R.id.expand_highest_tag);
         highestTagMore = (LinearLayout)view.findViewById(R.id.highest_tag_more);
         highestTagMore.setOnClickListener(this);
         highestTagMoreText = (TextView)view.findViewById(R.id.highest_tag_more_text);
-        highestTagMoreText.setTypeface(CoCoinUtil.getInstance().GetTypeface());
+//        highestTagMoreText.setTypeface(CoCoinUtil.getInstance().GetTypeface());
         highestTags.setOnItemClickListener(this);
 
         lowestTagLayout = (LinearLayout)view.findViewById(R.id.lowest_tag_layout);
         lowestTagLayout.setVisibility(View.GONE);
         lowestTagTitle = (TextView)view.findViewById(R.id.lowest_tag_title);
-        lowestTagTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lowestTagTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestFirst = (LinearLayout)view.findViewById(R.id.lowest_first);
         lowestFirst.setOnClickListener(this);
         lowestTagIcon = (ImageView)view.findViewById(R.id.lowest_tag_icon);
         lowestTagText = (TextView)view.findViewById(R.id.lowest_tag_text);
-        lowestTagText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lowestTagText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestTagExpenseTV = (TextView)view.findViewById(R.id.lowest_tag_expense);
-        lowestTagExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lowestTagExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestTagRecord = (TextView)view.findViewById(R.id.lowest_tag_sum);
-        lowestTagRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lowestTagRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestTags = (ExpandedListView)view.findViewById(R.id.lowest_tags);
         lowestTagsLayout = (RelativeLayout) view.findViewById(R.id.expand_lowest_tag);
         lowestTagMore = (LinearLayout)view.findViewById(R.id.lowest_tag_more);
         lowestTagMore.setOnClickListener(this);
         lowestTagMoreText = (TextView)view.findViewById(R.id.lowest_tag_more_text);
-        lowestTagMoreText.setTypeface(CoCoinUtil.getInstance().GetTypeface());
+//        lowestTagMoreText.setTypeface(CoCoinUtil.getInstance().GetTypeface());
         lowestTags.setOnItemClickListener(this);
 
         lineLayout = (LinearLayout)view.findViewById(R.id.line_layout);
         lineLayout.setVisibility(View.GONE);
         lineTitle = (TextView)view.findViewById(R.id.line_title);
-        lineTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lineTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         line = (LineChartView) view.findViewById(R.id.chart_line);
         line.setZoomEnabled(false);
         line.setOnValueTouchListener(new LineChartOnValueSelectListener() {
@@ -560,78 +560,78 @@ public class ReportViewFragment extends Fragment
         highestMonthLayout = (LinearLayout) view.findViewById(R.id.highest_month_layout);
         highestMonthLayout.setVisibility(View.GONE);
         monthTitle = (TextView)view.findViewById(R.id.month_title);
-        monthTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        monthTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestFirstMonth = (LinearLayout)view.findViewById(R.id.highest_first_month);
         highestFirstMonth.setOnClickListener(this);
         highestFirstIcon = (TextView) view.findViewById(R.id.highest_month_icon);
-        highestFirstIcon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestFirstIcon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestFirstText = (TextView)view.findViewById(R.id.highest_month_text);
-        highestFirstText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestFirstText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestFirstExpenseTV = (TextView)view.findViewById(R.id.highest_month_expense);
-        highestFirstExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestFirstExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestFirstRecord = (TextView)view.findViewById(R.id.highest_month_sum);
-        highestFirstRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestFirstRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestMonths = (ExpandedListView)view.findViewById(R.id.highest_month);
         highestMonths.setOnItemClickListener(this);
         highestMonthsLayout = (RelativeLayout) view.findViewById(R.id.expand_highest_month);
         highestLast = (LinearLayout)view.findViewById(R.id.highest_last_month);
         highestLast.setOnClickListener(this);
         highestLastIcon = (TextView) view.findViewById(R.id.lowest_month_icon);
-        highestLastIcon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestLastIcon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestLastText = (TextView)view.findViewById(R.id.lowest_month_text);
-        highestLastText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestLastText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestLastExpenseTV = (TextView)view.findViewById(R.id.lowest_month_expense);
-        highestLastExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestLastExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestLastRecord = (TextView)view.findViewById(R.id.lowest_month_sum);
-        highestLastRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestLastRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestMonthMore = (LinearLayout)view.findViewById(R.id.highest_month_more);
         highestMonthMore.setOnClickListener(this);
         highestMonthMoreText = (TextView)view.findViewById(R.id.highest_month_more_text);
-        highestMonthMoreText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestMonthMoreText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         averageMonthText = (TextView)view.findViewById(R.id.average_month_text);
-        averageMonthText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        averageMonthText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         averageMonthExpenseTV = (TextView)view.findViewById(R.id.average_month_expense);
-        averageMonthExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        averageMonthExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         averageMonthRecordTV = (TextView)view.findViewById(R.id.average_month_sum);
-        averageMonthRecordTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        averageMonthRecordTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         
         highestDayLayout = (LinearLayout)view.findViewById(R.id.highest_day_layout);
         highestDayLayout.setVisibility(View.GONE);
         highestDayTitle = (TextView)view.findViewById(R.id.highest_day_title);
-        highestDayTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestDayTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestFirstDay = (LinearLayout)view.findViewById(R.id.highest_first_day);
         highestFirstDay.setOnClickListener(this);
         highestDayIcon = (TextView) view.findViewById(R.id.highest_day_icon);
-        highestDayIcon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestDayIcon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestDayText = (TextView)view.findViewById(R.id.highest_day_text);
-        highestDayText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestDayText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestDayExpenseTV = (TextView)view.findViewById(R.id.highest_day_expense);
-        highestDayExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestDayExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestDayRecord = (TextView)view.findViewById(R.id.highest_day_sum);
-        highestDayRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        highestDayRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         highestDays = (ExpandedListView)view.findViewById(R.id.highest_days);
         highestDaysLayout = (RelativeLayout) view.findViewById(R.id.expand_highest_day);
         highestDayMore = (LinearLayout)view.findViewById(R.id.highest_day_more);
         highestDayMore.setOnClickListener(this);
         highestDayMoreText = (TextView)view.findViewById(R.id.highest_day_more_text);
-        highestDayMoreText.setTypeface(CoCoinUtil.getInstance().GetTypeface());
+//        highestDayMoreText.setTypeface(CoCoinUtil.getInstance().GetTypeface());
         highestDays.setOnItemClickListener(this);
 
         lowestDayLayout = (LinearLayout)view.findViewById(R.id.lowest_day_layout);
         lowestDayLayout.setVisibility(View.GONE);
         lowestDayTitle = (TextView)view.findViewById(R.id.lowest_day_title);
-        lowestDayTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lowestDayTitle.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestFirstDay = (LinearLayout)view.findViewById(R.id.lowest_first_day);
         lowestFirstDay.setOnClickListener(this);
         lowestDayIcon = (TextView) view.findViewById(R.id.lowest_day_icon);
-        lowestDayIcon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lowestDayIcon.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestDayText = (TextView)view.findViewById(R.id.lowest_day_text);
-        lowestDayText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lowestDayText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestDayExpenseTV = (TextView)view.findViewById(R.id.lowest_day_expense);
-        lowestDayExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lowestDayExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestDayRecord = (TextView)view.findViewById(R.id.lowest_day_sum);
-        lowestDayRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        lowestDayRecord.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         lowestDays = (ExpandedListView)view.findViewById(R.id.lowest_days);
         lowestDaysLayout = (RelativeLayout) view.findViewById(R.id.expand_lowest_day);
         lowestDayMore = (LinearLayout)view.findViewById(R.id.lowest_day_more);
@@ -641,14 +641,14 @@ public class ReportViewFragment extends Fragment
         lowestDays.setOnItemClickListener(this);
 
         averageDayText = (TextView)view.findViewById(R.id.average_day_text);
-        averageDayText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        averageDayText.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         averageDayExpenseTV = (TextView)view.findViewById(R.id.average_day_expense);
-        averageDayExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        averageDayExpenseTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         averageDayRecordTV = (TextView)view.findViewById(R.id.average_day_sum);
-        averageDayRecordTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        averageDayRecordTV.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         foot = (TextView)view.findViewById(R.id.foot);
-        foot.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        foot.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
         foot.setVisibility(View.GONE);
 
         if (IS_EMPTY) {

@@ -126,12 +126,13 @@ public class EditRecordActivity extends AppCompatActivity
         tagViewPager = (ViewPager)findViewById(R.id.viewpager);
         tagViewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-        if (RecordManager.TAGS.size() % 8 == 0)
-            tagAdapter = new TagChooseFragmentAdapter(getSupportFragmentManager(), RecordManager.TAGS.size() / 8);
-        else
-            tagAdapter = new TagChooseFragmentAdapter(getSupportFragmentManager(), RecordManager.TAGS.size() / 8 + 1);
-
-        tagViewPager.setAdapter(tagAdapter);
+        tagAdapter = new TagChooseFragmentAdapter(this, this, RecordManager.getNumberOfTagPages(8));
+//        if (RecordManager.TAGS.size() % 8 == 0)
+//            tagAdapter = new TagChooseFragmentAdapter(getSupportFragmentManager(), RecordManager.TAGS.size() / 8);
+//        else
+//            tagAdapter = new TagChooseFragmentAdapter(getSupportFragmentManager(), RecordManager.TAGS.size() / 8 + 1);
+//
+//        tagViewPager.setAdapter(tagAdapter);
         
         myGridView = (MyGridView)findViewById(R.id.gridview);
         myGridViewAdapter = new ButtonGridViewAdapter(this);
@@ -286,9 +287,9 @@ public class EditRecordActivity extends AppCompatActivity
         switch (toastType) {
             case NO_MONEY_TOAST:
 
-                superToast.setText(mContext.getResources().getString(R.string.toast_no_money));
+                superToast.setText(mContext.getResources().getString(R.string.toast_no_amount));
                 superToast.setBackground(SuperToast.Background.BLUE);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             case SAVE_SUCCESSFULLY_TOAST:
@@ -296,14 +297,14 @@ public class EditRecordActivity extends AppCompatActivity
                 superToast.setText(
                         mContext.getResources().getString(R.string.toast_save_successfully));
                 superToast.setBackground(SuperToast.Background.GREEN);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             case SAVE_FAILED_TOAST:
 
                 superToast.setText(mContext.getResources().getString(R.string.toast_save_failed));
                 superToast.setBackground(SuperToast.Background.RED);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             default:

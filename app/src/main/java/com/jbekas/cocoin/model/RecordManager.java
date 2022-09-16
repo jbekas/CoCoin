@@ -29,6 +29,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import timber.log.Timber;
 
 /**
  * Created by 伟平 on 2015/10/20.
@@ -121,6 +122,10 @@ public class RecordManager {
             for (Tag tag : TAGS) TAG_NAMES.put(tag.getId(), tag.getName());
 
             sortTAGS();
+
+            for (Tag tag : TAGS) {
+                Timber.d(tag.toString());
+            }
         }
         return recordManager;
     }
@@ -740,4 +745,11 @@ public class RecordManager {
         });
     }
 
+    public static int getNumberOfTagPages(int pageSize) {
+        if (RecordManager.TAGS.size() % pageSize == 0) {
+            return RecordManager.TAGS.size() / pageSize;
+        } else {
+            return (RecordManager.TAGS.size()) / pageSize + 1;
+        }
+    }
 }

@@ -163,8 +163,8 @@ public class AccountBookListViewActivity extends AppCompatActivity
 
         userName = (TextView)findViewById(R.id.user_name);
         userEmail = (TextView)findViewById(R.id.user_email);
-        userName.setTypeface(CoCoinUtil.typefaceLatoRegular);
-        userEmail.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        userName.setTypeface(CoCoinUtil.typefaceLatoRegular);
+//        userEmail.setTypeface(CoCoinUtil.typefaceLatoLight);
 
 //        User user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User.class);
 //        if (user != null) {
@@ -259,7 +259,7 @@ public class AccountBookListViewActivity extends AppCompatActivity
         });
 
         emptyTip = (TextView)findViewById(R.id.empty_tip);
-        emptyTip.setTypeface(CoCoinUtil.GetTypeface());
+//        emptyTip.setTypeface(CoCoinUtil.GetTypeface());
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
@@ -376,11 +376,11 @@ public class AccountBookListViewActivity extends AppCompatActivity
         mDemoSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
 
         titleExpense = (TextView)findViewById(R.id.title_expense);
-        titleExpense.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        titleExpense.setTypeface(CoCoinUtil.typefaceLatoLight);
         titleExpense.setText(CoCoinUtil.GetInMoney((int)(double)RecordManager.getInstance(mContext).SELECTED_SUM));
 
         titleSum = (TextView)findViewById(R.id.title_sum);
-        titleSum.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        titleSum.setTypeface(CoCoinUtil.typefaceLatoLight);
         titleSum.setText(RecordManager.getInstance(mContext).SELECTED_RECORDS.size() + "'s");
 
 //        titleSlider = (SliderLayout)findViewById(R.id.title_slider);
@@ -406,10 +406,10 @@ public class AccountBookListViewActivity extends AppCompatActivity
 //        titleSlider.setDuration(3000);
 //        titleSlider.setCustomIndicator((PagerIndicator) findViewById(R.id.custom_indicator));
 
-        ((TextView)findViewById(R.id.tag_title)).setTypeface(CoCoinUtil.GetTypeface());
-        ((TextView)findViewById(R.id.tag_title_expense)).setTypeface(CoCoinUtil.GetTypeface());
-        ((TextView)findViewById(R.id.tag_title_time)).setTypeface(CoCoinUtil.GetTypeface());
-        ((TextView)findViewById(R.id.tag_title_tag)).setTypeface(CoCoinUtil.GetTypeface());
+//        ((TextView)findViewById(R.id.tag_title)).setTypeface(CoCoinUtil.GetTypeface());
+//        ((TextView)findViewById(R.id.tag_title_expense)).setTypeface(CoCoinUtil.GetTypeface());
+//        ((TextView)findViewById(R.id.tag_title_time)).setTypeface(CoCoinUtil.GetTypeface());
+//        ((TextView)findViewById(R.id.tag_title_tag)).setTypeface(CoCoinUtil.GetTypeface());
 
         setMoney = (TextView)findViewById(R.id.select_expense);
         setMoney.setTypeface(CoCoinUtil.GetTypeface());

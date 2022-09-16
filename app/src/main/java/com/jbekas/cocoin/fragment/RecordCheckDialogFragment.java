@@ -76,7 +76,7 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
         TextView title = new TextView(mContext);
         title.setHeight(120);
         title.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-        title.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        title.setTypeface(CoCoinUtil.typefaceLatoLight);
         title.setText(this.title);
         alert.setCustomTitle(title);
 
@@ -84,7 +84,7 @@ public class RecordCheckDialogFragment extends DialogFragment implements RecordC
             @Override
             public void onShow(DialogInterface dialog) {
                 Button btnPositive = alert.getButton(Dialog.BUTTON_POSITIVE);
-                btnPositive.setTypeface(CoCoinUtil.typefaceLatoLight);
+//                btnPositive.setTypeface(CoCoinUtil.typefaceLatoLight);
             }
         });
 

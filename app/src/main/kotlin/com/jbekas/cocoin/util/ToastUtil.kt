@@ -1,13 +1,11 @@
 package com.jbekas.cocoin.util
 
-import com.github.johnpersano.supertoasts.SuperToast
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
-import com.jbekas.cocoin.util.ToastUtil
 import com.github.johnpersano.supertoasts.SuperActivityToast
+import com.github.johnpersano.supertoasts.SuperToast
 
 object ToastUtil {
     @JvmField

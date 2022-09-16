@@ -95,6 +95,7 @@
 
     <string name="check">check</string>
 
+    <string name="date_range_view">Date Range view</string>
     <string name="today_view_today">Today</string>
     <string name="today_view_yesterday">Yesterday</string>
     <string name="today_view_this_week">This Week</string>
@@ -139,8 +140,8 @@
 
     <string name="password_tip">Input password to account book</string>
 
-    <string name="toast_no_tag">Just...give me a tag~</string>
-    <string name="toast_no_money">How much U spend?</string>
+    <string name="toast_no_tag">Please select a tag.</string>
+    <string name="toast_no_amount">Please enter the expense amount.</string>
     <string name="toast_password_wrong">Ooops...That\'s wrong!</string>
     <string name="toast_password_correct">That\'s it!</string>
     <string name="toast_save_successfully">Save successfully!</string>
@@ -571,4 +572,18 @@
 
     <string name="pin">PIN</string>
     <string name="content_desc_toggle_password_visibility">Toggle password visibility</string>
+    <string name="title_activity_new_main">NewMainActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="reports_label">Reports</string>
+    <string name="settings_fragment_label">Settings</string>
+    <string name="date_range_report_label">Date Range Reports</string>
+    <string name="custom_report_label">Custom Reports</string>
+    <string name="tag_report_label">Tag Reports</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="add_entry">Add</string>
+    <string name="reports">Reports</string>
 </resources>

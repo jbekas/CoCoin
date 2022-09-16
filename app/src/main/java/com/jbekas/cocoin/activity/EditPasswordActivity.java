@@ -140,7 +140,7 @@ public class EditPasswordActivity extends AppCompatActivity {
         superToast = new SuperToast(this);
 
         title = (TextView)findViewById(R.id.title);
-        title.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        title.setTypeface(CoCoinUtil.typefaceLatoLight);
         if (SettingManager.getInstance().getFirstTime()) {
             title.setText(mContext.getResources().getString(R.string.app_name));
         } else {
@@ -318,7 +318,7 @@ public class EditPasswordActivity extends AppCompatActivity {
                 superToast.setText(
                         mContext.getResources().getString(R.string.toast_password_wrong));
                 superToast.setBackground(SuperToast.Background.RED);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             // password is different
@@ -327,7 +327,7 @@ public class EditPasswordActivity extends AppCompatActivity {
                 superToast.setText(
                         mContext.getResources().getString(R.string.different_password));
                 superToast.setBackground(SuperToast.Background.RED);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             // success
@@ -336,7 +336,7 @@ public class EditPasswordActivity extends AppCompatActivity {
                 superToast.setText(
                         mContext.getResources().getString(R.string.set_password_successfully));
                 superToast.setBackground(SuperToast.Background.GREEN);
-                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
+//                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 
                 break;
             default:

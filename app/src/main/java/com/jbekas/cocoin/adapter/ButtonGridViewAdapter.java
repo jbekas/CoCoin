@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.model.RecordManager;
@@ -62,18 +64,18 @@ public class ButtonGridViewAdapter extends BaseAdapter {
         }
 
         if (position == 11) {
-            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
+//            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
             holder.tv.setVisibility(View.INVISIBLE);
             holder.iv.setIcon(MaterialDrawableBuilder.IconValue.CHECK);
             holder.ml.setRippleAlpha(50);
         } else if (position == 9) {
             holder.iv.setIcon(MaterialDrawableBuilder.IconValue.ERASER);
-            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
+//            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
             holder.tv.setVisibility(View.INVISIBLE);
             holder.ml.setRippleAlpha(50);
         } else {
             holder.iv.setVisibility(View.INVISIBLE);
-            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
+//            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
             holder.tv.setText(CoCoinUtil.BUTTONS[position]);
             holder.ml.setRippleDelayClick(false);
         }
@@ -92,11 +94,10 @@ public class ButtonGridViewAdapter extends BaseAdapter {
             holder.tv.setTextColor(SettingManager.getInstance().getRemindColor());
         } else {
             holder.fl.setBackgroundColor(CoCoinUtil.getAlphaColor(CoCoinUtil.MY_BLUE));
-            holder.ml.setRippleColor(CoCoinUtil.MY_BLUE);
-            holder.iv.setColor(CoCoinUtil.MY_BLUE);
-            holder.tv.setTextColor(CoCoinUtil.MY_BLUE);
+            holder.ml.setRippleColor(ContextCompat.getColor(mContext, R.color.my_blue));
+            holder.iv.setColor(ContextCompat.getColor(mContext, R.color.my_blue));
+            holder.tv.setTextColor(ContextCompat.getColor(mContext, R.color.my_blue));
         }
-
 
         return convertView;
     }

@@ -64,9 +64,9 @@ public class EditMoneyFragment extends Fragment {
         editView = (MaterialEditText)mView.findViewById(R.id.money);
         tagImage = (ImageView)mView.findViewById(R.id.tag_image);
         tagName = (TextView)mView.findViewById(R.id.tag_name);
-        tagName.setTypeface(CoCoinUtil.typefaceLatoLight);
+//        tagName.setTypeface(CoCoinUtil.typefaceLatoLight);
 
-        editView.setTypeface(CoCoinUtil.typefaceLatoHairline);
+//        editView.setTypeface(CoCoinUtil.typefaceLatoHairline);
         editView.setText("0");
         editView.requestFocus();
         editView.setHelperText(" ");

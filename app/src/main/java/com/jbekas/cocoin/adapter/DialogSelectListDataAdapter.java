@@ -49,10 +49,10 @@ public class DialogSelectListDataAdapter extends BaseAdapter {
         TextView expense = (TextView)convertView.findViewById(R.id.expense);
         TextView sum = (TextView)convertView.findViewById(R.id.sum);
 
-        month.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        year.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        expense.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-        sum.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        month.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        year.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        expense.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        sum.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
 
         double monthNum = data.get(position)[1];
         if (monthNum == -1) {
