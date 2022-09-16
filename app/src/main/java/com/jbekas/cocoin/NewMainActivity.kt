@@ -9,26 +9,27 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import cn.bmob.v3.Bmob
 import cn.bmob.v3.BmobUser
-import com.github.johnpersano.supertoasts.SuperToast
 import com.google.android.material.navigation.NavigationBarView
 import com.jbekas.cocoin.activity.CoCoinApplication
 import com.jbekas.cocoin.databinding.ActivityNewMainBinding
 import com.jbekas.cocoin.model.CoCoin
 import com.jbekas.cocoin.model.SettingManager
 import com.jbekas.cocoin.model.User
-import com.jbekas.cocoin.util.ToastUtil
+import com.jbekas.cocoin.service.ToastService
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NewMainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var toastService: ToastService
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityNewMainBinding
 
     companion object {
-        val NO_TAG_TOAST = 0
-        val NO_MONEY_TOAST = 1
         val PASSWORD_WRONG_TOAST = 2
         val PASSWORD_CORRECT_TOAST = 3
         val SAVE_SUCCESSFULLY_TOAST = 4
@@ -122,44 +123,30 @@ class NewMainActivity : AppCompatActivity() {
     fun showToast(toastType: Int) {
         Timber.d("showToast: %d", toastType)
         when (toastType) {
-            NO_TAG_TOAST -> {
-                ToastUtil.showToast(
-                    context = this,
-                    textId = R.string.toast_no_tag,
-                    textColor = null,
-                    color = SuperToast.Background.RED)
+            PASSWORD_WRONG_TOAST -> {
+                toastService.showErrorToast(
+                    text = getString(R.string.toast_password_wrong)
+                )
             }
-            NO_MONEY_TOAST -> ToastUtil.showToast(
-                context = this,
-                textId = R.string.toast_no_money,
-                textColor = null,
-                color = SuperToast.Background.RED)
-            PASSWORD_WRONG_TOAST -> ToastUtil.showToast(
-                context = this,
-                textId = R.string.toast_password_wrong,
-                textColor = null,
-                color = SuperToast.Background.RED)
             PASSWORD_CORRECT_TOAST -> {
                 Timber.d("PASSWORD_CORRECT_TOAST start")
-                ToastUtil.showToast(
-                    context = this,
-                    textId = R.string.toast_password_correct,
-                    textColor = null,
-                    color = SuperToast.Background.BLUE)
+                toastService.showErrorToast(
+                    text = getString(R.string.toast_password_correct)
+                )
                 Timber.d("PASSWORD_CORRECT_TOAST finish")
             }
             SAVE_SUCCESSFULLY_TOAST -> {}
             SAVE_FAILED_TOAST -> {}
-            PRESS_AGAIN_TO_EXIT -> ToastUtil.showToast(
-                context = this,
-                textId = R.string.toast_press_again_to_exit,
-                textColor = null,
-                color = SuperToast.Background.BLUE)
-            WELCOME_BACK -> ToastUtil.showToast(
-                context = this,
-                text = this.resources.getString(R.string.welcome_back, SettingManager.getInstance().userName),
-                textColor = null,
-                color = SuperToast.Background.BLUE)
+            PRESS_AGAIN_TO_EXIT -> {
+                toastService.showInfoToast(
+                    text = getString(R.string.toast_press_again_to_exit,)
+                )
+            }
+            WELCOME_BACK -> {
+                toastService.showInfoToast(
+                    text = getString(R.string.welcome_back, SettingManager.getInstance().userName)
+                )
+            }
             else -> {}
         }
     }

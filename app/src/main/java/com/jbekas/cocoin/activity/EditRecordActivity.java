@@ -287,7 +287,7 @@ public class EditRecordActivity extends AppCompatActivity
         switch (toastType) {
             case NO_MONEY_TOAST:
 
-                superToast.setText(mContext.getResources().getString(R.string.toast_no_money));
+                superToast.setText(mContext.getResources().getString(R.string.toast_no_amount));
                 superToast.setBackground(SuperToast.Background.BLUE);
 //                superToast.getTextView().setTypeface(CoCoinUtil.typefaceLatoLight);
 

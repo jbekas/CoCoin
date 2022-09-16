@@ -19,8 +19,6 @@ import androidx.viewpager.widget.ViewPager
 import cn.bmob.v3.Bmob
 import cn.bmob.v3.BmobUser
 import com.afollestad.materialdialogs.MaterialDialog
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.github.johnpersano.supertoasts.SuperActivityToast
 import com.github.johnpersano.supertoasts.SuperToast
 import com.jbekas.cocoin.R
@@ -300,7 +298,7 @@ class MainActivity : AppCompatActivity() {
             }
             NO_MONEY_TOAST -> ToastUtil.showToast(
                 context = this,
-                textId = R.string.toast_no_money,
+                textId = R.string.toast_no_amount,
                 textColor = null,
                 color = SuperToast.Background.RED)
             PASSWORD_WRONG_TOAST -> ToastUtil.showToast(

@@ -13,20 +13,25 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import com.jbekas.cocoin.NewMainActivity.Companion.NO_MONEY_TOAST
-import com.jbekas.cocoin.NewMainActivity.Companion.NO_TAG_TOAST
 import com.jbekas.cocoin.adapter.ButtonGridViewAdapter
 import com.jbekas.cocoin.adapter.TagChooseFragmentAdapter
 import com.jbekas.cocoin.databinding.FragmentAddEditRecordBinding
 import com.jbekas.cocoin.fragment.TagChooseFragment
 import com.jbekas.cocoin.model.CoCoinRecord
 import com.jbekas.cocoin.model.RecordManager
+import com.jbekas.cocoin.service.ToastService
 import com.jbekas.cocoin.util.CoCoinUtil
 import com.jbekas.cocoin.viewmodel.AddEditTransactionViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedListener {
+
+    @Inject
+    lateinit var toastService: ToastService
 
     private var _binding: FragmentAddEditRecordBinding? = null
 
@@ -153,13 +158,9 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
     private fun commit() {
         if (tagId  == -1) {
             tagAnimation()
-            activity?.let {
-                (activity as NewMainActivity).showToast(NO_TAG_TOAST)
-            }
+            toastService.showErrorToast(text = context?.getText(R.string.toast_no_tag).toString())
         } else if (viewModel.amount.value.toString() == ZERO) {
-            activity?.let {
-                (activity as NewMainActivity).showToast(NO_MONEY_TOAST)
-            }
+            toastService.showErrorToast(text = context?.getText(R.string.toast_no_amount).toString())
         } else {
             val calendar = Calendar.getInstance()
             val coCoinRecord = CoCoinRecord(
