@@ -43,9 +43,6 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
     private var myGridViewAdapter: ButtonGridViewAdapter? = null
     private var isLoading = false
 
-    // TODO Pull out selected tag into a State object
-    private var tagId = -1
-
     companion object {
         const val ZERO = "0"
         const val MAX_EXPENSE_DIGITS = 5
@@ -156,7 +153,8 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
     }
 
     private fun commit() {
-        if (tagId  == -1) {
+        val tagId = viewModel.tagId.value ?: -1
+        if (tagId == -1) {
             tagAnimation()
             toastService.showErrorToast(text = context?.getText(R.string.toast_no_tag).toString())
         } else if (viewModel.amount.value.toString() == ZERO) {
@@ -177,7 +175,7 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
 //                if (!superToast!!.isShowing) {
 //                    changeColor()
 //                }
-                tagId = -1
+                viewModel.tagId.postValue(-1)
                 binding.editMoney.tagImage.setImageResource(R.color.transparent)
                 binding.editMoney.tagName.text = ""
             }
@@ -186,14 +184,15 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
     }
 
     override fun onTagItemPicked(position: Int) {
+        val tagId = viewModel.tagId.value ?: -1
         val newTagId = RecordManager.TAGS[position].id
 
         if (tagId == newTagId) {
-            tagId = -1
+            viewModel.tagId.postValue(-1)
             binding.editMoney.tagName.text = ""
             binding.editMoney.tagImage.setImageResource(R.color.transparent)
         } else {
-            tagId = RecordManager.TAGS[position].id
+            viewModel.tagId.postValue(newTagId)
             binding.editMoney.tagName.text = CoCoinUtil.GetTagName(RecordManager.TAGS[position].id)
             binding.editMoney.tagImage.setImageResource(CoCoinUtil.GetTagIcon(RecordManager.TAGS[position].id))
         }
