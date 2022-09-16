@@ -112,7 +112,7 @@ dependencies {
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
 
     // snack bar
-    implementation 'com.nispok:snackbar:2.11.+'
+    implementation 'com.nispok:snackbar:2.11.0'
 
     // icons
     implementation 'com.github.code-mc:material-icon-lib:1.1.5'
