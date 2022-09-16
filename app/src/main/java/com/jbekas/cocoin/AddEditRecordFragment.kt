@@ -9,7 +9,10 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.jbekas.cocoin.NewMainActivity.Companion.NO_MONEY_TOAST
 import com.jbekas.cocoin.NewMainActivity.Companion.NO_TAG_TOAST
 import com.jbekas.cocoin.adapter.ButtonGridViewAdapter
@@ -19,6 +22,7 @@ import com.jbekas.cocoin.fragment.TagChooseFragment
 import com.jbekas.cocoin.model.CoCoinRecord
 import com.jbekas.cocoin.model.RecordManager
 import com.jbekas.cocoin.util.CoCoinUtil
+import com.jbekas.cocoin.viewmodel.AddEditTransactionViewModel
 import timber.log.Timber
 import java.util.*
 
@@ -28,6 +32,7 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
+    private val viewModel: AddEditTransactionViewModel by viewModels()
 
     private var tagAdapter: FragmentStateAdapter? = null
     private var myGridViewAdapter: ButtonGridViewAdapter? = null
@@ -35,6 +40,11 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
 
     // TODO Pull out selected tag into a State object
     private var tagId = -1
+
+    companion object {
+        const val ZERO = "0"
+        const val MAX_EXPENSE_DIGITS = 5
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +58,15 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         // Tag selection
-        tagAdapter = TagChooseFragmentAdapter(activity!!, this, RecordManager.getNumberOfTagPages(8))
-        binding.viewpager.adapter = tagAdapter
-        tagAdapter?.notifyDataSetChanged()
+        activity?.let {
+            tagAdapter = TagChooseFragmentAdapter(it, this, RecordManager.getNumberOfTagPages(8))
+            binding.viewpager.adapter = tagAdapter
+            tagAdapter?.notifyDataSetChanged()
+        }
 
         // Custom Numeric keypad
         myGridViewAdapter = ButtonGridViewAdapter(activity)
@@ -105,47 +120,43 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
         }
 
     private fun buttonClickOperation(longClick: Boolean, position: Int) {
-        if (binding.editMoney.money.text.toString() == "0" && !CoCoinUtil.ClickButtonCommit(position)) {
+        if (binding.editMoney.money.text.toString() == ZERO && !CoCoinUtil.ClickButtonCommit(position)) {
             if (CoCoinUtil.ClickButtonDelete(position) || CoCoinUtil.ClickButtonIsZero(position)) {
             } else {
                 Timber.d("%s", CoCoinUtil.BUTTONS[position])
-                binding.editMoney.money.setText(CoCoinUtil.BUTTONS[position])
+                viewModel.amount.postValue(CoCoinUtil.BUTTONS[position])
             }
         } else {
             if (CoCoinUtil.ClickButtonDelete(position)) {
                 if (longClick) {
-                    binding.editMoney.money.setText("0")
-                    binding.editMoney.money.setHelperText(
-                        CoCoinUtil.FLOATINGLABELS[binding.editMoney.money.toString().length]
-                    )
+                    viewModel.amount.postValue(ZERO)
                 } else {
-                    binding.editMoney.money.setText(
-                        binding.editMoney.money.text.toString()
-                            .substring(0, binding.editMoney.money.text.toString().length - 1))
-                    if (binding.editMoney.money.text?.isEmpty() == true) {
-                        binding.editMoney.money.setText("0")
-                        binding.editMoney.money.setHelperText("")
+                    var amount = viewModel.amount.value.toString().dropLast(1)
+                    if (amount.isEmpty()) {
+                        amount = ZERO
                     }
+                    viewModel.amount.postValue(amount)
                 }
             } else if (CoCoinUtil.ClickButtonCommit(position)) {
                 commit()
             } else {
-                binding.editMoney.money.setText(
-                        binding.editMoney.money.text.toString() + CoCoinUtil.BUTTONS[position]
-                )
+                if (viewModel.amount.value.toString().length < MAX_EXPENSE_DIGITS) {
+                    val amount = viewModel.amount.value.toString() + CoCoinUtil.BUTTONS[position]
+                    viewModel.amount.postValue(amount)
+                } else {
+                    Timber.w("Too many digits")
+                }
             }
         }
-        binding.editMoney.money.setHelperText(
-            CoCoinUtil.FLOATINGLABELS[(binding.editMoney.money.text ?: "").length]
-        )
     }
 
     private fun commit() {
         if (tagId  == -1) {
+            tagAnimation()
             activity?.let {
                 (activity as NewMainActivity).showToast(NO_TAG_TOAST)
             }
-        } else if (binding.editMoney.money.text.toString() == "0") {
+        } else if (viewModel.amount.value.toString() == ZERO) {
             activity?.let {
                 (activity as NewMainActivity).showToast(NO_MONEY_TOAST)
             }
@@ -153,7 +164,7 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
             val calendar = Calendar.getInstance()
             val coCoinRecord = CoCoinRecord(
                 -1,
-                binding.editMoney.money.text.toString().toFloat(),
+                viewModel.amount.value.toString().toFloat(),
                 "RMB",
                 tagId,
                 calendar)
@@ -169,8 +180,7 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
                 binding.editMoney.tagImage.setImageResource(R.color.transparent)
                 binding.editMoney.tagName.text = ""
             }
-            binding.editMoney.money.setText("0") // TODO move to strings
-            binding.editMoney.money.setHelperText("")
+            viewModel.amount.postValue(ZERO)
         }
     }
 
@@ -190,5 +200,9 @@ class AddEditRecordFragment : Fragment(), TagChooseFragment.OnTagItemSelectedLis
 
     override fun onAnimationStart(id: Int) {
         Timber.w("onAnimationStart: Not yet implemented")
+    }
+
+    private fun tagAnimation() {
+        YoYo.with(Techniques.Shake).duration(1000).playOn(binding.viewpager)
     }
 }

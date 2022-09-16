@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.jbekas.cocoin.viewmodel.AddEditTransactionViewModel" />
+
+    </data>
+
+    <FrameLayout
     android:id="@+id/root"
     android:layout_marginTop="?attr/actionBarSize"
     android:layout_width="match_parent"
@@ -31,7 +41,11 @@
                     android:orientation="vertical"
                     >
 
-                    <include android:id="@+id/edit_money" layout="@layout/edit_money_fragment" />
+                    <include
+                        android:id="@+id/edit_money"
+                        layout="@layout/edit_money_fragment"
+                        bind:viewModel="@{viewModel}"
+                        />
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewpager"
@@ -66,3 +80,4 @@
     </LinearLayout>
 
 </FrameLayout>
+</layout>

@@ -1,15 +1,11 @@
 package com.jbekas.cocoin
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.MenuItem
 import android.view.View
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import cn.bmob.v3.Bmob
 import cn.bmob.v3.BmobUser
@@ -17,9 +13,7 @@ import com.github.johnpersano.supertoasts.SuperToast
 import com.google.android.material.navigation.NavigationBarView
 import com.jbekas.cocoin.activity.CoCoinApplication
 import com.jbekas.cocoin.databinding.ActivityNewMainBinding
-import com.jbekas.cocoin.fragment.CoCoinFragmentManager
 import com.jbekas.cocoin.model.CoCoin
-import com.jbekas.cocoin.model.RecordManager
 import com.jbekas.cocoin.model.SettingManager
 import com.jbekas.cocoin.model.User
 import com.jbekas.cocoin.util.ToastUtil
@@ -33,14 +27,14 @@ class NewMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewMainBinding
 
     companion object {
-        public val NO_TAG_TOAST = 0
-        public val NO_MONEY_TOAST = 1
-        public val PASSWORD_WRONG_TOAST = 2
-        public val PASSWORD_CORRECT_TOAST = 3
-        public val SAVE_SUCCESSFULLY_TOAST = 4
-        public val SAVE_FAILED_TOAST = 5
-        public val PRESS_AGAIN_TO_EXIT = 6
-        public val WELCOME_BACK = 7
+        val NO_TAG_TOAST = 0
+        val NO_MONEY_TOAST = 1
+        val PASSWORD_WRONG_TOAST = 2
+        val PASSWORD_CORRECT_TOAST = 3
+        val SAVE_SUCCESSFULLY_TOAST = 4
+        val SAVE_FAILED_TOAST = 5
+        val PRESS_AGAIN_TO_EXIT = 6
+        val WELCOME_BACK = 7
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,10 +85,8 @@ class NewMainActivity : AppCompatActivity() {
             SettingManager.getInstance().userName = user.username
             SettingManager.getInstance().userEmail = user.email
             showToast(WELCOME_BACK)
-            // 允许用户使用应用
         } else {
             SettingManager.getInstance().loggenOn = false
-            //缓存用户对象为空时， 可打开用户注册界面…
         }
 
         binding.bottomNavigation.apply {
@@ -127,7 +119,7 @@ class NewMainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    public fun showToast(toastType: Int) {
+    fun showToast(toastType: Int) {
         Timber.d("showToast: %d", toastType)
         when (toastType) {
             NO_TAG_TOAST -> {
@@ -136,7 +128,6 @@ class NewMainActivity : AppCompatActivity() {
                     textId = R.string.toast_no_tag,
                     textColor = null,
                     color = SuperToast.Background.RED)
-//                tagAnimation()
             }
             NO_MONEY_TOAST -> ToastUtil.showToast(
                 context = this,
