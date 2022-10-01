@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.jbekas.cocoin.R;
-import com.jbekas.cocoin.model.RecordManager;
+import com.jbekas.cocoin.db.RecordManager;
 import com.jbekas.cocoin.model.SettingManager;
 import com.jbekas.cocoin.util.CoCoinUtil;
 
@@ -27,15 +27,19 @@ public class ButtonGridViewAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private Context mContext;
+    private CoCoinUtil coCoinUtil;
 
-    public ButtonGridViewAdapter(Context context) {
+    public ButtonGridViewAdapter(
+            Context context,
+            CoCoinUtil coCoinUtil) {
         this.inflater = LayoutInflater.from(context);
         this.mContext = context;
+        this.coCoinUtil = coCoinUtil;
     }
 
     @Override
     public int getCount() {
-        return CoCoinUtil.BUTTONS.length;
+        return coCoinUtil.BUTTONS.length;
     }
 
     @Override
@@ -76,7 +80,7 @@ public class ButtonGridViewAdapter extends BaseAdapter {
         } else {
             holder.iv.setVisibility(View.INVISIBLE);
 //            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
-            holder.tv.setText(CoCoinUtil.BUTTONS[position]);
+            holder.tv.setText(coCoinUtil.BUTTONS[position]);
             holder.ml.setRippleDelayClick(false);
         }
 
@@ -88,12 +92,12 @@ public class ButtonGridViewAdapter extends BaseAdapter {
                 >= SettingManager.getInstance().getMonthWarning();
         if (shouldChange) {
             holder.fl.setBackgroundColor(
-                    CoCoinUtil.getAlphaColor(SettingManager.getInstance().getRemindColor()));
+                    coCoinUtil.getAlphaColor(SettingManager.getInstance().getRemindColor()));
             holder.ml.setRippleColor(SettingManager.getInstance().getRemindColor());
             holder.iv.setColor(SettingManager.getInstance().getRemindColor());
             holder.tv.setTextColor(SettingManager.getInstance().getRemindColor());
         } else {
-            holder.fl.setBackgroundColor(CoCoinUtil.getAlphaColor(CoCoinUtil.MY_BLUE));
+            holder.fl.setBackgroundColor(coCoinUtil.getAlphaColor(coCoinUtil.MY_BLUE));
             holder.ml.setRippleColor(ContextCompat.getColor(mContext, R.color.my_blue));
             holder.iv.setColor(ContextCompat.getColor(mContext, R.color.my_blue));
             holder.tv.setTextColor(ContextCompat.getColor(mContext, R.color.my_blue));

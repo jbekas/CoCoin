@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/AddEditRecordFragment"
-        android:name="com.jbekas.cocoin.AddEditRecordFragment"
+        android:name="com.jbekas.cocoin.fragment.AddEditRecordFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_add_edit_record">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/ReportsFragment"
-        android:name="com.jbekas.cocoin.ReportsFragment"
+        android:name="com.jbekas.cocoin.fragment.ReportsFragment"
         android:label="@string/reports_label">
 
         <action
@@ -29,6 +29,15 @@
         android:name="com.jbekas.cocoin.fragment.SettingsFragment"
         android:label="@string/settings_fragment_label"
         tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_SettingsFragment_to_helpAboutFragment"
+            app:destination="@id/AboutFragment" />
+        <action
+            android:id="@+id/action_SettingsFragment_to_helpFeedbackFragment"
+            app:destination="@id/FeedbackFragment" />
+        <action
+            android:id="@+id/action_SettingsFragment_to_helpCoCoinFragment"
+            app:destination="@id/HelpFragment" />
     </fragment>
     <fragment
         android:id="@+id/DateRangeReportFragment"
@@ -48,4 +57,34 @@
         android:label="@string/tag_report_label"
         tools:layout="@layout/fragment_tag_report">
     </fragment>
+    <fragment
+        android:id="@+id/MonthlyReportFragment"
+        android:name="com.jbekas.cocoin.fragment.MonthlyReportFragment"
+        android:label="@string/monthly_report_label"
+        tools:layout="@layout/fragment_monthly_view">
+    </fragment>
+    <fragment
+        android:id="@+id/ListReportFragment"
+        android:name="com.jbekas.cocoin.fragment.ListReportFragment"
+        android:label="@string/list_report_label"
+        tools:layout="@layout/fragment_list_report">
+    </fragment>
+    <fragment
+        android:id="@+id/ExpenseReportFragment"
+        android:name="com.jbekas.cocoin.fragment.ExpenseReportsFragment"
+        android:label="@string/expense_reports_label"
+        tools:layout="@layout/fragment_expense_reports">
+    </fragment>
+    <fragment
+        android:id="@+id/AboutFragment"
+        android:name="com.jbekas.cocoin.fragment.AboutFragment"
+        android:label="@string/about" />
+    <fragment
+        android:id="@+id/FeedbackFragment"
+        android:name="com.jbekas.cocoin.fragment.FeedbackFragment"
+        android:label="@string/feedback" />
+    <fragment
+        android:id="@+id/HelpFragment"
+        android:name="com.jbekas.cocoin.fragment.HelpFragment"
+        android:label="@string/help" />
 </navigation>

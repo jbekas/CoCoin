@@ -18,12 +18,15 @@ import com.jbekas.cocoin.model.SettingManager;
 import com.jbekas.cocoin.util.CoCoinUtil;
 import com.rey.material.widget.RadioButton;
 
+import javax.inject.Inject;
 
-/**
- * Created by 伟平 on 2015/10/27.
- */
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class PasswordChangeFragment extends Fragment {
+
+    @Inject
+    protected CoCoinUtil coCoinUtil;
 
     private int fragmentPosition;
     private RadioButton button0;
@@ -57,7 +60,7 @@ public class PasswordChangeFragment extends Fragment {
         button3 = (RadioButton)view.findViewById(R.id.button3);
         ly = (LinearLayout)view.findViewById(R.id.buttonLy);
         passwordTip = (TextView)view.findViewById(R.id.password_tip);
-        passwordTip.setTypeface(CoCoinUtil.GetTypeface());
+        passwordTip.setTypeface(coCoinUtil.getTypeface());
         switch (fragmentPosition) {
             case 0:
                 if (SettingManager.getInstance().getFirstTime()) {

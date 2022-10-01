@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.github.johnpersano.supertoasts.SuperActivityToast;
@@ -27,7 +26,7 @@ import com.jbekas.cocoin.adapter.TagChooseFragmentAdapter;
 import com.jbekas.cocoin.fragment.CoCoinFragmentManager;
 import com.jbekas.cocoin.fragment.TagChooseFragment;
 import com.jbekas.cocoin.model.CoCoinRecord;
-import com.jbekas.cocoin.model.RecordManager;
+import com.jbekas.cocoin.db.RecordManager;
 import com.jbekas.cocoin.ui.CoCoinScrollableViewPager;
 import com.jbekas.cocoin.ui.MyGridView;
 import com.jbekas.cocoin.util.CoCoinUtil;
@@ -35,8 +34,16 @@ import com.jbekas.cocoin.util.ToastUtil;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EditRecordActivity extends AppCompatActivity
         implements TagChooseFragment.OnTagItemSelectedListener {
+
+    @Inject
+    protected CoCoinUtil coCoinUtil;
 
     private Context mContext;
     private boolean IS_CHANGED = false;
@@ -74,9 +81,9 @@ public class EditRecordActivity extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             position = extras.getInt("POSITION");
-            CoCoinUtil.editRecordPosition = RecordManager.SELECTED_RECORDS.size() - 1 - position;
+            coCoinUtil.editRecordPosition = RecordManager.SELECTED_RECORDS.size() - 1 - position;
         } else {
-            CoCoinUtil.editRecordPosition = -1;
+            coCoinUtil.editRecordPosition = -1;
         }
 
 
@@ -135,7 +142,7 @@ public class EditRecordActivity extends AppCompatActivity
 //        tagViewPager.setAdapter(tagAdapter);
         
         myGridView = (MyGridView)findViewById(R.id.gridview);
-        myGridViewAdapter = new ButtonGridViewAdapter(this);
+        myGridViewAdapter = new ButtonGridViewAdapter(this, coCoinUtil);
         myGridView.setAdapter(myGridViewAdapter);
 
         myGridView.setOnItemClickListener(gridViewClickListener);
@@ -176,7 +183,7 @@ public class EditRecordActivity extends AppCompatActivity
         intent.putExtra("POSITION", position);
         setResult(RESULT_OK, intent);
 
-        CoCoinUtil.editRecordPosition = -1;
+        coCoinUtil.editRecordPosition = -1;
 
         super.finish();
     }
@@ -203,20 +210,20 @@ public class EditRecordActivity extends AppCompatActivity
             return;
         }
         if (CoCoinFragmentManager.editRecordActivityEditMoneyFragment.getNumberText().toString().equals("0")
-                && !CoCoinUtil.ClickButtonCommit(position)) {
-            if (CoCoinUtil.ClickButtonDelete(position)
-                    || CoCoinUtil.ClickButtonIsZero(position)) {
+                && !coCoinUtil.clickButtonCommit(position)) {
+            if (coCoinUtil.clickButtonDelete(position)
+                    || coCoinUtil.clickButtonIsZero(position)) {
 
             } else {
-                CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setNumberText(CoCoinUtil.BUTTONS[position]);
+                CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setNumberText(coCoinUtil.BUTTONS[position]);
             }
         } else {
-            if (CoCoinUtil.ClickButtonDelete(position)) {
+            if (coCoinUtil.clickButtonDelete(position)) {
                 if (longClick) {
                     CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setNumberText("0");
                     CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setHelpText(" ");
                     CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setHelpText(
-                            CoCoinUtil.FLOATINGLABELS[CoCoinFragmentManager.editRecordActivityEditMoneyFragment
+                            coCoinUtil.FLOATINGLABELS[CoCoinFragmentManager.editRecordActivityEditMoneyFragment
                                     .getNumberText().toString().length()]);
                 } else {
                     CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setNumberText(
@@ -228,20 +235,20 @@ public class EditRecordActivity extends AppCompatActivity
                         CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setHelpText(" ");
                     }
                 }
-            } else if (CoCoinUtil.ClickButtonCommit(position)) {
+            } else if (coCoinUtil.clickButtonCommit(position)) {
                 commit();
             } else {
                 if (FIRST_EDIT) {
-                    CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setNumberText(CoCoinUtil.BUTTONS[position]);
+                    CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setNumberText(coCoinUtil.BUTTONS[position]);
                     FIRST_EDIT = false;
                 } else {
                     CoCoinFragmentManager.editRecordActivityEditMoneyFragment
                             .setNumberText(CoCoinFragmentManager.editRecordActivityEditMoneyFragment
-                                    .getNumberText().toString() + CoCoinUtil.BUTTONS[position]);
+                                    .getNumberText().toString() + coCoinUtil.BUTTONS[position]);
                 }
             }
         }
-        CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setHelpText(CoCoinUtil.FLOATINGLABELS[
+        CoCoinFragmentManager.editRecordActivityEditMoneyFragment.setHelpText(coCoinUtil.FLOATINGLABELS[
                 CoCoinFragmentManager.editRecordActivityEditMoneyFragment.getNumberText().toString().length()]);
     }
 
@@ -340,8 +347,8 @@ public class EditRecordActivity extends AppCompatActivity
                 x2 = ev.getX();
                 y2 = ev.getY();
                 if (editViewPager.getCurrentItem() == 0
-                        && CoCoinUtil.isPointInsideView(x2, y2, editViewPager)
-                        && CoCoinUtil.GetScreenWidth(mContext) - x2 <= 60) {
+                        && coCoinUtil.isPointInsideView(x2, y2, editViewPager)
+                        && coCoinUtil.getScreenWidth(this) - x2 <= 60) {
                     return true;
                 }
                 break;

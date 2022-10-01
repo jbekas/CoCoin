@@ -26,12 +26,21 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropM
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.adapter.TagDraggableItemAdapter;
-import com.jbekas.cocoin.model.RecordManager;
+import com.jbekas.cocoin.db.RecordManager;
 import com.jbekas.cocoin.model.SettingManager;
+import com.jbekas.cocoin.util.CoCoinUtil;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class TagSettingActivity extends AppCompatActivity {
+
+    @Inject
+    protected CoCoinUtil coCoinUtil;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -81,7 +90,7 @@ public class TagSettingActivity extends AppCompatActivity {
         mRecyclerViewDragDropManager.setLongPressTimeout(750);
 
         //adapter
-        myItemAdapter = new TagDraggableItemAdapter();
+        myItemAdapter = new TagDraggableItemAdapter(coCoinUtil);
         mAdapter = myItemAdapter;
 
         // wrap for dragging

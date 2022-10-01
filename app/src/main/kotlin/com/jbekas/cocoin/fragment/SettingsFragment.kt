@@ -23,8 +23,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.BmobUser
 import cn.bmob.v3.datatype.BmobFile
@@ -41,6 +43,7 @@ import com.afollestad.materialdialogs.color.ColorChooserDialog
 import com.afollestad.materialdialogs.color.ColorChooserDialog.ColorCallback
 import com.github.johnpersano.supertoasts.SuperActivityToast
 import com.github.johnpersano.supertoasts.SuperToast
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.jbekas.cocoin.BuildConfig
 import com.jbekas.cocoin.R
@@ -49,7 +52,7 @@ import com.jbekas.cocoin.activity.TagSettingActivity
 import com.jbekas.cocoin.databinding.FragmentSettingsBinding
 import com.jbekas.cocoin.model.AppUpdateManager
 import com.jbekas.cocoin.model.Logo
-import com.jbekas.cocoin.model.RecordManager
+import com.jbekas.cocoin.db.RecordManager
 import com.jbekas.cocoin.model.SettingManager
 import com.jbekas.cocoin.model.User
 import com.jbekas.cocoin.util.CoCoinUtil
@@ -59,6 +62,7 @@ import com.jbekas.cocoin.util.ToastUtil.showToast
 import com.koushikdutta.ion.Ion
 import com.rengwuxian.materialedittext.MaterialEditText
 import com.rey.material.widget.Switch
+import dagger.hilt.android.AndroidEntryPoint
 import net.steamcrafted.materialiconlib.MaterialIconView
 import timber.log.Timber
 import java.io.File
@@ -66,9 +70,14 @@ import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     Switch.OnCheckedChangeListener {
+
+    @Inject
+    lateinit var coCoinUtil: CoCoinUtil
 
     private var _binding: FragmentSettingsBinding? = null
 
@@ -106,7 +115,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         } else {
             // do something for phones running an SDK before lollipop
 //            val statusBarView = findViewById<View>(R.id.status_bar_view)
-            binding.statusBarView.layoutParams.height = CoCoinUtil.getStatusBarHeight()
+            binding.statusBarView.layoutParams.height = coCoinUtil.statusBarHeight
         }
         init()
 
@@ -159,12 +168,12 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
                     binding.monthColorType.isEnabled = true
                     binding.monthColorType.setColorFilter(SettingManager.getInstance().remindColor, android.graphics.PorterDuff.Mode.SRC_IN)
                     binding.warningExpense.isEnabled = true
-                    binding.warningExpense.setTextColor(ContextCompat.getColor(activity!!, R.color.drawer_text))
+                    binding.warningExpense.setTextColor(ContextCompat.getColor(requireActivity(), R.color.drawer_text))
                 } else {
                     binding.monthColorType.isEnabled = false
                     binding.monthColorType.setColorFilter(R.color.my_gray, android.graphics.PorterDuff.Mode.SRC_IN)
                     binding.warningExpense.isEnabled = false
-                    binding.warningExpense.setTextColor(ContextCompat.getColor(activity!!, R.color.my_gray))
+                    binding.warningExpense.setTextColor(ContextCompat.getColor(requireActivity(), R.color.my_gray))
                 }
                 setTVEnable(binding.monthColorTypeText, isChecked
                         && SettingManager.getInstance().isMonthLimit)
@@ -198,7 +207,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         if (user != null) {
             try {
                 val logoFile =
-                    File(CoCoinApplication.getAppContext().filesDir.toString() + CoCoinUtil.LOGO_NAME)
+                    File(CoCoinApplication.getAppContext().filesDir.toString() + coCoinUtil.LOGO_NAME)
                 if (!logoFile.exists()) {
                     // the local logo file is missed
                     // try to get from the server
@@ -213,11 +222,11 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
                                 if (BuildConfig.DEBUG) Log.d("CoCoin", "Logo in server: $url")
                                 Ion.with(CoCoinApplication.getAppContext()).load(url)
                                     .write(File(CoCoinApplication.getAppContext().filesDir
-                                        .toString() + CoCoinUtil.LOGO_NAME))
+                                        .toString() + coCoinUtil.LOGO_NAME))
                                     .setCallback { e, file ->
                                         binding.profileImage.setImageBitmap(BitmapFactory.decodeFile(
                                             CoCoinApplication.getAppContext().filesDir
-                                                .toString() + CoCoinUtil.LOGO_NAME))
+                                                .toString() + coCoinUtil.LOGO_NAME))
                                     }
                             }
 
@@ -245,9 +254,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     private fun changeLogo() {
         val user = BmobUser.getCurrentUser(CoCoinApplication.getAppContext(), User::class.java)
         if (user == null) {
-            MaterialDialog.Builder(activity!!)
+            MaterialDialog.Builder(requireActivity())
                 .iconRes(R.drawable.cocoin_logo)
-//                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
                 .limitIconToDefaultSize() // limits the displayed icon size to 48dp
                 .title(R.string.login_first_title)
                 .content(R.string.login_first_content)
@@ -261,9 +270,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
                 .show()
             return
         }
-        MaterialDialog.Builder(activity!!)
+        MaterialDialog.Builder(requireActivity())
             .iconRes(R.drawable.cocoin_logo)
-//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
             .limitIconToDefaultSize() // limits the displayed icon size to 48dp
             .title(R.string.change_logo_title)
             .content(R.string.change_logo_content)
@@ -279,7 +288,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
                     val intent2 = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     intent2.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(File(CoCoinApplication.getAppContext().filesDir
-                            .toString() + CoCoinUtil.LOGO_NAME)))
+                            .toString() + coCoinUtil.LOGO_NAME)))
                     startActivityForResult(intent2, 2)
                 }
             }
@@ -312,7 +321,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             2 ->                 // after taking a photo
                 if (resultCode == Activity.RESULT_OK) { // TODO Does this still work?
                     val temp =
-                        File(CoCoinApplication.getAppContext().filesDir.toString() + CoCoinUtil.LOGO_NAME)
+                        File(CoCoinApplication.getAppContext().filesDir.toString() + coCoinUtil.LOGO_NAME)
                     cropPhoto(Uri.fromFile(temp))
                 }
             3 ->                 // after crop the picture
@@ -335,7 +344,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     private fun setPicToView(mBitmap: Bitmap) {
         var b: FileOutputStream? = null
         val file =
-            File(CoCoinApplication.getAppContext().filesDir.toString() + CoCoinUtil.LOGO_NAME)
+            File(CoCoinApplication.getAppContext().filesDir.toString() + coCoinUtil.LOGO_NAME)
         val fileName = file.absolutePath // get logo position
         try {
             b = FileOutputStream(fileName)
@@ -371,11 +380,11 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
                 val url = `object`[0].file.url
                 Ion.with(CoCoinApplication.getAppContext()).load(url)
                     .write(File(CoCoinApplication.getAppContext().filesDir
-                        .toString() + CoCoinUtil.LOGO_NAME))
+                        .toString() + coCoinUtil.LOGO_NAME))
                     .setCallback { e, file ->
                         val bitmap =
                             BitmapFactory.decodeFile(CoCoinApplication.getAppContext().filesDir
-                                .toString() + CoCoinUtil.LOGO_NAME)
+                                .toString() + coCoinUtil.LOGO_NAME)
                         if (bitmap == null) {
                             Log.d("Saver", "Logo misses")
                         } else {
@@ -400,7 +409,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             return
         }
         val file =
-            File(CoCoinApplication.getAppContext().filesDir.toString() + CoCoinUtil.LOGO_NAME)
+            File(CoCoinApplication.getAppContext().filesDir.toString() + coCoinUtil.LOGO_NAME)
         val user = currentUser
         // if login/////////////////////////////////////////////////////////////////////////////////////////
         if (user != null) {
@@ -502,9 +511,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     private fun userOperator() {
         if (!SettingManager.getInstance().loggenOn) {
             // register or log on
-            MaterialDialog.Builder(activity!!)
+            MaterialDialog.Builder(requireActivity())
                 .iconRes(R.drawable.cocoin_logo)
-//                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
                 .limitIconToDefaultSize() // limits the displayed icon size to 48dp
                 .title(R.string.welcome)
                 .content(R.string.login_or_register)
@@ -523,11 +532,11 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
                 .show()
         } else {
             // log out or user operate
-            MaterialDialog.Builder(activity!!)
+            MaterialDialog.Builder(requireActivity())
                 .iconRes(R.drawable.cocoin_logo)
-//                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
                 .limitIconToDefaultSize() // limits the displayed icon size to 48dp
-                .title(activity!!.resources.getString(R.string.hi)
+                .title(resources.getString(R.string.hi)
                         + SettingManager.getInstance().userName)
                 .content(R.string.whether_logout)
                 .positiveText(R.string.log_out)
@@ -560,12 +569,12 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     var loginDialogView: View? = null
     var loginDialogButton: MaterialButton? = null
     private fun userLogin() {
-        loginDialog = MaterialDialog.Builder(activity!!)
+        loginDialog = MaterialDialog.Builder(requireActivity())
             .title(R.string.go_login)
-//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
             .customView(R.layout.dialog_user_login, true)
             .build()
-        val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         loginDialogView = loginDialog!!.getCustomView()
         loginDialogButton = loginDialogView!!.findViewById<View>(R.id.button) as MaterialButton
@@ -584,9 +593,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
 
             user.username = loginUserName.text.toString()
             user.setPassword(loginPassword.text.toString())
-            showToast(activity!!, "Login is currently disabled.", null, null)
+            showToast(requireActivity(), "Login is currently disabled.")
             if (loginDialog != null) loginDialog!!.dismiss()
-            val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0)
 
             /*user.login(CoCoinApplication.getAppContext(), new SaveListener() {
@@ -718,20 +727,20 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     var registerDialogView: View? = null
     var registerDialogButton: MaterialButton? = null
     private fun userRegister() {
-        registerDialog = MaterialDialog.Builder(activity!!)
+        registerDialog = MaterialDialog.Builder(requireActivity())
             .title(R.string.go_register)
-//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
             .customView(R.layout.dialog_user_register, true)
             .build()
-        val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         registerDialogView = registerDialog!!.getCustomView()
         registerDialogButton =
             registerDialogView!!.findViewById<View>(R.id.button) as MaterialButton
         registerDialogButton!!.setOnClickListener {
-            showToast(activity!!, "Register is currently disabled.", null, null)
+            showToast(requireActivity(), "Register is currently disabled.")
             if (registerDialog != null) registerDialog!!.dismiss()
-            val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0)
 
 /*
@@ -887,9 +896,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
 
     // Change account book name/////////////////////////////////////////////////////////////////////////
     private fun changeAccountBookName() {
-        MaterialDialog.Builder(activity!!)
+        MaterialDialog.Builder(requireActivity())
             .theme(Theme.LIGHT)
-//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
             .title(R.string.set_account_book_dialog_title)
             .inputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS)
             .inputRange(1, 16)
@@ -918,12 +927,12 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         if (SettingManager.getInstance().loggenOn) {
             binding.userName.text = SettingManager.getInstance().userName
             binding.userEmail.text = SettingManager.getInstance().userEmail
-            binding.loginButton.text = activity!!.resources.getText(R.string.logout_button)
+            binding.loginButton.text = resources.getText(R.string.logout_button)
             binding.loginButton.setBackgroundResource(R.drawable.button_logout)
         } else {
             binding.userName.text = ""
             binding.userEmail.text = ""
-            binding.loginButton.text = activity!!.resources.getText(R.string.login_button)
+            binding.loginButton.text = resources.getText(R.string.login_button)
             binding.loginButton.setBackgroundResource(R.drawable.button_login)
         }
     }
@@ -931,7 +940,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     // Start change account book password activity//////////////////////////////////////////////////////
     // I put the update to server part in the change password activity but not here/////////////////////
     private fun changePassword() {
-        Toast.makeText(activity!!, "Disabled", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireActivity(), "Disabled", Toast.LENGTH_SHORT).show()
 //        val intent = Intent(activity, EditPasswordActivity::class.java)
 //        startActivity(intent)
     }
@@ -961,9 +970,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         // change the month limit///////////////////////////////////////////////////////////////////////////
         binding.monthExpense.setOnClickListener {
             if (SettingManager.getInstance().isMonthLimit) {
-                MaterialDialog.Builder(activity!!)
+                MaterialDialog.Builder(requireActivity())
                     .theme(Theme.LIGHT)
-//                    .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                    .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
                     .title(R.string.set_month_expense_dialog_title)
                     .inputType(InputType.TYPE_CLASS_NUMBER)
                     .positiveText(R.string.submit)
@@ -1005,16 +1014,16 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             if (SettingManager.getInstance().isMonthLimit
                 && SettingManager.getInstance().isColorRemind
             ) {
-                MaterialDialog.Builder(activity!!)
+                MaterialDialog.Builder(requireActivity())
                     .theme(Theme.LIGHT)
-//                    .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//                    .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
                     .title(R.string.set_month_expense_dialog_title)
                     .inputType(InputType.TYPE_CLASS_NUMBER)
                     .positiveText(R.string.submit)
                     .alwaysCallInputCallback()
                     .input(null, null) { dialog, input ->
                         if (input.length == 0) {
-                            dialog.setContent(activity!!.resources.getString(
+                            dialog.setContent(resources.getString(
                                 R.string.set_warning_expense_dialog_title))
                             dialog.getActionButton(DialogAction.POSITIVE).isEnabled = false
                         } else if (input.toString().toInt() < 100) {
@@ -1027,7 +1036,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
                                 .monthLimit.toString())
                             dialog.getActionButton(DialogAction.POSITIVE).isEnabled = false
                         } else {
-                            dialog.setContent(activity!!.resources.getString(
+                            dialog.setContent(resources.getString(
                                 R.string.set_warning_expense_dialog_title))
                             dialog.getActionButton(DialogAction.POSITIVE).isEnabled = true
                         }
@@ -1056,26 +1065,42 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         binding.whetherShowPictureButton.setOnCheckedChangeListener(this)
         binding.whetherShowCircleButton.setOnCheckedChangeListener(this)
         binding.updateLayout.setOnClickListener {
-            showToast(activity!!,
-                activity!!.resources.getString(R.string.checking_update),
-                null,
-                SuperToast.Background.BLUE)
+            showToast(requireActivity(),
+                resources.getString(R.string.checking_update),
+                color = SuperToast.Background.BLUE)
             val appUpdateManager = AppUpdateManager(activity)
             appUpdateManager.checkUpdateInfo(true)
         }
         binding.updateText.text =
-            activity!!.resources.getString(R.string.current_version) + CoCoinUtil.GetCurrentVersion()
+            resources.getString(R.string.current_version) + coCoinUtil.getCurrentVersion()
         if (SettingManager.getInstance().canBeUpdated) {
             binding.updateTag.visibility = View.VISIBLE
         } else {
             binding.updateTag.visibility = View.GONE
         }
+
+        binding.helpLayout.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_SettingsFragment_to_helpCoCoinFragment)
+        }
+
+        binding.feedbackLayout.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_SettingsFragment_to_helpFeedbackFragment)
+        }
+
+        binding.aboutLayout.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_SettingsFragment_to_helpAboutFragment)
+        }
+
+
         val loggenOn = SettingManager.getInstance().loggenOn
         if (loggenOn) {
             // is logged on, set the user name and email
             binding.userName.text = SettingManager.getInstance().userName
             binding.userEmail.text = SettingManager.getInstance().userEmail
-            binding.loginButton.text = activity!!.resources.getText(R.string.logout_button)
+            binding.loginButton.text = resources.getText(R.string.logout_button)
             binding.loginButton.setBackgroundResource(R.drawable.button_logout)
         } else {
             binding.userName.text = ""
@@ -1115,12 +1140,12 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
             binding.monthColorType.isEnabled = true
             binding.monthColorType.setColorFilter(SettingManager.getInstance().remindColor, android.graphics.PorterDuff.Mode.SRC_IN)
             binding.warningExpense.isEnabled = true
-            binding.warningExpense.setTextColor(ContextCompat.getColor(activity!!, R.color.drawer_text))
+            binding.warningExpense.setTextColor(ContextCompat.getColor(requireActivity(), R.color.drawer_text))
         } else {
             binding.monthColorType.isEnabled = false
             binding.monthColorType.setColorFilter(R.color.my_gray, android.graphics.PorterDuff.Mode.SRC_IN)
             binding.warningExpense.isEnabled = false
-            binding.warningExpense.setTextColor(ContextCompat.getColor(activity!!, R.color.my_gray))
+            binding.warningExpense.setTextColor(ContextCompat.getColor(requireActivity(), R.color.my_gray))
         }
         setIconEnable(binding.monthForbiddenIcon, isMonthLimit && isForbidden)
         binding.monthColorRemindButton.isEnabled = isMonthLimit
@@ -1138,8 +1163,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     }
 
     private fun setIconEnable(icon: MaterialIconView?, enable: Boolean) {
-        if (enable) icon!!.setColor(activity!!.resources.getColor(R.color.my_blue)) else icon!!.setColor(
-            activity!!.resources.getColor(R.color.my_gray))
+        if (enable) icon!!.setColor(resources.getColor(R.color.my_blue)) else icon!!.setColor(
+            resources.getColor(R.color.my_gray))
     }
 
     private fun setIconState(icon: ImageView, enable: Boolean) {
@@ -1148,12 +1173,12 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
         } else {
             R.color.my_gray
         }
-        icon.setColorFilter(ContextCompat.getColor(activity!!, color), android.graphics.PorterDuff.Mode.SRC_IN)
+        icon.setColorFilter(ContextCompat.getColor(requireActivity(), color), android.graphics.PorterDuff.Mode.SRC_IN)
     }
 
     private fun setTVEnable(tv: TextView?, enable: Boolean) {
-        if (enable) tv!!.setTextColor(activity!!.resources.getColor(R.color.drawer_text)) else tv!!.setTextColor(
-            activity!!.resources.getColor(R.color.my_gray))
+        if (enable) tv!!.setTextColor(resources.getColor(R.color.drawer_text)) else tv!!.setTextColor(
+            resources.getColor(R.color.my_gray))
     }
 
     // choose a color///////////////////////////////////////////////////////////////////////////////////
@@ -1167,7 +1192,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
     override fun onColorChooserDismissed(dialog: ColorChooserDialog) {}
 
     private fun getRemindColorSelectDialog() : ColorChooserDialog {
-        return ColorChooserDialog.Builder(activity!!, R.string.set_remind_color_dialog_title)
+        return ColorChooserDialog.Builder(requireActivity(), R.string.set_remind_color_dialog_title)
                 .titleSub(R.string.set_remind_color_dialog_sub_title)
                 .preselect(SettingManager.getInstance().remindColor)
                 .doneButton(R.string.submit)
@@ -1180,9 +1205,9 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
 
     // whether sync the settings from server////////////////////////////////////////////////////////////
     private fun whetherSyncSettingsFromServer() {
-        MaterialDialog.Builder(activity!!)
+        MaterialDialog.Builder(requireActivity())
             .iconRes(R.drawable.cocoin_logo)
-//            .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+//            .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
             .limitIconToDefaultSize() // limits the displayed icon size to 48dp
             .title(R.string.sync_dialog_title)
             .stackingBehavior(StackingBehavior.ALWAYS) //                .forceStacking(true)
@@ -1213,7 +1238,7 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
                     ) binding.warningExpense.withNumber(SettingManager.getInstance()
                         .monthWarning).setDuration(1000).start()
                     SettingManager.getInstance().remindColor = user.remindColor
-                    binding.monthColorType.setColorFilter(ContextCompat.getColor(activity!!, SettingManager.getInstance().remindColor), android.graphics.PorterDuff.Mode.SRC_IN)
+                    binding.monthColorType.setColorFilter(ContextCompat.getColor(requireActivity(), SettingManager.getInstance().remindColor), android.graphics.PorterDuff.Mode.SRC_IN)
                     SettingManager.getInstance().isForbidden = user.isForbidden
                     binding.monthColorRemindButton.isChecked = user.isForbidden
                     SettingManager.getInstance().accountBookName = user.accountBookName
@@ -1235,8 +1260,8 @@ class SettingsFragment : Fragment(), View.OnClickListener, ColorCallback,
      
      ${getString(R.string.your_current_account_book_password_is)}${SettingManager.getInstance().password}
      """.trimIndent()
-                    MaterialDialog.Builder(activity!!)
-//                        .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+                    MaterialDialog.Builder(requireActivity())
+//                        .typeface(coCoinUtil.GetTypeface(), coCoinUtil.GetTypeface())
                         .limitIconToDefaultSize() // limits the displayed icon size to 48dp
                         .title(R.string.sync_to_local_successfully_dialog_title)
                         .content(getString(R.string.sync_to_local_successfully_dialog_content) + tip)

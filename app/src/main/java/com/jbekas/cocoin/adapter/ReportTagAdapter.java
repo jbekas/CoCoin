@@ -8,25 +8,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jbekas.cocoin.R;
-import com.jbekas.cocoin.fragment.ReportViewFragment;
+import com.jbekas.cocoin.fragment.ExpenseReportsFragment;
 import com.jbekas.cocoin.util.CoCoinUtil;
 
 import java.util.ArrayList;
 
-/**
- * Created by Weiping on 2016/1/30.
- */
 public class ReportTagAdapter extends BaseAdapter {
 
+    private CoCoinUtil coCoinUtil;
     private ArrayList<double[]> tagExpense;
 
-    public ReportTagAdapter(ArrayList<double[]> tagExpense) {
+    public ReportTagAdapter(
+            CoCoinUtil coCoinUtil,
+            ArrayList<double[]> tagExpense
+    ) {
+        this.coCoinUtil = coCoinUtil;
         this.tagExpense = tagExpense;
     }
 
     @Override
     public int getCount() {
-        return min(tagExpense.size() - 1, ReportViewFragment.MAX_TAG_EXPENSE);
+        return min(tagExpense.size() - 1, ExpenseReportsFragment.MAX_TAG_EXPENSE);
     }
 
     @Override
@@ -49,14 +51,14 @@ public class ReportTagAdapter extends BaseAdapter {
         TextView expense = (TextView)convertView.findViewById(R.id.tag_expense);
         TextView records = (TextView)convertView.findViewById(R.id.tag_sum);
 
-//        name.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-//        expense.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
-//        records.setTypeface(CoCoinUtil.getInstance().typefaceLatoLight);
+//        name.setTypeface(coCoinUtil.typefaceLatoLight);
+//        expense.setTypeface(coCoinUtil.typefaceLatoLight);
+//        records.setTypeface(coCoinUtil.typefaceLatoLight);
 
-        icon.setImageDrawable(CoCoinUtil.getInstance().GetTagIconDrawable((int)tagExpense.get(position + 1)[2]));
-        name.setText(CoCoinUtil.getInstance().GetTagName((int)tagExpense.get(position + 1)[2]) + CoCoinUtil.getInstance().GetPurePercentString(tagExpense.get(position + 1)[1] * 100));
-        expense.setText(CoCoinUtil.getInstance().GetInMoney((int)tagExpense.get(position + 1)[0]));
-        records.setText(CoCoinUtil.getInstance().GetInRecords((int)tagExpense.get(position + 1)[3]));
+        icon.setImageDrawable(coCoinUtil.getTagIconDrawable((int)tagExpense.get(position + 1)[2]));
+        name.setText(coCoinUtil.getTagName((int)tagExpense.get(position + 1)[2]) + coCoinUtil.getPurePercentString(tagExpense.get(position + 1)[1] * 100));
+        expense.setText(coCoinUtil.getInMoney((int)tagExpense.get(position + 1)[0]));
+        records.setText(coCoinUtil.getInRecords((int)tagExpense.get(position + 1)[3]));
 
         return convertView;
     }

@@ -8,29 +8,31 @@ import android.widget.TextView;
 
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.activity.CoCoinApplication;
-import com.jbekas.cocoin.fragment.ReportViewFragment;
+import com.jbekas.cocoin.fragment.ExpenseReportsFragment;
 import com.jbekas.cocoin.util.CoCoinUtil;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by Weiping on 2016/2/2.
- */
-
 public class ReportDayAdapter extends BaseAdapter {
 
+    private CoCoinUtil coCoinUtil;
     private ArrayList<double[]> dayExpense;
     private int month;
 
-    public ReportDayAdapter(ArrayList<double[]> dayExpense, int month) {
+    public ReportDayAdapter(
+            CoCoinUtil coCoinUtil,
+            ArrayList<double[]> dayExpense,
+            int month
+    ) {
+        this.coCoinUtil = coCoinUtil;
         this.dayExpense = dayExpense;
         this.month = month;
     }
 
     @Override
     public int getCount() {
-        return min(dayExpense.size() - 1, ReportViewFragment.MAX_DAY_EXPENSE);
+        return min(dayExpense.size() - 1, ExpenseReportsFragment.MAX_DAY_EXPENSE);
     }
 
     @Override
@@ -60,9 +62,9 @@ public class ReportDayAdapter extends BaseAdapter {
 
         icon.setBackgroundResource(getBackgroundResource());
         icon.setText("" + ((int)dayExpense.get(position + 1)[2]));
-        name.setText(CoCoinUtil.getInstance().GetCalendarStringDayExpenseSort(CoCoinApplication.getAppContext(), (int)dayExpense.get(position + 1)[0], (int)dayExpense.get(position + 1)[1] + 1, (int)dayExpense.get(position + 1)[2]) + CoCoinUtil.getInstance().GetPurePercentString(dayExpense.get(position + 1)[4] * 100));
-        expense.setText(CoCoinUtil.getInstance().GetInMoney((int) dayExpense.get(position + 1)[3]));
-        records.setText(CoCoinUtil.getInstance().GetInRecords((int) dayExpense.get(position + 1)[5]));
+        name.setText(coCoinUtil.getCalendarStringDayExpenseSort(CoCoinApplication.getAppContext(), (int)dayExpense.get(position + 1)[0], (int)dayExpense.get(position + 1)[1] + 1, (int)dayExpense.get(position + 1)[2]) + coCoinUtil.getPurePercentString(dayExpense.get(position + 1)[4] * 100));
+        expense.setText(coCoinUtil.getInMoney((int) dayExpense.get(position + 1)[3]));
+        records.setText(coCoinUtil.getInRecords((int) dayExpense.get(position + 1)[5]));
 
         return convertView;
     }

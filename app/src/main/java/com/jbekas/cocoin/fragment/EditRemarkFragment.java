@@ -13,16 +13,20 @@ import androidx.fragment.app.Fragment;
 
 import com.jbekas.cocoin.R;
 import com.jbekas.cocoin.activity.CoCoinApplication;
-import com.jbekas.cocoin.model.RecordManager;
+import com.jbekas.cocoin.db.RecordManager;
 import com.jbekas.cocoin.model.SettingManager;
 import com.jbekas.cocoin.util.CoCoinUtil;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-/**
- * Created by 伟平 on 2015/10/27.
- */
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EditRemarkFragment extends Fragment {
+
+    @Inject
+    protected CoCoinUtil coCoinUtil;
 
     private int fragmentPosition;
     private int tagId = -1;
@@ -65,9 +69,9 @@ public class EditRemarkFragment extends Fragment {
         setEditColor(shouldChange);
 
         if (getArguments().getInt("type") == CoCoinFragmentManager.EDIT_RECORD_ACTIVITY_FRAGMENT
-                && CoCoinUtil.editRecordPosition != -1) {
+                && coCoinUtil.editRecordPosition != -1) {
             CoCoinFragmentManager.editRecordActivityEditRemarkFragment
-                    .setRemark(RecordManager.SELECTED_RECORDS.get(CoCoinUtil.editRecordPosition).getRemark());
+                    .setRemark(RecordManager.SELECTED_RECORDS.get(coCoinUtil.editRecordPosition).getRemark());
             CoCoinFragmentManager.editRecordActivityEditRemarkFragment.setLastSelection();
         }
 
@@ -123,9 +127,9 @@ public class EditRemarkFragment extends Fragment {
             editView.setPrimaryColor(SettingManager.getInstance().getRemindColor());
             editView.setHelperTextColor(SettingManager.getInstance().getRemindColor());
         } else {
-            editView.setTextColor(CoCoinUtil.getInstance().MY_BLUE);
-            editView.setPrimaryColor(CoCoinUtil.getInstance().MY_BLUE);
-            editView.setHelperTextColor(CoCoinUtil.getInstance().MY_BLUE);
+            editView.setTextColor(coCoinUtil.MY_BLUE);
+            editView.setPrimaryColor(coCoinUtil.MY_BLUE);
+            editView.setHelperTextColor(coCoinUtil.MY_BLUE);
         }
     }
 

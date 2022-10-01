@@ -12,15 +12,18 @@ import com.jbekas.cocoin.util.CoCoinUtil;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Created by Weiping on 2016/2/2.
- */
 public class ReportMonthAdapter extends BaseAdapter {
 
+    private CoCoinUtil coCoinUtil;
     private ArrayList<double[]> highestMonthExpense;
     private int year;
 
-    public ReportMonthAdapter(ArrayList<double[]> highestMonthExpense, int year) {
+    public ReportMonthAdapter(
+            CoCoinUtil coCoinUtil,
+            ArrayList<double[]> highestMonthExpense,
+            int year
+    ) {
+        this.coCoinUtil = coCoinUtil;
         this.highestMonthExpense = highestMonthExpense;
         this.year = year;
     }
@@ -57,9 +60,9 @@ public class ReportMonthAdapter extends BaseAdapter {
 
         icon.setBackgroundResource(getBackgroundResource());
         icon.setText("" + ((int)highestMonthExpense.get(position + 1)[1] + 1));
-        name.setText(CoCoinUtil.GetMonthShort((int) highestMonthExpense.get(position + 1)[1] + 1) + " " + year + CoCoinUtil.getInstance().GetPurePercentString(highestMonthExpense.get(position + 1)[4] * 100));
-        expense.setText(CoCoinUtil.getInstance().GetInMoney((int) highestMonthExpense.get(position + 1)[3]));
-        records.setText(CoCoinUtil.getInstance().GetInRecords((int) highestMonthExpense.get(position + 1)[5]));
+        name.setText(coCoinUtil.getMonthShort((int) highestMonthExpense.get(position + 1)[1] + 1) + " " + year + coCoinUtil.getPurePercentString(highestMonthExpense.get(position + 1)[4] * 100));
+        expense.setText(coCoinUtil.getInMoney((int) highestMonthExpense.get(position + 1)[3]));
+        records.setText(coCoinUtil.getInRecords((int) highestMonthExpense.get(position + 1)[5]));
 
         return convertView;
     }

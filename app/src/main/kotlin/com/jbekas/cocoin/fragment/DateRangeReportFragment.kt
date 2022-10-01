@@ -39,7 +39,7 @@ import com.jbekas.cocoin.activity.CoCoinApplication
 import com.jbekas.cocoin.adapter.TodayViewFragmentAdapter
 import com.jbekas.cocoin.databinding.FragmentDateRangeReportBinding
 import com.jbekas.cocoin.model.Logo
-import com.jbekas.cocoin.model.RecordManager
+import com.jbekas.cocoin.db.RecordManager
 import com.jbekas.cocoin.model.SettingManager
 import com.jbekas.cocoin.model.TaskManager
 import com.jbekas.cocoin.model.UploadInfo
@@ -62,9 +62,13 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DateRangeReportFragment : Fragment() {
+
+    @Inject
+    lateinit var coCoinUtil: CoCoinUtil
 
     private var _binding: FragmentDateRangeReportBinding? = null
 
@@ -102,7 +106,7 @@ class DateRangeReportFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        (activity!! as AppCompatActivity).supportActionBar?.let {
+        (requireActivity() as AppCompatActivity).supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setDisplayShowHomeEnabled(true)
             it.setHomeButtonEnabled(true)
@@ -130,7 +134,7 @@ class DateRangeReportFragment : Fragment() {
         }
 */
 
-        mDrawerToggle = object : ActionBarDrawerToggle(activity!!, mDrawer, 0, 0) {
+        mDrawerToggle = object : ActionBarDrawerToggle(requireActivity(), mDrawer, 0, 0) {
             override fun onDrawerClosed(view: View) {
                 super.onDrawerClosed(view)
                 monthExpense!!.text = "0"
@@ -139,7 +143,7 @@ class DateRangeReportFragment : Fragment() {
             override fun onDrawerOpened(drawerView: View) {
                 super.onDrawerOpened(drawerView)
                 monthExpense!!.withNumber(
-                    RecordManager.getCurrentMonthExpense()).setDuration(500).start()
+                    RecordManager.currentMonthExpense).setDuration(500).start()
             }
         }
 //        mDrawer!!.setDrawerListener(mDrawerToggle)
@@ -147,7 +151,7 @@ class DateRangeReportFragment : Fragment() {
 //        logo?.setOnClickListener {
 //            Timber.e("onClick not implemented.")
 //        }
-        todayModeAdapter = TodayViewFragmentAdapter(activity!!)
+        todayModeAdapter = TodayViewFragmentAdapter(requireActivity())
         mViewPager?.adapter = todayModeAdapter
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout)
@@ -176,7 +180,7 @@ class DateRangeReportFragment : Fragment() {
 //            }
 //        }
 //        mDemoSlider = view.findViewById<View>(R.id.slider) as SliderLayout
-//        val urls = CoCoinUtil.GetDrawerTopUrl()
+//        val urls = coCoinUtil.GetDrawerTopUrl()
 //        for (name in urls.keys) {
 //            val customSliderView = CustomSliderView(activity!!)
 //            // initialize a SliderLayout
@@ -236,11 +240,13 @@ class DateRangeReportFragment : Fragment() {
     var syncProgressDialog: MaterialDialog? = null
     private fun sync() {
         if (!SettingManager.getInstance().loggenOn) {
-            showToast(activity!!, R.string.login_tip, null, null)
+            showToast(
+                activity = requireActivity(),
+                textId = R.string.login_tip)
         } else {
             syncSuccessNumber = 0
             syncFailedNumber = 0
-            syncQueryDialog = MaterialDialog.Builder(activity!!)
+            syncQueryDialog = MaterialDialog.Builder(requireActivity())
                 .title(R.string.sync_querying_title)
                 .content(R.string.sync_querying_content)
                 .negativeText(R.string.cancel)
@@ -279,34 +285,19 @@ class DateRangeReportFragment : Fragment() {
 //
 //                                }
                             }
-                            val content = (CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                R.string.sync_info_cloud_record_0)
+                            val content = (resources.getString(R.string.sync_info_cloud_record_0)
                                     + cloudRecordNumber
-                                    + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                R.string.sync_info_cloud_record_1)
-                                    + (if (cal == null) CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                R.string.sync_info_cloud_time_2) else CoCoinUtil.GetString(
+                                    + resources.getString(R.string.sync_info_cloud_record_1)
+                                    + (if (cal == null) resources.getString(R.string.sync_info_cloud_time_2) else resources.getString(R.string.sync_info_cloud_time_0) + coCoinUtil.getCalendarString(
                                 CoCoinApplication.getAppContext(),
-                                R.string.sync_info_cloud_time_0) + CoCoinUtil.GetCalendarString(
-                                CoCoinApplication.getAppContext(),
-                                cal) + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                R.string.sync_info_cloud_time_1))
-                                    + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                R.string.sync_info_mobile_record_0)
+                                cal) + resources.getString(R.string.sync_info_cloud_time_1))
+                                    + resources.getString(R.string.sync_info_mobile_record_0)
                                     + RecordManager.RECORDS.size
-                                    + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                R.string.sync_info_mobile_record_1)
-                                    + (if (SettingManager.getInstance().recentlySyncTime == null) CoCoinUtil.GetString(
+                                    + resources.getString(R.string.sync_info_mobile_record_1)
+                                    + (if (SettingManager.getInstance().recentlySyncTime == null) resources.getString(R.string.sync_info_mobile_time_2) else resources.getString(R.string.sync_info_mobile_time_0) + coCoinUtil.getCalendarString(
                                 CoCoinApplication.getAppContext(),
-                                R.string.sync_info_mobile_time_2) else CoCoinUtil.GetString(
-                                CoCoinApplication.getAppContext(),
-                                R.string.sync_info_mobile_time_0) + CoCoinUtil.GetCalendarString(
-                                CoCoinApplication.getAppContext(),
-                                SettingManager.getInstance().recentlySyncTime) + CoCoinUtil.GetString(
-                                CoCoinApplication.getAppContext(),
-                                R.string.sync_info_mobile_time_1))
-                                    + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                R.string.sync_choose_content))
+                                SettingManager.getInstance().recentlySyncTime) + resources.getString(R.string.sync_info_mobile_time_1))
+                                    + resources.getString(R.string.sync_choose_content))
                             syncChooseDialog =
                                 MaterialDialog.Builder(activity!!)
                                     .title(R.string.sync_choose_title)
@@ -321,8 +312,7 @@ class DateRangeReportFragment : Fragment() {
                                             var subContent: String? = ""
                                             if (RecordManager.RECORDS.size == 0) {
                                                 subContent =
-                                                    CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                                        R.string.mobile_record_empty)
+                                                    resources.getString(R.string.mobile_record_empty)
                                                 MaterialDialog.Builder(activity!!)
                                                     .title(R.string.sync)
                                                     .content(subContent)
@@ -331,11 +321,9 @@ class DateRangeReportFragment : Fragment() {
                                                 return@SingleButtonCallback
                                             } else {
                                                 subContent =
-                                                    (CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                                        R.string.sure_to_cloud_0)
+                                                    (resources.getString(R.string.sure_to_cloud_0)
                                                             + RecordManager.RECORDS.size
-                                                            + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                                        R.string.sure_to_cloud_1))
+                                                            + resources.getString(R.string.sure_to_cloud_1))
                                             }
                                             MaterialDialog.Builder(activity!!)
                                                 .title(R.string.sync)
@@ -347,18 +335,14 @@ class DateRangeReportFragment : Fragment() {
                                                         syncProgressDialog =
                                                             MaterialDialog.Builder(activity!!)
                                                                 .title(R.string.syncing)
-                                                                .content(CoCoinUtil.GetString(
-                                                                    CoCoinApplication.getAppContext(),
-                                                                    R.string.uploading_0) + "1" + CoCoinUtil.GetString(
-                                                                    activity!!,
-                                                                    R.string.uploading_1))
+                                                                .content(resources.getString(R.string.uploading_0) + "1" + resources.getString(R.string.uploading_1))
                                                                 .progress(false,
                                                                     RecordManager.RECORDS.size,
                                                                     true)
                                                                 .cancelable(false)
                                                                 .show()
                                                         val databasePath =
-                                                            CoCoinUtil.GetRecordDatabasePath(
+                                                            coCoinUtil.getRecordDatabasePath(
                                                                 CoCoinApplication.getAppContext())
                                                         //                                                                final BmobFile bmobFile = new BmobFile(new File(databasePath));
 //                                                                bmobFile.uploadblock(mContext, new UploadFileListener() {
@@ -388,7 +372,7 @@ class DateRangeReportFragment : Fragment() {
 //                                                                                    syncProgressDialog.dismiss();
 //                                                                                    new MaterialDialog.Builder(mContext)
 //                                                                                            .title(R.string.sync_completely_title)
-//                                                                                            .content(RecordManager.getInstance(mContext).RECORDS.size() + CoCoinUtil.GetString(mContext, R.string.uploading_fail_1))
+//                                                                                            .content(RecordManager.getInstance(mContext).RECORDS.size() + coCoinUtil.GetString(mContext, R.string.uploading_fail_1))
 //                                                                                            .positiveText(R.string.ok_1)
 //                                                                                            .show();
 //                                                                                }
@@ -409,7 +393,7 @@ class DateRangeReportFragment : Fragment() {
 //                                                                                    syncProgressDialog.dismiss();
 //                                                                                    new MaterialDialog.Builder(mContext)
 //                                                                                            .title(R.string.sync_completely_title)
-//                                                                                            .content(RecordManager.getInstance(mContext).RECORDS.size() + CoCoinUtil.GetString(mContext, R.string.uploading_fail_1))
+//                                                                                            .content(RecordManager.getInstance(mContext).RECORDS.size() + coCoinUtil.GetString(mContext, R.string.uploading_fail_1))
 //                                                                                            .positiveText(R.string.ok_1)
 //                                                                                            .show();
 //                                                                                }
@@ -447,7 +431,7 @@ class DateRangeReportFragment : Fragment() {
                                                                         url: String,
                                                                         file: BmobFile,
                                                                     ) {
-                                                                        CoCoinUtil.deleteBmobUploadCach(
+                                                                        coCoinUtil.deleteBmobUploadCach(
                                                                             CoCoinApplication.getAppContext())
                                                                         if (BuildConfig.DEBUG) {
                                                                             Timber.d("Upload successfully fileName: $fileName")
@@ -480,13 +464,10 @@ class DateRangeReportFragment : Fragment() {
                                                                                     override fun onSuccess() {
                                                                                         // upload successfully
                                                                                         syncProgressDialog?.dismiss()
-                                                                                        MaterialDialog.Builder(
-                                                                                            activity!!)
+                                                                                        MaterialDialog.Builder(activity!!)
                                                                                             .title(R.string.sync_completely_title)
                                                                                             .content(
-                                                                                                RecordManager.RECORDS.size.toString() + CoCoinUtil.GetString(
-                                                                                                    CoCoinApplication.getAppContext(),
-                                                                                                    R.string.uploading_fail_1))
+                                                                                                RecordManager.RECORDS.size.toString() + resources.getString(R.string.uploading_fail_1))
                                                                                             .positiveText(
                                                                                                 R.string.ok_1)
                                                                                             .cancelable(
@@ -517,9 +498,7 @@ class DateRangeReportFragment : Fragment() {
                                                                                             activity!!)
                                                                                             .title(R.string.sync_completely_title)
                                                                                             .content(
-                                                                                                RecordManager.RECORDS.size.toString() + CoCoinUtil.GetString(
-                                                                                                    CoCoinApplication.getAppContext(),
-                                                                                                    R.string.uploading_fail_1))
+                                                                                                RecordManager.RECORDS.size.toString() + resources.getString(R.string.uploading_fail_1))
                                                                                             .positiveText(
                                                                                                 R.string.ok_1)
                                                                                             .cancelable(
@@ -561,8 +540,7 @@ class DateRangeReportFragment : Fragment() {
                                             var subContent: String? = ""
                                             if (cloudRecordNumber == 0) {
                                                 subContent =
-                                                    CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                                        R.string.cloud_record_empty)
+                                                    resources.getString(R.string.cloud_record_empty)
                                                 MaterialDialog.Builder(activity!!)
                                                     .title(R.string.sync)
                                                     .content(subContent)
@@ -571,11 +549,9 @@ class DateRangeReportFragment : Fragment() {
                                                 return@SingleButtonCallback
                                             } else {
                                                 subContent =
-                                                    (CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                                        R.string.sure_to_mobile_0)
+                                                    (resources.getString(R.string.sure_to_mobile_0)
                                                             + cloudRecordNumber
-                                                            + CoCoinUtil.GetString(CoCoinApplication.getAppContext(),
-                                                        R.string.sure_to_mobile_1))
+                                                            + resources.getString(R.string.sure_to_mobile_1))
                                             }
                                             MaterialDialog.Builder(activity!!)
                                                 .title(R.string.sync)
@@ -587,11 +563,7 @@ class DateRangeReportFragment : Fragment() {
                                                         syncProgressDialog =
                                                             MaterialDialog.Builder(activity!!)
                                                                 .title(R.string.syncing)
-                                                                .content(CoCoinUtil.GetString(
-                                                                    CoCoinApplication.getAppContext(),
-                                                                    R.string.downloading_0) + "1" + CoCoinUtil.GetString(
-                                                                    CoCoinApplication.getAppContext(),
-                                                                    R.string.downloading_1))
+                                                                .content(resources.getString(R.string.downloading_0) + "1" + resources.getString(R.string.downloading_1))
                                                                 .progress(false,
                                                                     cloudRecordNumber,
                                                                     true)
@@ -616,7 +588,7 @@ class DateRangeReportFragment : Fragment() {
                                                                             val inputStream: InputStream =
                                                                                 FileInputStream(file)
                                                                             val outFileNameString =
-                                                                                CoCoinUtil.GetRecordDatabasePath(
+                                                                                coCoinUtil.getRecordDatabasePath(
                                                                                     CoCoinApplication.getAppContext())
                                                                             val outputStream: OutputStream =
                                                                                 FileOutputStream(
@@ -640,8 +612,8 @@ class DateRangeReportFragment : Fragment() {
                                                                             Timber.d("Download successfully delete completely")
                                                                             // refresh data
                                                                             RecordManager.RECORDS.clear()
-                                                                            RecordManager.RECORDS =
-                                                                                null
+//                                                                            RecordManager.RECORDS =
+//                                                                                null
                                                                             RecordManager.getInstance(
                                                                                 CoCoinApplication.getAppContext())
                                                                             todayModeAdapter!!.notifyDataSetChanged()
@@ -651,9 +623,7 @@ class DateRangeReportFragment : Fragment() {
                                                                                 activity!!)
                                                                                 .title(R.string.sync_completely_title)
                                                                                 .content(
-                                                                                    cloudRecordNumber.toString() + CoCoinUtil.GetString(
-                                                                                        CoCoinApplication.getAppContext(),
-                                                                                        R.string.downloading_fail_1))
+                                                                                    cloudRecordNumber.toString() + resources.getString(R.string.downloading_fail_1))
                                                                                 .positiveText(R.string.ok_1)
                                                                                 .cancelable(false)
                                                                                 .show()
@@ -719,7 +689,7 @@ class DateRangeReportFragment : Fragment() {
         // upload failed
         if (BuildConfig.DEBUG) Timber.d("Upload database failed $code $msg")
         syncProgressDialog!!.dismiss()
-        MaterialDialog.Builder(activity!!)
+        MaterialDialog.Builder(requireActivity())
             .title(R.string.sync_failed)
             .content(R.string.uploading_fail_0)
             .positiveText(R.string.ok_1)
@@ -731,7 +701,7 @@ class DateRangeReportFragment : Fragment() {
         // upload failed
         if (BuildConfig.DEBUG) Timber.d("Download database failed $code $msg")
         syncProgressDialog!!.dismiss()
-        MaterialDialog.Builder(activity!!)
+        MaterialDialog.Builder(requireActivity())
             .title(R.string.sync_failed)
             .content(R.string.downloading_fail_0)
             .positiveText(R.string.ok_1)
@@ -746,16 +716,13 @@ class DateRangeReportFragment : Fragment() {
             if (syncSuccessNumber == RecordManager.RECORDS.size) {
                 syncProgressDialog!!.setContent(R.string.sync_completely_content)
             } else {
-                syncProgressDialog!!.setContent(CoCoinUtil.GetString(activity!!,
-                    R.string.uploading_0) + (syncSuccessNumber + 1) + CoCoinUtil.GetString(activity!!,
-                    R.string.uploading_1))
+                syncProgressDialog!!.setContent(resources.getString(R.string.uploading_0) + (syncSuccessNumber + 1) + resources.getString(R.string.uploading_1))
             }
             if (syncSuccessNumber + syncFailedNumber == RecordManager.RECORDS.size) {
                 syncProgressDialog!!.dismiss()
                 MaterialDialog.Builder(activity!!)
                     .title(R.string.sync_completely_title)
-                    .content(syncSuccessNumber.toString() + CoCoinUtil.GetString(activity!!,
-                        R.string.uploading_fail_1))
+                    .content(syncSuccessNumber.toString() + resources.getString(R.string.uploading_fail_1))
                     .positiveText(R.string.ok_1)
                     .show()
             }
@@ -768,8 +735,7 @@ class DateRangeReportFragment : Fragment() {
                 syncProgressDialog!!.dismiss()
                 MaterialDialog.Builder(activity!!)
                     .title(R.string.sync_completely_title)
-                    .content(syncSuccessNumber.toString() + CoCoinUtil.GetString(activity!!,
-                        R.string.uploading_fail_1))
+                    .content(syncSuccessNumber.toString() + resources.getString(R.string.uploading_fail_1))
                     .positiveText(R.string.ok_1)
                     .show()
             }
@@ -778,7 +744,7 @@ class DateRangeReportFragment : Fragment() {
 
     private fun loadSettings() {
         Timber.e("TODO: When TodayView is converted to Fragment, hook up with nav controller.")
-        Toast.makeText(activity!!, "Disabled", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireActivity(), "Disabled", Toast.LENGTH_SHORT).show()
         //val intent = Intent(this, AccountBookSettingActivity::class.java)
         //startActivity(intent)
     }
@@ -804,7 +770,7 @@ class DateRangeReportFragment : Fragment() {
             if (SettingManager.getInstance().isMonthLimit) {
                 monthExpenseTip?.visibility = View.VISIBLE
                 monthExpense?.withNumber(
-                    RecordManager.getCurrentMonthExpense())?.setDuration(500)?.start()
+                    RecordManager.currentMonthExpense)?.setDuration(500)?.start()
             } else {
                 monthExpenseTip?.visibility = View.INVISIBLE
                 monthExpense?.visibility = View.INVISIBLE
@@ -859,18 +825,6 @@ class DateRangeReportFragment : Fragment() {
 //                AccountBookReportViewActivity::class.java))
 //        }
 //        sync!!.setOnClickListener { sync() }
-//        help!!.setOnClickListener {
-//            startActivity(Intent(activity!!,
-//                HelpActivity::class.java))
-//        }
-//        feedback!!.setOnClickListener {
-//            startActivity(Intent(activity!!,
-//                FeedbackActivity::class.java))
-//        }
-//        about!!.setOnClickListener {
-//            startActivity(Intent(activity!!,
-//                AboutActivity::class.java))
-//        }
     }
 
     private fun loadLogo() {
@@ -878,7 +832,7 @@ class DateRangeReportFragment : Fragment() {
         if (user != null) {
             try {
                 val logoFile =
-                    File(CoCoinApplication.getAppContext().filesDir.toString() + CoCoinUtil.LOGO_NAME)
+                    File(CoCoinApplication.getAppContext().filesDir.toString() + coCoinUtil.LOGO_NAME)
                 if (!logoFile.exists()) {
                     // the local logo file is missed
                     // try to get from the server
@@ -894,11 +848,11 @@ class DateRangeReportFragment : Fragment() {
                                 if (BuildConfig.DEBUG) Timber.d("Logo in server: $url")
                                 Ion.with(CoCoinApplication.getAppContext()).load(url)
                                     .write(File(CoCoinApplication.getAppContext().filesDir
-                                        .toString() + CoCoinUtil.LOGO_NAME))
+                                        .toString() + coCoinUtil.LOGO_NAME))
                                     .setCallback { e, file ->
                                         profileImage!!.setImageBitmap(BitmapFactory.decodeFile(
                                             CoCoinApplication.getAppContext().filesDir
-                                                .toString() + CoCoinUtil.LOGO_NAME))
+                                                .toString() + coCoinUtil.LOGO_NAME))
                                     }
                             }
 

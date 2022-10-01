@@ -24,15 +24,19 @@ public class PasswordChangeButtonGridViewAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private Context mContext;
+    private CoCoinUtil coCoinUtil;
 
-    public PasswordChangeButtonGridViewAdapter(Context context) {
+    public PasswordChangeButtonGridViewAdapter(
+            Context context,
+            CoCoinUtil coCoinUtil) {
         this.inflater = LayoutInflater.from(context);
         this.mContext = context;
+        this.coCoinUtil = coCoinUtil;
     }
 
     @Override
     public int getCount() {
-        return CoCoinUtil.BUTTONS.length;
+        return coCoinUtil.BUTTONS.length;
     }
 
     @Override
@@ -73,20 +77,20 @@ public class PasswordChangeButtonGridViewAdapter extends BaseAdapter {
         } else {
             holder.iv.setVisibility(View.INVISIBLE);
 //            holder.tv.setTypeface(CoCoinUtil.typefaceLatoHairline);
-            holder.tv.setText(CoCoinUtil.BUTTONS[position]);
+            holder.tv.setText(coCoinUtil.BUTTONS[position]);
             holder.ml.setRippleDelayClick(false);
         }
 
         holder.ml.setRippleDuration(300);
         holder.fl.setBackgroundColor(
-                CoCoinUtil.getAlphaColor(SettingManager.getInstance().getRemindColor()));
+                coCoinUtil.getAlphaColor(SettingManager.getInstance().getRemindColor()));
         holder.ml.setRippleColor(SettingManager.getInstance().getRemindColor());
         holder.iv.setColor(SettingManager.getInstance().getRemindColor());
         holder.tv.setTextColor(SettingManager.getInstance().getRemindColor());
-        holder.fl.setBackgroundColor(CoCoinUtil.getAlphaColor(CoCoinUtil.MY_BLUE));
-        holder.ml.setRippleColor(CoCoinUtil.MY_BLUE);
-        holder.iv.setColor(CoCoinUtil.MY_BLUE);
-        holder.tv.setTextColor(CoCoinUtil.MY_BLUE);
+        holder.fl.setBackgroundColor(coCoinUtil.getAlphaColor(coCoinUtil.MY_BLUE));
+        holder.ml.setRippleColor(coCoinUtil.MY_BLUE);
+        holder.iv.setColor(coCoinUtil.MY_BLUE);
+        holder.tv.setTextColor(coCoinUtil.MY_BLUE);
 
 
         return convertView;

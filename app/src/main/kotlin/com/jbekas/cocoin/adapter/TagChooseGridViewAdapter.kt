@@ -4,28 +4,28 @@ import android.content.Context
 import android.widget.BaseAdapter
 import android.view.LayoutInflater
 import android.view.View
-import com.jbekas.cocoin.model.RecordManager
+import com.jbekas.cocoin.db.RecordManager
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.jbekas.cocoin.R
 import com.jbekas.cocoin.fragment.TagChooseFragment
 import com.jbekas.cocoin.util.CoCoinUtil
-import timber.log.Timber
 
 class TagChooseGridViewAdapter(
-    context: Context,
+    private val context: Context,
+    private val coCoinUtil: CoCoinUtil,
     fragmentPosition: Int,
     private val tagSelectedListener: TagChooseFragment.OnTagItemSelectedListener? = null
 ) : BaseAdapter() {
 
     private val inflater: LayoutInflater
-    private val mContext: Context
+//    private val mContext: Context
     private val fragmentPosition: Int
 
     init {
         inflater = LayoutInflater.from(context)
-        mContext = context
+//        mContext = context
         this.fragmentPosition = fragmentPosition
     }
 
@@ -71,10 +71,10 @@ class TagChooseGridViewAdapter(
         }
 
         holder.tagName!!.text =
-            CoCoinUtil.GetTagName(RecordManager.TAGS[fragmentPosition * 8 + position + 2].id)
+            coCoinUtil.getTagName(RecordManager.TAGS[fragmentPosition * 8 + position + 2].id)
         //holder.tagName!!.setTypeface(CoCoinUtil.typefaceLatoLight)
         holder.tagImage!!.setImageResource(
-            CoCoinUtil.GetTagIcon(RecordManager.TAGS[fragmentPosition * 8 + position + 2].id))
+            coCoinUtil.getTagIcon(RecordManager.TAGS[fragmentPosition * 8 + position + 2].id))
 
         return view
     }

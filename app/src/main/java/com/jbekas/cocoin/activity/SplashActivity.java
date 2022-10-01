@@ -1,6 +1,5 @@
 package com.jbekas.cocoin.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,14 +12,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.jbekas.cocoin.R;
-import com.jbekas.cocoin.model.CoCoin;
-import com.jbekas.cocoin.model.RecordManager;
+import com.jbekas.cocoin.db.RecordManager;
 import com.jbekas.cocoin.util.CoCoinUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
@@ -30,7 +33,11 @@ import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class SplashActivity extends Activity {
+@AndroidEntryPoint
+public class SplashActivity extends FragmentActivity {
+
+    @Inject
+    protected CoCoinUtil coCoinUtil;
 
     private Context mContext;
 
@@ -100,8 +107,8 @@ public class SplashActivity extends Activity {
         // get the center for the clipping circle
         int[] location = new int[2];
         image.getLocationOnScreen(location);
-        int cx = location[0] + CoCoinUtil.dpToPx(24);
-        int cy = location[1] + CoCoinUtil.dpToPx(24);
+        int cx = location[0] + coCoinUtil.dpToPx(24);
+        int cy = location[1] + coCoinUtil.dpToPx(24);
 
         // get the final radius for the clipping circle
         int dx = Math.max(cx, ly.getWidth() - cx);
@@ -160,7 +167,7 @@ public class SplashActivity extends Activity {
 //            Bmob.initialize(CoCoinApplication.getAppContext(), CoCoin.APPLICATION_ID);
 //            CrashReport.initCrashReport(CoCoinApplication.getAppContext(), "900018935", false);
             RecordManager.getInstance(CoCoinApplication.getAppContext());
-            CoCoinUtil.init(CoCoinApplication.getAppContext());
+//            CoCoinUtil.init(CoCoinApplication.getAppContext());
             return null;
         }
         @Override

@@ -9,10 +9,6 @@ import java.util.Date;
 
 import cn.bmob.v3.BmobObject;
 
-/**
- * Created by 伟平 on 2015/10/20.
- */
-
 public class CoCoinRecord extends BmobObject {
 
     private Long id;
@@ -84,15 +80,20 @@ public class CoCoinRecord extends BmobObject {
         return (!this.calendar.before(c1)) && this.calendar.before(c2);
     }
 
-    public boolean isInMoney(double money1, double money2, String currency) {
-        return CoCoinUtil.ToDollas(money1, currency) <= CoCoinUtil.ToDollas(this.money, this.currency)
-                && CoCoinUtil.ToDollas(money2, currency) > CoCoinUtil.ToDollas(this.money, this.currency);
+    public boolean isInMoney(
+            CoCoinUtil coCoinUtil,
+            double money1,
+            double money2,
+            String currency
+    ) {
+        return coCoinUtil.toDollars(money1, currency) <= coCoinUtil.toDollars(this.money, this.currency)
+                && coCoinUtil.toDollars(money2, currency) > coCoinUtil.toDollars(this.money, this.currency);
     }
 
-    public String getCalendarString() {
+    public String getCalendarString(CoCoinUtil coCoinUtil) {
         return String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":"
                 + String.format("%02d", calendar.get(Calendar.MINUTE)) + " "
-                + CoCoinUtil.GetMonthShort(calendar.get(Calendar.MONTH) + 1) + " "
+                + coCoinUtil.getMonthShort(calendar.get(Calendar.MONTH) + 1) + " "
                 + calendar.get(Calendar.DAY_OF_MONTH) + " "
                 + calendar.get(Calendar.YEAR);
     }

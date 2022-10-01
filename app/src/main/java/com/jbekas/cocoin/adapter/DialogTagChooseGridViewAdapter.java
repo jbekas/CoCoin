@@ -9,21 +9,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jbekas.cocoin.R;
-import com.jbekas.cocoin.model.RecordManager;
+import com.jbekas.cocoin.db.RecordManager;
 import com.jbekas.cocoin.util.CoCoinUtil;
-
-/**
- * Created by 伟平 on 2015/11/10.
- */
 
 public class DialogTagChooseGridViewAdapter extends BaseAdapter {
 
     private Context mContext;
+    private CoCoinUtil coCoinUtil;
     private LayoutInflater inflater;
 
-    public DialogTagChooseGridViewAdapter(Context context) {
+    public DialogTagChooseGridViewAdapter(
+            Context context,
+            CoCoinUtil coCoinUtil) {
         this.inflater = LayoutInflater.from(context);
         mContext = context;
+        this.coCoinUtil = coCoinUtil;
     }
 
     @Override
@@ -55,8 +55,8 @@ public class DialogTagChooseGridViewAdapter extends BaseAdapter {
         }
 
         holder.tagImage.setImageResource(
-                CoCoinUtil.GetTagIcon(RecordManager.TAGS.get(position + 2).getId()));
-        holder.tagName.setText(CoCoinUtil.GetTagName(RecordManager.getInstance(mContext).TAGS.get(position + 2).getId()));
+                coCoinUtil.getTagIcon(RecordManager.TAGS.get(position + 2).getId()));
+        holder.tagName.setText(coCoinUtil.getTagName(RecordManager.getInstance(mContext).TAGS.get(position + 2).getId()));
 //        holder.tagName.setTypeface(CoCoinUtil.GetTypeface());
 
         return convertView;

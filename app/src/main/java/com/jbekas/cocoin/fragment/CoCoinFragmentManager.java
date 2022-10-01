@@ -26,39 +26,6 @@ public class CoCoinFragmentManager {
     public static CustomTitleSliderView numberCustomTitleSliderView = null;
     public static CustomTitleSliderView expenseCustomTitleSliderView = null;
 
-    public static ReportViewFragment reportViewFragment = null;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private static CoCoinFragmentManager ourInstance = new CoCoinFragmentManager();
 

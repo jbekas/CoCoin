@@ -29,11 +29,12 @@ import com.jbekas.cocoin.fragment.CoCoinFragmentManager
 import com.jbekas.cocoin.model.AppUpdateManager
 import com.jbekas.cocoin.model.CoCoin
 import com.jbekas.cocoin.model.CoCoinRecord
-import com.jbekas.cocoin.model.RecordManager
+import com.jbekas.cocoin.db.RecordManager
 import com.jbekas.cocoin.model.SettingManager
 import com.jbekas.cocoin.model.User
 import com.jbekas.cocoin.service.ToastService
 import com.jbekas.cocoin.util.CoCoinUtil
+import com.jbekas.cocoin.util.Constants
 import com.jbekas.cocoin.util.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -44,6 +45,9 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var coCoinToast: ToastService
+
+    @Inject
+    lateinit var coCoinUtil: CoCoinUtil
 
     companion object {
         private const val SHAKE_ACCELERATED_SPEED = 15f
@@ -91,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         //        CrashReport.initCrashReport(CoCoinApplication.getAppContext(), "900016815", false);
 
         RecordManager.getInstance(CoCoinApplication.getAppContext())
-        CoCoinUtil.init(CoCoinApplication.getAppContext())
+//        coCoinUtil.init(CoCoinApplication.getAppContext())
         appUpdateManager = AppUpdateManager(this)
         appUpdateManager!!.checkUpdateInfo(false)
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -139,7 +143,7 @@ class MainActivity : AppCompatActivity() {
 
         // Button grid view
         val myGridView = binding.gridview
-        myGridViewAdapter = ButtonGridViewAdapter(this)
+        myGridViewAdapter = ButtonGridViewAdapter(this, coCoinUtil)
         myGridView.adapter = myGridViewAdapter
         myGridView.onItemClickListener = gridViewClickListener
         myGridView.onItemLongClickListener = gridViewLongClickListener
@@ -162,7 +166,7 @@ class MainActivity : AppCompatActivity() {
             val wrapInScrollView = true
             MaterialDialog.Builder(this)
                 .title(R.string.guide)
-                .typeface(CoCoinUtil.GetTypeface(), CoCoinUtil.GetTypeface())
+                .typeface(coCoinUtil.getTypeface(), coCoinUtil.getTypeface())
                 .customView(R.layout.main_activity_guide, wrapInScrollView)
                 .positiveText(R.string.ok)
                 .show()
@@ -212,22 +216,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun buttonClickOperation(longClick: Boolean, position: Int) {
         if (binding.editPager.currentItem == 1) return
-        if (CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString() == "0" && !CoCoinUtil.ClickButtonCommit(
+        if (CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString() == "0" && !coCoinUtil.clickButtonCommit(
                 position)
         ) {
-            if (CoCoinUtil.ClickButtonDelete(position)
-                || CoCoinUtil.ClickButtonIsZero(position)
+            if (coCoinUtil.clickButtonDelete(position)
+                || coCoinUtil.clickButtonIsZero(position)
             ) {
             } else {
                 CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText =
-                    CoCoinUtil.BUTTONS[position]
+                    coCoinUtil.BUTTONS[position]
             }
         } else {
-            if (CoCoinUtil.ClickButtonDelete(position)) {
+            if (coCoinUtil.clickButtonDelete(position)) {
                 if (longClick) {
                     CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText = "0"
                     CoCoinFragmentManager.mainActivityEditMoneyFragment.helpText =
-                        CoCoinUtil.FLOATINGLABELS[CoCoinFragmentManager.mainActivityEditMoneyFragment
+                        coCoinUtil.FLOATINGLABELS[CoCoinFragmentManager.mainActivityEditMoneyFragment
                             .numberText.toString().length]
                 } else {
                     CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText =
@@ -241,16 +245,16 @@ class MainActivity : AppCompatActivity() {
                         CoCoinFragmentManager.mainActivityEditMoneyFragment.helpText = " "
                     }
                 }
-            } else if (CoCoinUtil.ClickButtonCommit(position)) {
+            } else if (coCoinUtil.clickButtonCommit(position)) {
                 commit()
             } else {
                 CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText = (
                         CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString()
-                                + CoCoinUtil.BUTTONS[position])
+                                + coCoinUtil.BUTTONS[position])
             }
         }
         CoCoinFragmentManager.mainActivityEditMoneyFragment.helpText =
-            CoCoinUtil.FLOATINGLABELS[CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString().length]
+            coCoinUtil.FLOATINGLABELS[CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString().length]
     }
 
     private fun commit() {
@@ -263,7 +267,7 @@ class MainActivity : AppCompatActivity() {
             val coCoinRecord = CoCoinRecord(
                 -1,
                 java.lang.Float.valueOf(CoCoinFragmentManager.mainActivityEditMoneyFragment.numberText.toString()),
-                "RMB",
+                Constants.USD,
                 CoCoinFragmentManager.mainActivityEditMoneyFragment.tagId,
                 calendar)
             coCoinRecord.remark = CoCoinFragmentManager.mainActivityEditRemarkFragment.remark
@@ -290,43 +294,37 @@ class MainActivity : AppCompatActivity() {
         when (toastType) {
             NO_TAG_TOAST -> {
                 ToastUtil.showToast(
-                    context = this,
+                    activity = this,
                     textId = R.string.toast_no_tag,
-                    textColor = null,
                     color = SuperToast.Background.RED)
 //                tagAnimation()
             }
             NO_MONEY_TOAST -> ToastUtil.showToast(
-                context = this,
+                activity = this,
                 textId = R.string.toast_no_amount,
-                textColor = null,
                 color = SuperToast.Background.RED)
             PASSWORD_WRONG_TOAST -> ToastUtil.showToast(
-                context = this,
+                activity = this,
                 textId = R.string.toast_password_wrong,
-                textColor = null,
                 color = SuperToast.Background.RED)
             PASSWORD_CORRECT_TOAST -> {
                 Timber.d("PASSWORD_CORRECT_TOAST start")
                 ToastUtil.showToast(
-                    context = this,
+                    activity = this,
                     textId = R.string.toast_password_correct,
-                    textColor = null,
                     color = SuperToast.Background.BLUE)
                 Timber.d("PASSWORD_CORRECT_TOAST finish")
             }
             SAVE_SUCCESSFULLY_TOAST -> {}
             SAVE_FAILED_TOAST -> {}
             PRESS_AGAIN_TO_EXIT -> ToastUtil.showToast(
-                context = this,
+                activity = this,
                 textId = R.string.toast_press_again_to_exit,
-                textColor = null,
                 color = SuperToast.Background.BLUE)
             WELCOME_BACK -> ToastUtil.showToast(
-                context = this,
+                activity = this,
                 text = this.resources.getString(R.string.welcome_back,
                     SettingManager.getInstance().userName),
-                textColor = null,
                 color = SuperToast.Background.BLUE)
             else -> {}
         }
@@ -335,7 +333,7 @@ class MainActivity : AppCompatActivity() {
     private fun changeColor() {
         val shouldChange = (SettingManager.getInstance().isMonthLimit
                 && SettingManager.getInstance().isColorRemind
-                && (RecordManager.getCurrentMonthExpense()
+                && (RecordManager.currentMonthExpense
                 >= SettingManager.getInstance().monthWarning))
         val currentapiVersion = Build.VERSION.SDK_INT
         if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
@@ -345,7 +343,7 @@ class MainActivity : AppCompatActivity() {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             if (shouldChange) {
                 window.statusBarColor =
-                    CoCoinUtil.getDeeperColor(SettingManager.getInstance().remindColor)
+                    coCoinUtil.getDeeperColor(SettingManager.getInstance().remindColor)
             } else {
                 window.statusBarColor = ContextCompat.getColor(this, R.color.statusBarColor)
             }
@@ -356,8 +354,8 @@ class MainActivity : AppCompatActivity() {
             binding.root.setBackgroundColor(SettingManager.getInstance().remindColor)
             binding.toolbar.setBackgroundColor(SettingManager.getInstance().remindColor)
         } else {
-            binding.root.setBackgroundColor(CoCoinUtil.MY_BLUE)
-            binding.toolbar.setBackgroundColor(CoCoinUtil.MY_BLUE)
+            binding.root.setBackgroundColor(coCoinUtil.MY_BLUE)
+            binding.toolbar.setBackgroundColor(coCoinUtil.MY_BLUE)
         }
         if (CoCoinFragmentManager.mainActivityEditMoneyFragment != null) CoCoinFragmentManager.mainActivityEditMoneyFragment.setEditColor(
             shouldChange)

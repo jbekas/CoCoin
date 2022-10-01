@@ -14,15 +14,11 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemConstant
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableItemViewHolder;
 import com.jbekas.cocoin.R;
-import com.jbekas.cocoin.model.RecordManager;
+import com.jbekas.cocoin.db.RecordManager;
 import com.jbekas.cocoin.model.Tag;
 import com.jbekas.cocoin.util.CoCoinUtil;
 
 import java.util.ArrayList;
-
-/**
- * Created by 伟平 on 2015/11/7.
- */
 
 public class TagDraggableItemAdapter
         extends RecyclerView.Adapter<TagDraggableItemAdapter.MyViewHolder>
@@ -30,6 +26,7 @@ public class TagDraggableItemAdapter
 
     private static final String TAG = "TagDraggableItemAdapter";
 
+    private CoCoinUtil coCoinUtil;
     private ArrayList<Tag> tags;
     private boolean changed;
 
@@ -63,7 +60,9 @@ public class TagDraggableItemAdapter
         return TAG;
     }
 
-    public TagDraggableItemAdapter() {
+    public TagDraggableItemAdapter(CoCoinUtil coCoinUtil) {
+
+        this.coCoinUtil = coCoinUtil;
 
         tags = new ArrayList<>();
 
@@ -104,8 +103,8 @@ public class TagDraggableItemAdapter
         // set background resource (target view ID: container)
         final int dragState = holder.getDragStateFlags();
 
-        holder.tagImage.setImageResource(CoCoinUtil.GetTagIcon(tags.get(position).getId()));
-        holder.tagName.setText(CoCoinUtil.GetTagName(tags.get(position).getId()));
+        holder.tagImage.setImageResource(coCoinUtil.getTagIcon(tags.get(position).getId()));
+        holder.tagName.setText(coCoinUtil.getTagName(tags.get(position).getId()));
 //        holder.tagName.setTypeface(CoCoinUtil.typefaceLatoLight);
 
         if (((dragState & Draggable.STATE_FLAG_IS_UPDATED) != 0)) {
@@ -115,7 +114,7 @@ public class TagDraggableItemAdapter
                 bgResId = R.drawable.bg_item_dragging_active_state;
 
                 // need to clear drawable state here to get correct appearance of the dragging item.
-                CoCoinUtil.clearState(holder.mContainer.getForeground());
+                coCoinUtil.clearState(holder.mContainer.getForeground());
             } else if ((dragState & Draggable.STATE_FLAG_DRAGGING) != 0) {
                 bgResId = R.drawable.bg_item_normal_state;
             } else {

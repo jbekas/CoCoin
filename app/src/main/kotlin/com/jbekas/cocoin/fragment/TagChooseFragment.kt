@@ -2,33 +2,28 @@ package com.jbekas.cocoin.fragment
 
 import com.jbekas.cocoin.adapter.TagChooseGridViewAdapter
 import com.jbekas.cocoin.ui.MyGridView
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.os.Bundle
 import android.view.View
 import com.jbekas.cocoin.R
-import android.widget.AdapterView
-import com.jbekas.cocoin.model.RecordManager
 import android.widget.BaseAdapter
 import androidx.fragment.app.Fragment
+import com.jbekas.cocoin.util.CoCoinUtil
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.lang.ClassCastException
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class TagChooseFragment : Fragment() {
+    @Inject
+    lateinit var coCoinUtil: CoCoinUtil
+
     var tagAdapter: TagChooseGridViewAdapter? = null
     private var fragmentPosition = 0
     var tagGridView: MyGridView? = null
-//    var activity: Activity? = null
     var tagSelectionListener: TagChooseFragment.OnTagItemSelectedListener? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-//        if (context is Activity) {
-//            activity = context
-//        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +41,12 @@ class TagChooseFragment : Fragment() {
 //        }
 //        CoCoinFragmentManager.tagChooseFragments[fragmentPosition] = this
         context?.let { context ->
-            tagAdapter = TagChooseGridViewAdapter(context, fragmentPosition, tagSelectionListener)
+            tagAdapter = TagChooseGridViewAdapter(
+                context = context,
+                coCoinUtil = coCoinUtil,
+                fragmentPosition,
+                tagSelectionListener
+            )
             tagGridView!!.adapter = tagAdapter
         }
 

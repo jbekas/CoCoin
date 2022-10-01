@@ -9,10 +9,16 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jbekas.cocoin.adapter.TagViewFragmentAdapter
 import com.jbekas.cocoin.databinding.FragmentTagReportBinding
-import com.jbekas.cocoin.model.RecordManager
+import com.jbekas.cocoin.db.RecordManager
 import com.jbekas.cocoin.util.CoCoinUtil
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class TagReportFragment : Fragment() {
+
+    @Inject
+    lateinit var coCoinUtil: CoCoinUtil
 
     private var _binding: FragmentTagReportBinding? = null
 
@@ -24,7 +30,7 @@ class TagReportFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (activity!! as AppCompatActivity).supportActionBar?.let {
+        (requireActivity() as AppCompatActivity).supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setDisplayShowHomeEnabled(true)
             it.setHomeButtonEnabled(true)
@@ -38,7 +44,7 @@ class TagReportFragment : Fragment() {
     ): View {
         _binding = FragmentTagReportBinding.inflate(inflater, container, false)
 
-        tagModeAdapter = TagViewFragmentAdapter(activity!!)
+        tagModeAdapter = TagViewFragmentAdapter(requireActivity())
         binding.tagReportPager.offscreenPageLimit = tagModeAdapter.itemCount
         binding.tagReportPager.adapter = tagModeAdapter
 
@@ -55,8 +61,8 @@ class TagReportFragment : Fragment() {
         _binding = null
     }
 
-    private fun getPageTitle(position: Int): CharSequence? {
-        return CoCoinUtil.GetTagName(
+    private fun getPageTitle(position: Int): CharSequence {
+        return coCoinUtil.getTagName(
             RecordManager.TAGS[position % RecordManager.TAGS.size].id)
     }
 }

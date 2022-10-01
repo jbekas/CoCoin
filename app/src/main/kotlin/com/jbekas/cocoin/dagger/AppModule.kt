@@ -2,6 +2,7 @@ package com.jbekas.cocoin.dagger
 
 import android.content.Context
 import com.jbekas.cocoin.service.ToastService
+import com.jbekas.cocoin.util.CoCoinUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,5 +24,11 @@ object AppModule {
     @Provides
     fun provideToastService(@ApplicationContext appContext: Context): ToastService {
         return ToastService(appContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCoCoinUtil(@ApplicationContext appContext: Context): CoCoinUtil {
+        return CoCoinUtil(appContext)
     }
 }
