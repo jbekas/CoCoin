@@ -2,13 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-        android:name=".activity.CoCoinApplication"
+        android:name="com.redgecko.expensetracker.ExpenseTrackerApplication"
         android:allowBackup="true"
         android:icon="@drawable/cocoin_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".NewMainActivity"
+            android:name="com.redgecko.expensetracker.activity.SimpleMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,41 +17,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.PinActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.SplashActivity"
-            android:exported="true">
+            android:name="com.redgecko.expensetracker.activity.ComposeMainActivity"
+            android:exported="false">
         </activity>
-        <activity
-            android:name=".activity.MainActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".activity.AccountBookReportViewActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".activity.AccountBookMonthViewActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".activity.TagSettingActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".activity.AccountBookListViewActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".activity.EditRecordActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".activity.EditPasswordActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".activity.SetPasswordActivity"
-            android:launchMode="singleTop" />
-        <activity android:name=".activity.HelpActivity" />
-        <activity android:name=".activity.FeedbackActivity" />
-        <activity android:name=".activity.AboutActivity" />
-        <activity android:name=".activity.ShowActivity" />
-        <activity android:name=".activity.TestActivity" />
 
         <meta-data android:name="preloaded_fonts" android:resource="@array/preloaded_fonts" />
     </application>
